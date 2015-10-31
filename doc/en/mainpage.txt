@@ -1,0 +1,201 @@
+/**
+
+ @mainpage The tiny ASURO library
+ 
+ @section mainpage_intro Preface
+ Yet another ASURO library?
+ 
+ The question is not completely unjustified since several other libraries for
+ the ASURO exist. But the original library (by Jan Grewe, DLR) is far away
+ from being up-to-date and will not work without complaints with current GCC 
+ builds. \n
+ A closer look at the code of the original library revealed some parts which
+ i did not like for different reasons. For this reason i started to implement
+ an own library, cleanly divided into modules and optimized for space, speed
+ and energy efficiency. But at the same time, i tried to stay close to the
+ original API if it made sense. \n
+ Users of the german forum "Roboternetz" continued the development of the 
+ original ASURO library and added a lot of enhancements. Some ideas have been
+ picked up from this library, as well as the code for GoTurn() (encoder.h) which
+ originated from there.
+ 
+ The tiny ASURO library tries to be suitable for beginners without neglecting
+ more demanding users. It is implemented without a lot of disturbing clutter or
+ unnecessary features and, despite a few exceptions, completely interrupt-proof.
+ 
+ @section mainpage_bootloader Bootloader
+ A bootloader is part of the tiny ASURO library since version 1.1.0. Compared
+ to the original bootloader it does only need the half amount of flash memory
+ while being fully compatible to it. The bootloader is located inside the folder
+ "tinyasuroboot". (See: bootloader.S) 
+ 
+ @section mainpage_usage Usage
+ @subsection mainpage_usage_common Overview
+ The tiny ASURO library is divided into different modules providing interfaces
+ for tasks like accessing the ADC or the infrared communications interface.
+ Normally those modules require an initialization before using their 
+ functionality, further informations are provided by the module documentations. \n
+ All hardware components can also be accessed directly. In this case, the 
+ functionality of affected library modules can be restored by initializing them 
+ again.
+ 
+ @subsection mainpage_usage_interrupts Interrupt safety
+ All functions can be used within interrupt context, despite a few exceptions
+ which are explicitly documented. One general exception are the initializion 
+ routines mentioned above.
+ 
+ @subsection mainpage_usage_hooks Hooks
+ Hooks are a mechanism to execute custom functions within internally used
+ interrupt handlers. Modules which support interrupt hooks contain a 
+ corresponding hook variable. The hooking feature itself can be configured
+ using the file hooks.h (see: @ref mainpage_config), each hook can be enabled or 
+ disabled as required. Since hooks.h is part of the libraries static 
+ configuration, all changes require the library to be recompiled. 
+ (See: @ref mainpage_usage_integration)
+ 
+ Basically, each hook variable is just a function pointer. If a function should
+ be called from a specific hookable interrupt, its address (function pointer) 
+ has to be stored into the corresponding hook variable.
+ 
+ @subsection mainpage_usage_integration Using the library
+ The library can be used in two different ways. At the one hand, the libraries
+ source code can be directly included into own projects, at the other hand, it
+ can also be used as a precompiled (objectcode) library.
+ 
+ @li Including the source: \n
+ Using the library source code directly is maybe the more flexible approach.
+ It offers the ability to have project-specific configurations or changes to
+ the library. Changes to the configuration will be taken into account directly 
+ at the next project rebuild. Building such a project might require more time
+ compared to the precompiled library. \n
+ Using the source code of the tiny ASURO library directly is not difficult, as 
+ it only requires copying the folder "libtinyasuro" to the desired place
+ (most likely the project source folder). The source files in the folder
+ have to be included into the building procedure (for example by adjusting the
+ makefile). A makefile template for projects starting from scratch is provided
+ inside the examples folder.
+ 
+ @li Linking to the precompiled library: \n
+ Using the tiny ASURO library as objectcode library is pretty simple, it 
+ requires only one file to be included (and the header files (*.h)). The 
+ resulting binary/hexfile might be sometimes a bit smaller compared to the
+ direct build from the source. Using the precompiled library has one important
+ drawback: The <b>configuration is compiled into the library</b> and <b>can only 
+ be changed by recompiling</b> it. \n 
+ To use the precompiled version, "libtinyasuro.a" is required to be included 
+ into the compilers library search path, as well as the header files. An example
+ makefile is included, too.
+ 
+ @subsection mainpage_usage_makefiles Makefiles
+ The following two makefiles are provided for building projects with make:
+ @bverbatim{
+examples/lib-object (objectcode library) 
+examples/lib-source (library included as source code) }
+ Required changes/adjustments:
+ @li Path to the root of the tiny ASURO library: \n
+     Defines the storage location of the library (the folder "libtinyasuro").
+     ".." points to the folder above, "." to the current folder and "../.." 
+     quals therefore the folder two levels above the current one. Paths 
+     containing spaces have to be surrounded by double quotes.
+     (Example: "C:\some path containing spaces")
+ @bverbatim{
+# Path to the root of the Tiny ASURO Library
+TINYASURODIR = ../../libtinyasuro }
+ @li Project source code: \n
+     This section can be used to add more source files to the build process:
+ @bverbatim{
+# List C source files here. (C dependencies are automatically generated.)
+SRC = $(TARGET).c 
+# Add your custom source files below:
+SRC += eigenerQuelltext.c 
+SRC += nochMehrQuelltext.c }
+     The source file containing the function "main" (this is "main.c" for all 
+     example projects) is handled different, it has to be set as "TARGET" 
+     (some lines above):
+ @bverbatim{
+# Target file name (without extension).
+TARGET = main
+ }
+ 
+ @section mainpage_examples Examples
+ The library comes along with a few example projects which are located inside
+ the folder "exmples". They can be used to understand how to use the library and 
+ as template for own projects.
+ @li lib-object is an empty project template for using the precompiled version 
+     of the tiny ASURO  library.
+ @li lib-source again an empty project template which uses the source code of the
+     tiny ASURO library directly. For local adjustments at the library source 
+     code or its configuration, copy the source code into the project folder and
+     update the makefile variable TINYASURODIR 
+     (see @ref mainpage_usage_makefiles).
+ @li SelfTest is a implementation of the self-test procedure mentioned at the 
+     ASURO's manual.
+ @li EncoderMovementDemo is an usage example for the encodercompensated movement 
+     mode.
+ @li SwitchTest and ADCSwitchTest are tools for debugging issues regarding the
+     ASURO's switches.
+ 
+ @section mainpage_config Configuration
+ The tiny ASURO library is configured by two different header files and one 
+ Makefile. General settings (mostly calibration related) are located inside 
+ config.h. The hooking feature is configured by another header file, named 
+ hooks.h.
+ Some platform specific parameters are defined in libtinyasuro/Config.mk. 
+ Under normal circumstances there is no need to modify them, except for using
+ the library with modified ASUROs (e.g. other MCU, Clock frequency).
+ 
+ The configuration itself is static, it is compiled into the binary and can not
+ be changed during runtime. If the library source code is used directly, the
+ build system normally takes care of recompiling all affected modules in case
+ of a configuration change. But if is used as an objectcode library, this work 
+ has to be done manually (see next section for details)!
+ 
+ @section mainpage_buildlib Compiling the library
+ Building the objectcode library is done by using the Makefile located at the
+ root folder of the library using the statements mentioned below:
+ @bverbatim{
+make clean
+make all
+make distclean }
+ The last statement cleans up all build artefacts except of the objectcode 
+ library itself.
+ 
+ @section mainpage_license Licence
+ The original library of the DLR is licenced under the GPL, the same holds
+ true for the derived library of the "Roboternetz" users. In contrary, the tiny
+ ASURO library is licenced under the CDDL, a licence which is less "aggressive"
+ than the GPL and does not force developers to licence their whole code under
+ the same licence. This way one has the full control of his own source code.
+ Changes to the library itself are however automatically licenced under the CDDL,
+ which allows the whole community to benefit from them.
+ 
+ @section mainpage_changelog Changelog
+ - Version 1.0.0
+   - First release of the tiny ASURO library
+ - Version 1.1.0
+   - First release of the tiny ASURO bootloader
+   - asuro/motor.h: Add "BWD" as alias for "RWD"
+ - Version 2.0.0
+   - Replaced the string "Odometrie" of all funcion, macro and variable names by
+     "Odometry". The old names are deprecated
+   - The configuration parameter "ODO_OFFSET" has been renamed to 
+     "ODO_EDGE_THRESHOLD".
+   - The ADC clock has been reduced from F_CPU/32 to F_CPU/64. This improves the 
+     sample accuracy but reduces the maximum sampling rate by 50 percent.
+   - The function BatteryVoltage() (sensors.h) has been newly introduced to 
+     measure the ASURO's battery voltage.
+   - Bugfix: SWITCH_ISR_HOOK_ENABLE is now working as intended.
+   - Optimization: No more blocking/polling inside ADCInterruptEnable.
+   - New examples/debuggin tools: EncoderMovementDemo, SwitchTest and 
+     ADCSwitchTest.
+   - The bootloader is now compiled by AVR-GCC, the build does not depend any 
+     more from AVR Studio.
+   - Newer versions of AVR-GCC do not support the flag "-msize" any more, all
+     makefiles have been updated to use the flag "-dp" instead, which offers the
+     same functionality.
+   - asuro/motor.h: Added "BWD" to the documentation.
+   - English translation of comments and documentation.
+   - Documentation: Minor fixes and fine tuning.
+   - Reorganization of the folder structure.
+   - Reorganization of the Makefiles.
+ */

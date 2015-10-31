@@ -1,0 +1,206 @@
+/**
+
+ @mainpage Die Tiny ASURO Library
+ 
+ @section mainpage_intro Vorwort
+ Oder auch: Noch eine ASURO-Bibliothek?
+ 
+ Diese Frage ist nicht ganz unberechtigt, gibt es doch einige Bibliotheken
+ für den ASURO. Die originale Bibliothek (von Jan Grewe, DLR) ist allerdings
+ schon in die Jahre gekommen, was aktuelle GCC-Versionen an einigen Stellen
+ im Quelltext auch bemängeln. \n
+ Bei einer näheren Betrachtung des Quelltextes zeigte sich einiges was ich als
+ unschön oder optimierbar empfand, ich entwickelte also eine eigene Bibliothek
+ nach meinem Geschmack. Die Grundstruktur wurde dabei beibehalten, die
+ Funktionen in verschiedene Module aufgetrennt neu (und optimiert) 
+ implementiert. \n
+ Im Laufe der Entwicklung wurden dann auch Ideen aus dem Roboternetz
+ aufgegriffen. Dort hatte eine Reihe von Forumsmitgliedern die originale 
+ Bibliothek weiterentwickelt und den Funktionsumfang stark erweitert, der
+ Quelltext von GoTurn() (encoder.h) stammt aus dieser Bibliothek.
+ 
+ Die Tiny ASURO Library stellt den Versuch dar, eine Bibliothek zu 
+ implementieren die einerseits einsteigerfreundlich ist, andererseits aber
+ aber auch anspruchsvollere Anwender zufrieden stellt. Daher ist sie relativ 
+ schlank, weitestgehend interruptfest, aber auch auf effizienten beziehungsweise 
+ stromsparenden Code optimiert.
+ 
+ @section mainpage_bootloader Bootloader
+ Mit Version 1.1.0 der Tiny ASURO Library ist auch ein Bootloader Teil der
+ Bibliothek. Der Tiny ASURO Bootloader ist dabei kompatibel zum 
+ Original-Bootloader, benötigt aber nur die Hälfte dessen Speicherplatz. Er 
+ ist im Ordner "tinyasuroboot" zu finden. (Siehe auch: bootloader.S) 
+ 
+ @section mainpage_usage Verwendung
+ @subsection mainpage_usage_common Allgemein
+ Die Tiny ASURO Library gliedert sich in verschiedene Module die etwa für den
+ AD-Wandler oder die IR-Schnittstelle zuständig sind. Viele dieser Module
+ benötigen vor ihrer Verwendung eine Initialisierung, entsprechende Hinweise
+ gibt es in der jeweiligen Moduldokumentation. Dabei sind auch 
+ Modulabhängigkeiten zu berücksichtigen. \n
+ Bei direkter Verwendung einzelner Hardwarekomponenten kann die 
+ Funktionsfähigkeit der betreffenden Bibliotheksmodule durch eine 
+ Reinitialisierung dieser wiederhergestellt werden.
+ 
+ @subsection mainpage_usage_interrupts Interruptfestigkeit
+ Sofern nicht anders dokumentiert können alle Funktionen auch im 
+ Interruptkontext verwendet werden. Davon ausgenommen sind die oben erwähnten 
+ Initialisierungsroutinen. Die Initialisierungsfunktionen sollten daher nur
+ mit abgeschalteten Interrupts aufgerufen werden.
+ 
+ @subsection mainpage_usage_hooks Hooks
+ Hooks erlauben die Ausführung eigener Funktionen innerhalb von intern 
+ genutzten Interrupts. Zu diesem Zweck gibt es für jedes Modul das einen
+ Interruptvektor benutzt eine entsprechende Variable. Die Hooks können für
+ jeden Interruptvektor getrennt aktiviert werden, diese Konfiguration erfolgt
+ in hooks.h (Siehe auch: @ref mainpage_config). Eine Veränderung der 
+ Konfiguration erfordert, dass die Bibliothek neu kompiliert wird.
+ (Siehe auch: @ref mainpage_usage_integration)
+ 
+ Zur Verwendung der Hooks muss dann die Adresse der auszuführende Funktion in 
+ der zum Interruptvektor zugehörigen Variable (Funktionszeiger) gespeichert 
+ werden. 
+ 
+ @subsection mainpage_usage_integration Einbindung der Bibliothek
+ Für die Einbindung der Bibliothek gibt es zwei Möglichkeiten. Zum einen kann
+ der Quelltext direkt in eigene Projekte eingebunden werden, andererseits kann
+ die Tiny ASURO Library in vorkompilierter Form verwendet werden.
+ 
+ @li Einbindung als Quelltext: \n
+ Die Verwendung der Bibliothek in Quelltextform hat den Vorteil, dass jedes
+ Projekt seine eigene Kopie hat und daher eine projektspezifische Konfiguration
+ möglich ist. Dafür kann sich allerdings der Build-Vorgang verlängern. \n
+ Um die Tiny ASURO Library in Quelltextform zu verwenden, sollte der Ordner
+ "libtinyasuro" in das Projektverzeichnis kopiert werden. Die in diesen 
+ Ordnern befindlichen Quelltexte müssen in den Buildvorgang (zum Beispiel in 
+ das Makefile) integriert werden, es gibt dazu ein entsprechendes 
+ Beispiel-Makefile. Bei Konfigurationsänderungen werden so bei Bedarf alle
+ erforderlichen Teile der Bibliothek neu kompiliert.
+ 
+ @li Vorkompilierte Einbindung: \n
+ In Form einer Objectcode-Bibliothek vereinfacht sich die Benutzung der Tiny
+ ASURO Library, da in vorkompilierter Form nur eine Datei (sowie die 
+ Header-Dateien (*.h)) eingebunden werden muss. Außerdem kann ein so 
+ kompiliertes Programm in manchen Fällen etwas kleiner ausfallen als bei der
+ Verwendung der Quelltextbibliothek. In vorkompilierter Form ist die
+ <b>Konfiguration Teil der Bibliothek</b> und <b>nur durch eine Rekompilierung</b> 
+ dieser <b>veränderbar</b>. \n
+ Um die Bibliothek so zu verwenden, muss sich lediglich "libtinyasuro.a" im
+ Suchpfad befinden. Auch hierzu gibt es ein entsprechendes Beispiel-Makefile.
+ 
+ @subsection mainpage_usage_makefiles Makefiles
+ Wer den Build-Vorgang seiner Projekte mit make durchführen/steuern möchte, kann
+ die folgenden Makefiles verwenden:
+ @bverbatim{
+examples/lib-object (Objectcode-Bibliothek) 
+examples/lib-source (Bibliothek in Quelltextform) }
+ Die an den Makefiles vorzunehmenden Anpassungen werden im Folgenden näher 
+ beschrieben.
+ @li Pfad zur Tiny ASURO Library: \n
+     Hier wird der Speicherort der Bibliothek (also des Ordners libtinyasuro) 
+     angegeben. ".." verweist auf das übergeordnete Verzeichnis, "." auf das 
+     aktuelle, "../.." entspricht daher dem über-über-Verzeichnis. 
+     Soll ein Pfad mit Leerzeichen angegeben werden, muss dieser vollständig von 
+     Anführungszeichen eingeschlossen werden. 
+     (Beispiel: "C:\Pfad mit Leerzeichen")
+ @bverbatim{
+# Path to the root of the Tiny ASURO Library
+TINYASURODIR = ../../libtinyasuro }
+ @li Zum Projekt gehörender Quelltext: \n
+     In diesem Abschnitt wird bei Bedarf weiterer Quelltext eingebunden:
+ @bverbatim{
+# List C source files here. (C dependencies are automatically generated.)
+SRC = $(TARGET).c 
+# Eigener Quelltext ab hier:
+SRC += eigenerQuelltext.c 
+SRC += nochMehrQuelltext.c }
+     Die Quelltextdatei mit der "main"-Funktion (bei den mitgelieferten 
+     Beispielen ist das immer "main.c") erfährt hier eine Sonderbehandlung und
+     wird einige Zeilen oberhalb unter "TARGET" eingetragen:
+ @bverbatim{
+# Target file name (without extension).
+TARGET = main
+ }
+ 
+ @section mainpage_examples Beispiele
+ Im Ordner "examples" sind einige Beispielprojekte zu finden, die als Grundlage 
+ für eigene Projekte verwendet werden können.
+ @li lib-object ist eine leere Projektvorlage die die Bibliothek in 
+     vorkompilierter Form verwendet.
+ @li lib-source ist ebenfalls eine leere Projektvorlage, verwendet die 
+     Bibliothek aber in Quelltextform. Wird der Quelltext der Bibliothek in den
+     Projektordner kopiert und die Variable TINYASURODIR im Makefile angepasst
+     (siehe auch: @ref mainpage_usage_makefiles), wirken sich Änderungen an
+     (der Kopie) der Bibliothek und der Konfiguration nur auf dieses spezielle
+     Projekt aus. 
+ @li SelfTest beinhaltet eine Reimplementierung des mit dem ASURO ausgelieferten
+     Selbsttests. 
+ @li EncoderMovementDemo zeigt wie der encoderkompensierte Bewegungsmodus 
+     verwendet werden kann.
+ @li SwitchTest und ADCSwitchTest sind Hilfsmittel zur Fehlersuche bei Problemen 
+     mit den Tastern des ASURO.
+ 
+ @section mainpage_config Konfiguration
+ Die Tiny ASURO Library wird an drei Stellen konfiguriert. Allgemeine 
+ Einstellungen und Kalibrierdaten finden sich in config.h, in hooks.h können
+ die einzelnen Hooks aktiviert werden.
+ Einige plattformspezifische Parameter, die in der Regel nicht verändert werden 
+ müssen, werden in libtinyasuro/Config.mk definiert. Soll die Bibliothek mit
+ modifizierten ASUROs eingesetzt werden (Prozessor, Taktfrequenz etc.) sind hier
+ gegebenenfalls Anpassungen erforderlich.
+ 
+ Die Konfiguration erfolgt statisch, was bedeutet, dass zur Laufzeit keine
+ Änderungen an den Konfigurationsparametern möglich sind. Zudem müssen bei
+ Konfigurationsänderungen die betroffenen Teile der Bibliothek neu kompiliert
+ werden, dies ist insbesondere bei der Verwendung als Objectcode-Bibliothek
+ wichtig!
+ 
+ @section mainpage_buildlib Kompilieren der Bibliothek
+ Die Objectcode-Bibliothek kann mit dem Makefile im Wurzelverzeichnis der 
+ Bibliothek mit folgenden Anweisungen neu kompiliert werden:
+ @bverbatim{
+make clean
+make all
+make distclean }
+ Letztere Anweisung entfernt alle während des Build-Vorganges angelegten Dateien 
+ und Ordner, ausgenommen die erzeugte Bibliothek.
+ 
+ @section mainpage_license Lizenz
+ Im Gegensatz zur Bibliothek des DLR und deren Weiterentwicklung aus dem 
+ Roboternetz ist die Tiny ASURO Library unter der CDDL lizenziert. Verglichen
+ mit der GPL ist die CDDL weniger "aggressiv" und ermöglicht somit die Verwendung 
+ der Bibliothek ohne eigenen Quelltext zwangsläufig auch entsprechend 
+ lizenzieren zu müssen. So bleibt dem Entwickler die volle Entscheidungsfreiheit 
+ über eigenen Quelltext, nur Änderungen an der Bibliothek stehen automatisch 
+ unter der CDDL und kommen somit der Allgemeinheit zugute.
+ 
+ @section mainpage_changelog Changelog/Änderungen
+ - Version 1.0.0
+   - Erstveröffentlichung der Tiny ASURO Library
+ - Version 1.1.0
+   - Erstveröffentlichung des Tiny ASURO Bootloaders
+   - asuro/motor.h: "BWD" als Alias für "RWD" eingebaut
+ - Version 2.0.0
+   - "Odometrie" im Namen von Funktionen/Makros/Variablen wurde durch "Odometry"
+     ersetzt. Die bisherigen Bezeichner werden übergangsweise weiter unterstützt.
+   - Der Konfigurationsparameter "ODO_OFFSET" wurde umbenannt in 
+     "ODO_EDGE_THRESHOLD".
+   - Der AD-Wandler arbeitet zukünftig mit F_CPU/64 statt F_CPU/32. Dadurch 
+     wird die maximal mögliche Samplingrate halbiert, zugunsten einer 
+     verbesserten Genauigkeit.
+   - Die neue Funktion BatteryVoltage() (sensors.h) ermittelt die 
+     Batteriespannung des ASUROS.
+   - Bugfix: SWITCH_ISR_HOOK_ENABLE funktioniert jetzt wie dokumentiert.
+   - Optimierung: Kein blockierendes Warten innerhalb von ADCInterruptEnable.
+   - Neue Beispiel/Testanwendungen: EncoderMovementDemo, SwitchTest und 
+     ADCSwitchTest.
+   - Der Bootloader wird jetzt mit AVR-GCC compiliert, dadurch entfällt die
+	 Abhängigkeit von AVR Studio.
+   - Das Flag "-msize" wird von AVR-GCC nicht mehr länger unterstützt, es wurde 
+	 in den Makefiles durch das funktionsidentische Flag "-dp" ersetzt.
+   - asuro/motor.h: "BWD" in die Dokumentation aufgenommen.
+   - Übersetzung von Dokumentation und Kommentaren ins Englische.
+   - Diverse kleinere Verbesserungen an der Dokumentation.
+   - Reorganisation der Ordnerstruktur.
+   - Reorganisation der Makefiles.
+ */

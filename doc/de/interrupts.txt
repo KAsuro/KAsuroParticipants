@@ -1,0 +1,14 @@
+/**
+
+ @page interrupts Verwendete Interrupts
+ 
+ Folgende Interrupts werden für interne Zwecke verwendet:
+ @li ADC_vect: ADC-Interrupt, wird für den AutoMeasurmentMode verwendet
+               (sensors.h)
+ @li INT1_vect: Externer Interrupt 1, dient der Erkennung von 
+                Tasterereignissen (switches.h)
+ @li TIMER2_OVF_vect: Overflow-Interrupt von Timer2, erzeugt einen 36kHz-Takt
+                      als Zeitreferenz und für den IR-Transmitter (time.h)
+ 
+ */
+ 

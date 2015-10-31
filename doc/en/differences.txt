@@ -1,0 +1,84 @@
+/**
+
+ @page differences Noteworthy differences
+ 
+ The tiny ASURO library mostly follows the example of the original ASURO library
+ (DLR) and the enhanced version from the "Roboternetz" forum. The most important
+ differences between them are explained by the following sections. 
+ 
+ @section differences_common General differences
+ All function-like macros are called like functions (suffixed by parentheses), 
+ constant names are used without parentheses. \n 
+ Example: Use GREEN_LED_ON(); instead of GREEN_LED_ON
+ 
+ The API uses only C99-compliant datatypes. Some functions are using different
+ types (less or more bits, sign) for arguments or return values as their 
+ original counterpart.
+ 
+ @section differences_interupts Interrupts
+ Three interrupt vectors are in use for internal purposes (see: @ref interrupts).
+ All remaining interrupt vectors can be used without limitations. \n 
+ Most parts of this library are implemented interrupt-safe, the only general 
+ exception from this rule are initialization routines. Some functions may have
+ additional exceptions documented.
+ 
+ @section differences_adc Analogue-to-digital converter (ADC)
+ The ADC module has been implemented using a completely different approach in 
+ comparison to other ASURO libraries. Accessing the ADC is done inside a special
+ code block which enables the ADC module to offer a consistent behaviour even
+ if the ADC is accessed from an interupt context, too.
+ 
+ For this reason, the function ReadADC() has been dropped. Additionaly, all 
+ macros addressing the ADC channels have been renamed for a better consistency.
+ ADC_BAT is the new name for BATTERIE, all other channel macros have been 
+ prefixed by "ADC_".
+ 
+ @section differences_encoder Encoder/odometry
+ The odometry informations are derived from the sensor data captured by the
+ AutoMeasurmentMode (see: @ref differences_sensors). The data analysis is done
+ by EncoderPoll(), which has to be called periodically if odometry informations
+ are required. For further details, please consult the encoder.h documentation.
+ 
+ The "Roboternetz" library provides a variable named encoder. The same 
+ functionality is offered by encoderTicks. The functions EncoderSet(), 
+ EncoderStop() and EncoderStart() do not have a functional counterpart in this
+ library.
+ 
+ The tiny ASURO library offers the so-called encodercompensated movement mode.
+ This mode tries to compensate differences between the desired left/right motor
+ speeds and the actual speeds using odometry data.
+ 
+ @section differences_motor Motor control
+ MyMotorSpeed() and SetMotorPower() do not have a functional counterpart. 
+ 
+ @section differences_sensors Sensor data capturing
+ The AutoMeasurmentMode documented in sensors.h is similar to the autoencode
+ mode of the "Roboternetz" library. But the AutoMeasurmentMode only captures
+ the sensor data and does not evaluate them. (see: @ref differences_encoder)
+ 
+ @section differences_switches Switches
+ Some macros, variables and functions are named different compared to other
+ ASURO libraries. Instead of "Kx", use the "SWITCH_x" macros, switch_event
+ replaces switched and the functionality of StartSwitch()/StopSwitch() is
+ covered by SwitchInterruptEnable() and SwitchInterruptDisable().
+ 
+ @section differences_time Clock/time base
+ Tha tiny ASURO library uses, like the "Roboternetz" library, a 36kHz clock as 
+ time reference instead of the 72kHz from the original (DLR) library. Some 
+ efforts to reduce unnecessary power consuption have been made: All sleep
+ functions use the AVR's idle mode and the carrier signal of the infrared
+ communications interface can be turned off. (See: @ref differences_uart) 
+ 
+ Neiter timebase nor Gettime() have been implemented (in contrary to the
+ "Roboternetz" library), tick36kHz is the equivalent of count36kHz.
+ 
+ @section differences_uart Serial/infrared communication interface
+ The 36kHz carrier signal of the infrared communication interface is turned off
+ except for outgoing transmissions. This reduces the idle power consumption.
+ The function SerRead() has a timeout handling which differs from the other
+ libraries.
+ 
+ Additional functionality like UartPutc(), SerPrint(), PrintInt(),
+ PrintLong(), SerPrint_p() and PrintFloat() has not been implemented.
+ 
+ */

@@ -1,0 +1,9 @@
+2.1
+- Autokonfiguration: Switch, Batterie, Odo-Sensoren, Encoder-Strecken
+- ADC: sleep während Wandlung?
+- UART: sleep während Wartezeiten?
+2.2
+- Bootloader für ATMegaXX8 vorbereiten
+- Bibliothek auf ATMegaXX8 anpassen
+2.x
+- Mehr Beispielprojekte

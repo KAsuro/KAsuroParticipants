@@ -1,0 +1,30 @@
+/**
+
+ @page hardware Hardware resources in use
+ 
+ The different modules of the tiny ASURO library mostly address distinct aspects
+ of the ASURO. For this purpose, they control and use different hardware 
+ resources of the built in AVR microcontroller. Some of those resources are 
+ (with restrictions) still usable for custom purposes but exclusive access
+ is required for others.
+ 
+ @section hardware_common I/O pins
+ The software modules use specific I/O pins to communicate, measure and control.
+ Those pins might be used for other purposes (considering the wiring documented
+ in the ASURO manual) if no module, which requires access to them, is in use.
+   
+ @section hardware_adc ADC
+ The ADC interface requires exclusive access to this hardware component.
+ 
+ @section hardware_timer Timers
+ Timer1 is used exclusively for controlling the motors. As common time/clock
+ source, timer2 is also in exclusive use.
+ 
+ @section hardware_uart U(S)ART
+ The U(S)ART component of the AVR might be used otherwise if the UART module
+ is not accessed. However, it requires exclusive access to the U(S)ART while it
+ is in use. If the U(S)ART configuration has been changed, its functionality
+ can be restored by initializing the USART module again.
+ 
+ */
+ 

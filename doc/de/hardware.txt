@@ -1,0 +1,29 @@
+/**
+
+ @page hardware Genutzte Hardwareressourcen
+ 
+ Die einzelnen Module der Tiny ASURO Library verwenden verschiedene 
+ Komponenten des verbauten AVR Mikrocontrollers. In einigen Fällen ist
+ dabei keine Nutzung dieser Komponenten jenseits der gebotenen Schnittstelle
+ möglich.
+ 
+ @section hardware_common I/O-Pins
+ Die Module verwenden je nach Funktionalität entsprechende I/O-Pins zur
+ Kommunikation, Messdatenerfassung und Steuerung. Wird ein Modul nicht 
+ verwendet, können diese Pins (entsprechend der Beschaltung) verwendet werden. 
+  
+ @section hardware_adc AD-Wandler
+ Die Implementierung der ADC-Schnittstelle erfordert einen exklusiven Zugriff
+ auf das Hardwaremodul des AVR.
+ 
+ @section hardware_timer Timer
+ Die Motorsteuerung erfordert exklusiven Zugriff auf Timer1, Timer2 wird als
+ gemeinsame Zeitbasis ebenfalls exklusiv genutz.
+ 
+ @section hardware_uart U(S)ART
+ Das UART-Modul benötigt nur während der Benutzung exklusiven Zugriff auf die
+ Hardware und kann über eine Reinitialisierung auch bei veränderter 
+ Konfiguration wieder in einen arbeitsfähigen Zustand versetzt werden.
+ 
+ */
+ 

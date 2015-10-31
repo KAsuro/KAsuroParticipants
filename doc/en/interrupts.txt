@@ -1,0 +1,13 @@
+/**
+
+ @page interrupts Interrupt vectors in use
+ 
+ The interrupt vectors below are used for internal purposes:
+ @li ADC_vect: ADC interrupt, required for the AutoMeasurmentMode (sensors.h)
+ @li INT1_vect: External interrupt 1, used to handle switch events (switches.h)
+ @li TIMER2_OVF_vect: Overflow interrupt for timer2, generates a 36kHz clock
+                      as time base and carrier signal for the serial/infrared
+                      communications interface (time.h)
+ 
+ */
+ 

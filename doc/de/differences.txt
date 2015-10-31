@@ -1,0 +1,91 @@
+/**
+
+ @page differences Besonderheiten/Unterschiede
+ 
+ Obwohl die Tiny ASURO Library sich an der Bibliothek des DLR sowie deren
+ Weiterentwicklung im Roboternetz orientiert, gibt es Unterschiede, die im
+ Folgenden näher erläutert werden.
+ 
+ @section differences_common Allgemeines
+ Alle Makros die funktionsähnliches Verhalten zeigen, werden wie Funktionen
+ aufgerufen, lediglich Konstanten werden ohne runde Klammern verwendet. \n
+ Beispiel: GREEN_LED_ON wird zu GREEN_LED_ON();
+ 
+ Es werden ausschließlich die im C99-Standard definierten Datentypen verwendet,
+ einige Funktionen weichen ferner bezüglich der Datentypen 
+ (Größe/Breite, Vorzeichen) von ihren Vorbildern ab.  
+ 
+ @section differences_interupts Interrupts
+ Es werden insgesamt drei Interruptquellen/-vektoren verwendet 
+ (Siehe auch: @ref interrupts "Dokumentation zu den verwendeten Interrupts"), 
+ die Verbleibenden können (sofern sie nicht durch intern genutzte
+ Hardwareressourcen belegt werden), frei verwendet werden. \n
+ Bei Entwurf und Implementierung der Bibliothek wurde darauf geachtet, alle
+ Module und Funktionen interruptfest umzusetzen, sofern nicht extra 
+ dokumentiert, können daher alle Funktionen auch im Interruptkontext verwendet 
+ werden.
+ 
+ @section differences_adc Analog-Digital Konverter (ADC)
+ Die Verwendung des ADC-Moduls weicht grundlegend von der anderer 
+ ASURO-Bibliotheken ab. ADC-Zugriffe werden durch einen Schutzblock 
+ eingeschlossen und können daher beliebig von Interrupts unterbochen (und dort
+ verwendet) werden.
+  
+ Daher ist die Funktion ReadADC() entfallen, die Kanalmakros wurden zur
+ Schaffung konsistenter Namen umbenannt. Das Äquivalent zu BATTERIE lautet
+ ADC_BAT, bei allen anderen Kanalmakros wurde das Präfix "ADC_" vorangestellt.
+ 
+ @section differences_encoder Encoder/Odometrie
+ Die Auswertung der Odometriesensoren basiert auf den Daten, die
+ im AutoMeasurmentMode (Siehe auch: @ref differences_sensors)
+ erfasst werden. \n
+ Die Interpretation der Daten erfolgt dabei in EncoderPoll() und nicht während 
+ des Auslesens des ADC. Werden daher Odometriedaten benötigt, muss 
+ EncoderPoll() zyklisch aufgerufen werden. Details dazu stehen in der 
+ Dokumentation von encoder.h.
+  
+ Das Äquivalent zur Variable encoder findet sich in Form von encoderTicks, die 
+ Funktionen EncoderSet(), EncoderStop() und EncoderStart() haben kein 
+ Gegenstück in dieser Bibliothek.
+ 
+ Neben diesen Abweichungen gibt es den sogenannten encoderkompensierten
+ Bewegungsmodus. In diesem Modus wird versucht, basierend auf den 
+ Odometriedaten, das Verhältnis der Radgeschwindigkeiten links/rechts 
+ entsprechend der Vorgabewerte beizubehalten.
+ 
+ @section differences_motor Motoransteuerung
+ Es gibt keine Entsprechung für MyMotorSpeed() und SetMotorPower().
+ 
+ @section differences_sensors Sensorauswertung
+ Der in sensors.h dokumentierte AutoMeasurmentMode ähnelt dem Autencode-Modus.
+ Im Gegensatz dazu werden allerdings lediglich die Rohdaten der Linienfolge- 
+ und Odometrie-Sensoren erfasst, die Auswertung der Odometriedaten erfolgt
+ dabei nicht. (Siehe auch: @ref differences_encoder)
+ 
+ @section differences_switches Tasterauswertung
+ Einige Makros, Variablen und Funktionen haben andere Bezeichnungen als ihre
+ Vorbilder in anderen ASURO-Bibliotheken. So entsprechen die "SWITCH_x"-Makros 
+ "Kx", switch_event tritt an die Stelle von switched und die Funktionen 
+ SwitchInterruptEnable() beziehungsweise SwitchInterruptDisable() verhalten 
+ sich analog zu StartSwitch() und StopSwitch().
+ 
+ @section differences_time Zeitbasis
+ Wie bei der im Roboternetz weiterentwickelte Version der ASURO-Bibliothek wird
+ als interne Zeitbasis ein Takt von 36kHz anstelle von 72kHz verwendet.
+ Zusätzlich dazu wurden weitere Stromsparfunktionen implementiert, alle
+ sleep-Funktionen verwenden den Idle-Modus des AVR. Ferner kann der Takt für
+ die IR-Schnittstelle abgeschaltet werden. (Siehe auch: @ref differences_uart) 
+ 
+ Es gibt im Gegensatz zur Roboternetz-Version weder timebase noch Gettime(),
+ anstelle von count36kHz wird tick36kHz verwendet. 
+ 
+ @section differences_uart Serielle-/Infrarotschnittstelle
+ Bei der Implementierung der IR-Schnittstelle wurde auch der Stromverbrauch
+ optimiert, der 36kHz-Träger wird abgeschaltet wenn keine Daten gesendet 
+ werden. Zudem hat SerRead() eine veränderte Schnittstelle, sowohl bezüglich der
+ Spezifikation des Timeouts als auch bezüglich des Verhaltens im Timeout-Fall.
+ 
+ Zusätzliche Funktionalität wie UartPutc(), SerPrint(), PrintInt(),
+ PrintLong(), SerPrint_p() und PrintFloat() wurde nicht implementiert.
+ 
+ */
