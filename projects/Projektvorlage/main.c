@@ -20,7 +20,7 @@
 #include <asuro/asuro.h>
 #include <util/misc.h>
 
-MAIN void main(void) {
+void main(void) {
     Init();
     
     SerWrite("Switch Test\n", 12);
