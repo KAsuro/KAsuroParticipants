@@ -1,0 +1,4 @@
+# Checkliste zum Start
+
+- WLAN einrichten
+- sudo chmod dellxx:dellxx /dev/ttyUSB0 

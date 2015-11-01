@@ -1,46 +1,42 @@
 /**
- * @file
- *
- * \if de
- * Ein einfaches Testprojekt das den Tasterzustand alle 500 ms einliest und 
- * über die UART/IR-Schnittstelle ausgibt.
- * \endif
- *
- * \if en
- * Simple test project which polls all switches every 500 ms and prints their
- * state to the UART/IR-interface.
- * \endif 
- *
- * @author Markus Jung
- *
- * @version 14.12.2011 \n
- *  First Version
+ * Beschreibt hier was euer Programm macht!
  */
-#include <stdint.h>
+
+#define SWITCH(X) 1<<X
+#define SLOW 1000
+#define FAST 100
+
 #include <asuro/asuro.h>
-#include <util/misc.h>
 
 void main(void) {
     Init();
+
+    int state = 0;
+    int interval = FAST;
+    char a_pressed = 0;
+    char b_pressed = 0;
     
-    SerWrite("Switch Test\n", 12);
-    
-    for (;;) {
-    	uint8_t swState = PollSwitch();
-    	char asBits[12]; // 0bXXXXXXXX\r\n
-    	uint8_t i = 0;
-    	
-    	asBits[i++] = '0';
-    	asBits[i++] = 'b';
-		for (; i < 2 + 8; i++) {
-			asBits[i] = ((swState & 0x80) != 0) ? '1' : '0';
-			swState <<= 1;
-		}
-		asBits[i++] = '\r';
-		asBits[i++] = '\n';
-    	
-    	SerWrite(asBits, sizeof(asBits));
-    	
-		msleep(500);
-    };
+    while (1) {
+        char switches = PollSwitch();
+        switches &= 0b00111111;
+
+        if (state) {
+            BackLED(ON, OFF);
+            state = 0;
+        } else {
+            BackLED(OFF, ON);
+            state = 1;
+        }
+
+        a_pressed = ( switches & SWITCH(0) );
+        b_pressed = ( switches & SWITCH(5) );
+
+        if (a_pressed > 0) {
+            interval = SLOW;
+        }
+        if (b_pressed > 0) {
+            interval = FAST;
+        }
+        msleep(interval);
+    }
 }
