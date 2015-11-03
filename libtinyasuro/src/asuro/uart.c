@@ -93,7 +93,7 @@ void SerWrite(char * data, uint8_t length) {
     TIMER2_CLOCK_OUT_ENABLE(); // 36kHz carrier signal on
     UCSRB = (1 << TXEN);
 
-    while (length > 0) {
+    while (length > 0 && data[i] != '\0') {
         if (UCSRA & (1 << UDRE)) { // Buffer is empty, write next byte to it
             UDR = data[i++];
             length--;
@@ -109,3 +109,10 @@ void SerWrite(char * data, uint8_t length) {
     TIMER2_CLOCK_OUT_DISABLE(); // 36kHz carrier signal off
 }
 
+void SerWriteInt (int wert)
+{
+  char text [7];                        // "-12345"
+
+  itoa (wert, text, 10);
+  SerWrite (text, 7);
+}
