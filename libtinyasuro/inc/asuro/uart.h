@@ -182,5 +182,6 @@ extern uint8_t SerRead(char * const data, const uint8_t length,
  * \endif
  */
 extern void SerWrite(char * data, uint8_t length);
+extern void SerWriteInt(int value);
 
 #endif /* UART_H_ */
