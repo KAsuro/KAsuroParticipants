@@ -8,7 +8,7 @@
 #define TRUE 1
 #define FALSE 0
 #define SPEED_FAST 100
-#define SPEED_SLOW 80
+#define SPEED_SLOW 90
 
 #include <asuro/asuro.h>
 
@@ -22,6 +22,12 @@ char mode = 'h'; // h: halt
 		// a: left
 		// d: right
 
+void fwd();
+void bwn();
+void lft();
+void rgt();
+void stop_halt();
+
 void main(void) {
     Init();
 
@@ -31,7 +37,9 @@ void main(void) {
 	MotorSpeed(speed_l, speed_r);
 	MotorDir(dir_l, dir_r);
         
-	//char switches = PollSwitch() & 0b00111111;
+	char switches = PollSwitch();
+	switches &= 0b00111111;
+
 	char receivedInfo[1];
 	receivedInfo[0] = '0';
 
@@ -50,13 +58,24 @@ void main(void) {
 			rgt();
 			break;
 		case 'h':
-			halt();
-			break;
+			stop_halt();
+//			break;
         }
 
 
 
 
+	StatusLED(RED);
+	//SerWriteInt((int)switch_0);
+	char switch_l = ( ( switches & SWITCH(0) ) || (switches & SWITCH(1)) || (switches & SWITCH(2)) );
+	char switch_r = ( ( switches & SWITCH(3) ) || (switches & SWITCH(4)) || (switches & SWITCH(5)) );
+
+	if (switch_l > 0){
+		BackLED(OFF, ON);
+	}
+	if (switch_r > 0){
+		BackLED(ON, OFF);
+	}
 	msleep(10);
         
     }
@@ -78,7 +97,7 @@ void fwd(){
     	dir_l = FWD;
 	mode = 'w';
     }else if (mode == 's'){
-	halt();
+	stop_halt();
     }
 }
 void bwd(){
@@ -97,30 +116,30 @@ void bwd(){
     	dir_l = BWD;
 	mode = 's';
     }else if(mode == 'w'){
-	halt();
+	stop_halt();
     }
 }
 void lft(){
     if(mode != 's'){
-        speed_r = SPEED_FAST;
+        speed_r = SPEED_SLOW;
     	speed_l = 0;
     }else{
     	speed_r = 0;
-    	speed_l = SPEED_FAST;
+    	speed_l = SPEED_SLOW;
     }
     mode = 'a';
 }
 void rgt(){
     if(mode != 's'){
     	speed_r = 0;
-    	speed_l = SPEED_FAST;
+    	speed_l = SPEED_SLOW;
     }else{
-        speed_r = SPEED_FAST;
+        speed_r = SPEED_SLOW;
     	speed_l = 0;
     }
     mode = 'd';
 }
-void halt(){
+void stop_halt(){
     speed_r = 0;
     speed_l = 0;
     mode = 'h';

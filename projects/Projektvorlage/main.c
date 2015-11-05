@@ -30,7 +30,7 @@ void main(void) {
 
         a_pressed = ( switches & SWITCH(0) );
         b_pressed = ( switches & SWITCH(5) );
-
+	SerWriteInt((int)a_pressed);
         if (a_pressed > 0) {
             interval = SLOW;
         }
