@@ -1,5 +1,14 @@
 /**
- * Beschreibt hier was euer Programm macht!
+ * This project is contributed under BEER-Licence
+ * 
+ * Klingonian:
+ * jInmol linienfolger. puS latlh je features such as singing pagh vabDot epilepsy Qap tu'lu'.
+ * 
+ * Maori:
+ * Tenei kaupapa ko ha tokotaha muimui raina. He maha ngā āhuatanga rerehua pērā i te waiata mahi haurangi ranei.
+ * 
+ * Zulu:
+ * Le phrojekthi ungumlandeli line. Kunezinhlobo eziningana izici fancy ezifana ukucula noma umsebenzi sokuwa.
  */
 #include <asuro/asuro.h>
 #include <avr/interrupt.h>
