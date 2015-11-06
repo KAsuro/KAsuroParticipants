@@ -125,23 +125,13 @@ inline void bwd(char force){
     }
 }
 inline void lft(){
-    if(mode != 's'){
         speed_r = SPEED_SLOW;
     	speed_l = 0;
-    }else{
-    	speed_r = 0;
-    	speed_l = SPEED_SLOW;
-    }
     mode = 'a';
 }
 inline void rgt(){
-    if(mode != 's'){
     	speed_r = 0;
     	speed_l = SPEED_SLOW;
-    }else{
-        speed_r = SPEED_SLOW;
-    	speed_l = 0;
-    }
     mode = 'd';
 }
 void stop_halt(){
