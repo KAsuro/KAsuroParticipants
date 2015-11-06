@@ -8,7 +8,7 @@
 #define TRUE 1
 #define FALSE 0
 #define SPEED_FAST 100
-#define SPEED_SLOW 90
+#define SPEED_SLOW 100
 
 #include <asuro/asuro.h>
 
@@ -143,7 +143,7 @@ inline void park(){
     
     StatusLED(RED);
     // 1. Etwas rueckwaerts
-    MotorSpeed(90, 90);
+    MotorSpeed(100, 100);
     MotorDir(BWD, BWD);
     msleep(1000);
         
@@ -152,7 +152,7 @@ inline void park(){
     msleep(400);
 
     // 3. beide rueckwaerts
-    MotorSpeed(80, 80);
+    MotorSpeed(100, 100);
     msleep(1000);
 
     stop_halt();
