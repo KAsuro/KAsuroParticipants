@@ -22,11 +22,12 @@ char mode = 'h'; // h: halt
 		// a: left
 		// d: right
 
-void fwd();
-void bwn();
+void fwd(char force);
+void bwn(char force);
 void lft();
 void rgt();
 void stop_halt();
+void park();
 
 void main(void) {
     Init();
@@ -46,10 +47,10 @@ void main(void) {
 	SerRead(receivedInfo, 1, 0);
 	switch(receivedInfo[0]){
 		case 'w':
-			fwd();
+			fwd(FALSE);
 			break;
 		case 's':
-			bwd();
+			bwd(FALSE);
 			break;
 		case 'a':
 			lft();
@@ -59,30 +60,34 @@ void main(void) {
 			break;
 		case 'h':
 			stop_halt();
-//			break;
+			break;
+		case 'p':
+			park();
         }
 
 
 
 
-	StatusLED(RED);
+	//StatusLED(RED);
 	//SerWriteInt((int)switch_0);
 	char switch_l = ( ( switches & SWITCH(0) ) || (switches & SWITCH(1)) || (switches & SWITCH(2)) );
 	char switch_r = ( ( switches & SWITCH(3) ) || (switches & SWITCH(4)) || (switches & SWITCH(5)) );
 
 	if (switch_l > 0){
 		BackLED(OFF, ON);
+		bwd(TRUE);
 	}
 	if (switch_r > 0){
 		BackLED(ON, OFF);
+		bwd(TRUE);
 	}
 	msleep(10);
         
     }
 }
 
-void fwd(){
-    if((mode == 'h')||(mode == 'a')||(mode == 'd')){
+inline void fwd(char force){
+    if((mode == 'h')||(mode == 'a')||(mode == 'd')||(force)){
 	speed_r = SPEED_SLOW;
     	speed_l = SPEED_SLOW;
     	dir_r = FWD;
@@ -100,8 +105,8 @@ void fwd(){
 	stop_halt();
     }
 }
-void bwd(){
-    if((mode == 'h')||(mode == 'a')||(mode == 'd')){
+inline void bwd(char force){
+    if((mode == 'h')||(mode == 'a')||(mode == 'd')||(force)){
     	speed_r = SPEED_SLOW;
     	speed_l = SPEED_SLOW;
     	dir_r = BWD;
@@ -119,7 +124,7 @@ void bwd(){
 	stop_halt();
     }
 }
-void lft(){
+inline void lft(){
     if(mode != 's'){
         speed_r = SPEED_SLOW;
     	speed_l = 0;
@@ -129,7 +134,7 @@ void lft(){
     }
     mode = 'a';
 }
-void rgt(){
+inline void rgt(){
     if(mode != 's'){
     	speed_r = 0;
     	speed_l = SPEED_SLOW;
@@ -143,4 +148,23 @@ void stop_halt(){
     speed_r = 0;
     speed_l = 0;
     mode = 'h';
+}
+inline void park(){
+    
+    StatusLED(RED);
+    // 1. Etwas rueckwaerts
+    MotorSpeed(90, 90);
+    MotorDir(BWD, BWD);
+    msleep(1000);
+        
+    // 2. rechts rueckwaerts einbiegen
+    MotorSpeed(0, 150); 
+    msleep(400);
+
+    // 3. beide rueckwaerts
+    MotorSpeed(80, 80);
+    msleep(1000);
+
+    stop_halt();
+    StatusLED(GREEN);
 }
