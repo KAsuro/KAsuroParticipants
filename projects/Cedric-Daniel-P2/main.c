@@ -38,7 +38,7 @@ void main(void) {
 	MotorSpeed(speed_l, speed_r);
 	MotorDir(dir_l, dir_r);
         
-	char switches = PollSwitch();
+	char switches = ( PollSwitch() & PollSwitch() );
 	switches &= 0b00111111;
 
 	char receivedInfo[1];
