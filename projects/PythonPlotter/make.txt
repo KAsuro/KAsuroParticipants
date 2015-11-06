@@ -1,0 +1,112 @@
+-------- begin --------
+avr-gcc --version
+avr-gcc (GCC) 4.8.2
+Copyright (C) 2013 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+avr-gcc -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=main.o main.o Square.o asuro.o adc.o adc_low.o encoder.o encoder_low.o globals.o i2c.o lcd.o leds.o motor.o motor_low.o my_motor_low.o print.o printf.o rc5.o sound.o switches.o time.o uart.o ultrasonic.o version.o TimerService.o   --output main.elf -Wl,--gc-sections,-Map=main.map,--cref -L../../AsuroLib/lib  -lm
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/TimerService.lst ../../AsuroLib/lib/TimerService.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > TimerService.d; \
+	[ -s TimerService.d ] || rm -f TimerService.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/version.lst ../../AsuroLib/lib/version.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > version.d; \
+	[ -s version.d ] || rm -f version.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/ultrasonic.lst ../../AsuroLib/lib/ultrasonic.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > ultrasonic.d; \
+	[ -s ultrasonic.d ] || rm -f ultrasonic.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/uart.lst ../../AsuroLib/lib/uart.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > uart.d; \
+	[ -s uart.d ] || rm -f uart.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/time.lst ../../AsuroLib/lib/time.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > time.d; \
+	[ -s time.d ] || rm -f time.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/switches.lst ../../AsuroLib/lib/switches.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > switches.d; \
+	[ -s switches.d ] || rm -f switches.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/sound.lst ../../AsuroLib/lib/sound.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > sound.d; \
+	[ -s sound.d ] || rm -f sound.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/rc5.lst ../../AsuroLib/lib/rc5.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > rc5.d; \
+	[ -s rc5.d ] || rm -f rc5.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/printf.lst ../../AsuroLib/lib/printf.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > printf.d; \
+	[ -s printf.d ] || rm -f printf.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/print.lst ../../AsuroLib/lib/print.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > print.d; \
+	[ -s print.d ] || rm -f print.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/my_motor_low.lst ../../AsuroLib/lib/my_motor_low.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > my_motor_low.d; \
+	[ -s my_motor_low.d ] || rm -f my_motor_low.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/motor_low.lst ../../AsuroLib/lib/motor_low.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > motor_low.d; \
+	[ -s motor_low.d ] || rm -f motor_low.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/motor.lst ../../AsuroLib/lib/motor.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > motor.d; \
+	[ -s motor.d ] || rm -f motor.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/leds.lst ../../AsuroLib/lib/leds.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > leds.d; \
+	[ -s leds.d ] || rm -f leds.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/lcd.lst ../../AsuroLib/lib/lcd.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > lcd.d; \
+	[ -s lcd.d ] || rm -f lcd.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/i2c.lst ../../AsuroLib/lib/i2c.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > i2c.d; \
+	[ -s i2c.d ] || rm -f i2c.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/globals.lst ../../AsuroLib/lib/globals.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > globals.d; \
+	[ -s globals.d ] || rm -f globals.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/encoder_low.lst ../../AsuroLib/lib/encoder_low.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > encoder_low.d; \
+	[ -s encoder_low.d ] || rm -f encoder_low.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/encoder.lst ../../AsuroLib/lib/encoder.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > encoder.d; \
+	[ -s encoder.d ] || rm -f encoder.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/adc_low.lst ../../AsuroLib/lib/adc_low.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > adc_low.d; \
+	[ -s adc_low.d ] || rm -f adc_low.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/adc.lst ../../AsuroLib/lib/adc.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > adc.d; \
+	[ -s adc.d ] || rm -f adc.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/asuro.lst ../../AsuroLib/lib/asuro.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > asuro.d; \
+	[ -s asuro.d ] || rm -f asuro.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=Square.lst Square.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > Square.d; \
+	[ -s Square.d ] || rm -f Square.d
+set -e; avr-gcc -MM -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=main.lst main.c \
+	| sed 's,\(.*\)\.o[ :]*,\1.o \1.d : ,g' > main.d; \
+	[ -s main.d ] || rm -f main.d
+-------- begin --------
+avr-gcc --version
+avr-gcc (GCC) 4.8.2
+Copyright (C) 2013 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=main.lst main.c -o main.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=Square.lst Square.c -o Square.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/asuro.lst ../../AsuroLib/lib/asuro.c -o asuro.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/adc.lst ../../AsuroLib/lib/adc.c -o adc.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/adc_low.lst ../../AsuroLib/lib/adc_low.c -o adc_low.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/encoder.lst ../../AsuroLib/lib/encoder.c -o encoder.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/encoder_low.lst ../../AsuroLib/lib/encoder_low.c -o encoder_low.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/globals.lst ../../AsuroLib/lib/globals.c -o globals.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/i2c.lst ../../AsuroLib/lib/i2c.c -o i2c.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/lcd.lst ../../AsuroLib/lib/lcd.c -o lcd.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/leds.lst ../../AsuroLib/lib/leds.c -o leds.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/motor.lst ../../AsuroLib/lib/motor.c -o motor.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/motor_low.lst ../../AsuroLib/lib/motor_low.c -o motor_low.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/my_motor_low.lst ../../AsuroLib/lib/my_motor_low.c -o my_motor_low.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/print.lst ../../AsuroLib/lib/print.c -o print.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/printf.lst ../../AsuroLib/lib/printf.c -o printf.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/rc5.lst ../../AsuroLib/lib/rc5.c -o rc5.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/sound.lst ../../AsuroLib/lib/sound.c -o sound.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/switches.lst ../../AsuroLib/lib/switches.c -o switches.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/time.lst ../../AsuroLib/lib/time.c -o time.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/uart.lst ../../AsuroLib/lib/uart.c -o uart.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/ultrasonic.lst ../../AsuroLib/lib/ultrasonic.c -o ultrasonic.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/version.lst ../../AsuroLib/lib/version.c -o version.o
+avr-gcc -c -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=../../AsuroLib/lib/TimerService.lst ../../AsuroLib/lib/TimerService.c -o TimerService.o
+avr-gcc -mmcu=atmega8 -DF_CPU=8000000UL -I. -g -Os -I../../AsuroLib/lib/inc -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wstrict-prototypes -Wa,-ahlms=main.o main.o Square.o asuro.o adc.o adc_low.o encoder.o encoder_low.o globals.o i2c.o lcd.o leds.o motor.o motor_low.o my_motor_low.o print.o printf.o rc5.o sound.o switches.o time.o uart.o ultrasonic.o version.o TimerService.o   --output main.elf -Wl,--gc-sections,-Map=main.map,--cref -L../../AsuroLib/lib  -lm
