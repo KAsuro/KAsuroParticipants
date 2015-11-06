@@ -3,8 +3,10 @@
  */
 
 #define SWITCH(X) 1<<X
-#define SLOW 1000
-#define FAST 100
+#define SLOW 5000
+#define FAST 1000
+#define TRUE 1
+#define FALSE 0
 
 #include <asuro/asuro.h>
 
@@ -16,6 +18,9 @@ void main(void) {
     char a_pressed = 0;
     char b_pressed = 0;
     
+    GoTurn(3, 0, 100);
+    return;
+
     while (1) {
         char switches = PollSwitch();
         switches &= 0b00111111;
@@ -30,13 +35,16 @@ void main(void) {
 
         a_pressed = ( switches & SWITCH(0) );
         b_pressed = ( switches & SWITCH(5) );
-	SerWriteInt((int)a_pressed);
+
         if (a_pressed > 0) {
             interval = SLOW;
         }
         if (b_pressed > 0) {
             interval = FAST;
         }
+        
+        //GoTurn(10, 0, 255);
+        
         msleep(interval);
     }
 }
