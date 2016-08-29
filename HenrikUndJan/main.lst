@@ -1,0 +1,730 @@
+   1               		.file	"main.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.startup.main,"ax",@progbits
+  11               	.global	main
+  13               	main:
+  14               	.LFB2:
+  15               		.file 1 "main.c"
+   1:main.c        **** /**
+   2:main.c        ****  * Beschreibt hier was euer Programm macht!
+   3:main.c        ****  */
+   4:main.c        **** 
+   5:main.c        **** #define SWITCH(X) 1<<X
+   6:main.c        **** #define SLOW 1000
+   7:main.c        **** #define FAST 100
+   8:main.c        **** 
+   9:main.c        **** #include <asuro/asuro.h>
+  10:main.c        **** 
+  11:main.c        **** void main(void) {
+  16               		.loc 1 11 0
+  17               		.cfi_startproc
+  18 0000 CF93      		push r28	 ;  213	pushqi1/1	[length = 1]
+  19               	.LCFI0:
+  20               		.cfi_def_cfa_offset 3
+  21               		.cfi_offset 28, -2
+  22 0002 DF93      		push r29	 ;  214	pushqi1/1	[length = 1]
+  23               	.LCFI1:
+  24               		.cfi_def_cfa_offset 4
+  25               		.cfi_offset 29, -3
+  26               		 ; SP -= 4	 ;  218	*addhi3_sp	[length = 2]
+  27 0004 00D0      		rcall .
+  28 0006 00D0      		rcall .
+  29               	.LCFI2:
+  30               		.cfi_def_cfa_offset 8
+  31 0008 CDB7      		in r28,__SP_L__	 ;  219	*movhi/8	[length = 2]
+  32 000a DEB7      		in r29,__SP_H__
+  33               	.LCFI3:
+  34               		.cfi_def_cfa_register 28
+  35               	/* prologue: function */
+  36               	/* frame size = 4 */
+  37               	/* stack size = 6 */
+  38               	.L__stack_usage = 6
+  12:main.c        ****     Init();
+  39               		.loc 1 12 0
+  40 000c 00D0      		rcall Init	 ;  11	call_insn/2	[length = 1]
+  41               	.LVL0:
+  42               	.LBB9:
+  13:main.c        ****     
+  14:main.c        ****     int left = 0;
+  15:main.c        ****     int right = 0;
+  16:main.c        ****       
+  17:main.c        ****     //int state = 0;
+  18:main.c        ****     //int interval = FAST;
+  19:main.c        **** 	char a_pressed = 0;
+  20:main.c        **** 	char b_pressed = 0;
+  21:main.c        ****     
+  22:main.c        **** 	//for(int i=0;i<10;i++)
+  23:main.c        **** 	while(1){
+  24:main.c        **** 		
+  25:main.c        **** 		uint16_t lineData[] = {0,0};
+  26:main.c        **** 		LineData(lineData);
+  27:main.c        **** 		
+  28:main.c        **** 		char switches = PollSwitch();
+  29:main.c        ****         switches &= 0b00111111;
+  30:main.c        **** 		
+  31:main.c        **** 		
+  32:main.c        **** 		// lineData[LEFT]
+  33:main.c        **** 		// lineData[RIGHT]
+  34:main.c        **** 		left  = ((int)lineData[LEFT]+60)  / 6;
+  43               		.loc 1 34 0
+  44 000e 26E0      		ldi r18,lo8(6)	 ;  223	*reload_inhi	[length = 3]
+  45 0010 822E      		mov r8,r18
+  46 0012 912C      		mov r9,__zero_reg__
+  47               	.LVL1:
+  48               	.L10:
+  25:main.c        **** 		LineData(lineData);
+  49               		.loc 1 25 0
+  50 0014 1A82      		std Y+2,__zero_reg__	 ;  17	*movhi/4	[length = 2]
+  51 0016 1982      		std Y+1,__zero_reg__
+  52 0018 1C82      		std Y+4,__zero_reg__	 ;  18	*movhi/4	[length = 2]
+  53 001a 1B82      		std Y+3,__zero_reg__
+  26:main.c        **** 		
+  54               		.loc 1 26 0
+  55 001c CE01      		movw r24,r28	 ;  208	*movhi/1	[length = 1]
+  56 001e 0196      		adiw r24,1	 ;  19	*addhi3/3	[length = 1]
+  57 0020 00D0      		rcall LineData	 ;  20	call_insn/2	[length = 1]
+  58               	.LVL2:
+  28:main.c        ****         switches &= 0b00111111;
+  59               		.loc 1 28 0
+  60 0022 00D0      		rcall PollSwitch	 ;  21	call_value_insn/2	[length = 1]
+  61               	.LVL3:
+  62 0024 D82E      		mov r13,r24	 ;  22	movqi_insn/1	[length = 1]
+  63               	.LVL4:
+  64               		.loc 1 34 0
+  65 0026 8981      		ldd r24,Y+1	 ;  25	*movhi/3	[length = 2]
+  66 0028 9A81      		ldd r25,Y+2
+  67 002a CC96      		adiw r24,60	 ;  26	addhi3_clobber/1	[length = 1]
+  68 002c B401      		movw r22,r8	 ;  197	*movhi/1	[length = 1]
+  69 002e 00D0      		rcall __divmodhi4	 ;  198	*divmodhi4_call	[length = 1]
+  70 0030 7B01      		movw r14,r22	 ;  199	*movhi/1	[length = 1]
+  71               	.LVL5:
+  35:main.c        **** 		right = ((int)lineData[RIGHT]	) / 6;	
+  72               		.loc 1 35 0
+  73 0032 8B81      		ldd r24,Y+3	 ;  31	*movhi/3	[length = 2]
+  74 0034 9C81      		ldd r25,Y+4
+  75 0036 B401      		movw r22,r8	 ;  202	*movhi/1	[length = 1]
+  76 0038 00D0      		rcall __divmodhi4	 ;  203	*divmodhi4_call	[length = 1]
+  77 003a 8B01      		movw r16,r22	 ;  204	*movhi/1	[length = 1]
+  78               	.LVL6:
+  36:main.c        **** 			
+  37:main.c        **** 		
+  38:main.c        **** 		if (left>255){
+  79               		.loc 1 38 0
+  80 003c 2FEF      		ldi r18,-1	 ;  36	*cmphi/7	[length = 3]
+  81 003e E216      		cp r14,r18
+  82 0040 F104      		cpc r15,__zero_reg__
+  83 0042 01F0      		breq .+4	 ;  37	difficult_branch	[length = 3]
+  84 0044 04F0      		brlt .+2
+  85 0046 00C0      		rjmp .L2
+  39:main.c        **** 			left=254;
+  40:main.c        **** 		}
+  41:main.c        **** 			
+  42:main.c        **** 		if (right>255){
+  86               		.loc 1 42 0
+  87 0048 6F3F      		cpi r22,-1	 ;  40	*cmphi/6	[length = 2]
+  88 004a 7105      		cpc r23,__zero_reg__
+  89 004c 01F0      		breq .L3	 ;  41	difficult_branch	[length = 2]
+  90 004e 04F0      		brlt .L3
+  43:main.c        **** 			right=254;
+  91               		.loc 1 43 0
+  92 0050 0EEF      		ldi r16,lo8(-2)	 ;  180	*movhi/5	[length = 2]
+  93 0052 10E0      		ldi r17,0
+  94               	.LVL7:
+  95               	.L3:
+  44:main.c        **** 		}
+  45:main.c        **** 		
+  46:main.c        **** 		if(left > right){
+  96               		.loc 1 46 0
+  97 0054 0E15      		cp r16,r14	 ;  46	*cmphi/3	[length = 2]
+  98 0056 1F05      		cpc r17,r15
+  99 0058 04F4      		brge .L4	 ;  47	branch	[length = 1]
+  47:main.c        **** 			BackLED(OFF,ON);
+ 100               		.loc 1 47 0
+ 101 005a 61E0      		ldi r22,lo8(1)	 ;  49	movqi_insn/2	[length = 1]
+ 102 005c 80E0      		ldi r24,0	 ;  50	movqi_insn/1	[length = 1]
+ 103 005e 00D0      		rcall BackLED	 ;  51	call_insn/2	[length = 1]
+ 104               	.LVL8:
+ 105               	.L4:
+  48:main.c        **** 		}
+  49:main.c        **** 		if(right > left){
+ 106               		.loc 1 49 0
+ 107 0060 E016      		cp r14,r16	 ;  54	*cmphi/3	[length = 2]
+ 108 0062 F106      		cpc r15,r17
+ 109 0064 04F4      		brge .L5	 ;  55	branch	[length = 1]
+  50:main.c        **** 			BackLED(ON,OFF);
+ 110               		.loc 1 50 0
+ 111 0066 60E0      		ldi r22,0	 ;  57	movqi_insn/1	[length = 1]
+ 112 0068 81E0      		ldi r24,lo8(1)	 ;  58	movqi_insn/2	[length = 1]
+ 113 006a 00D0      		rcall BackLED	 ;  59	call_insn/2	[length = 1]
+ 114               	.LVL9:
+ 115               	.L5:
+  51:main.c        **** 		}
+  52:main.c        **** 		if(right == left){
+ 116               		.loc 1 52 0
+ 117 006c 0E15      		cp r16,r14	 ;  62	*cmphi/3	[length = 2]
+ 118 006e 1F05      		cpc r17,r15
+ 119 0070 01F4      		brne .L6	 ;  63	branch	[length = 1]
+ 120               	.LVL10:
+ 121               	.L12:
+  53:main.c        **** 			BackLED(ON,ON);
+ 122               		.loc 1 53 0
+ 123 0072 61E0      		ldi r22,lo8(1)	 ;  65	movqi_insn/2	[length = 1]
+ 124 0074 81E0      		ldi r24,lo8(1)	 ;  66	movqi_insn/2	[length = 1]
+ 125 0076 00D0      		rcall BackLED	 ;  67	call_insn/2	[length = 1]
+ 126               	.LVL11:
+ 127               	.L6:
+  54:main.c        **** 		}
+  55:main.c        **** 		MotorDir(FWD,FWD);
+ 128               		.loc 1 55 0
+ 129 0078 60E2      		ldi r22,lo8(32)	 ;  70	movqi_insn/2	[length = 1]
+ 130 007a 80E2      		ldi r24,lo8(32)	 ;  71	movqi_insn/2	[length = 1]
+ 131 007c 00D0      		rcall MotorDir	 ;  72	call_insn/2	[length = 1]
+ 132               	.LVL12:
+  56:main.c        **** 		MotorSpeed(right,left);
+ 133               		.loc 1 56 0
+ 134 007e 6E2D      		mov r22,r14	 ;  73	movqi_insn/1	[length = 1]
+ 135 0080 802F      		mov r24,r16	 ;  74	movqi_insn/1	[length = 1]
+ 136 0082 00D0      		rcall MotorSpeed	 ;  75	call_insn/2	[length = 1]
+ 137               	.LVL13:
+ 138 0084 08E7      		ldi r16,lo8(120)	 ;  181	*movhi/5	[length = 2]
+ 139 0086 10E0      		ldi r17,0
+ 140               	.LVL14:
+ 141               	.L7:
+ 142               	.LBB10:
+ 143               	.LBB11:
+ 144               		.file 2 "../../libtinyasuro/inc/asuro/time.h"
+   1:../../libtinyasuro/inc/asuro/time.h **** /**
+   2:../../libtinyasuro/inc/asuro/time.h ****  * @file
+   3:../../libtinyasuro/inc/asuro/time.h ****  *
+   4:../../libtinyasuro/inc/asuro/time.h ****  * \if de
+   5:../../libtinyasuro/inc/asuro/time.h ****  * Definiert die Schnittstelle für die Verwendung des Timer2 als gemeinsame
+   6:../../libtinyasuro/inc/asuro/time.h ****  * Zeitbasis und Taktquelle.
+   7:../../libtinyasuro/inc/asuro/time.h ****  *
+   8:../../libtinyasuro/inc/asuro/time.h ****  * Es werden Funktionen definiert, die es ermöglichen, den Prozessor für einen
+   9:../../libtinyasuro/inc/asuro/time.h ****  * definierten Zeitraum oder bis zum nächsten Interrupt in den Idle-Mode zu
+  10:../../libtinyasuro/inc/asuro/time.h ****  * versetzen (unter Verwendung der Funktionalität aus avr/sleep.h).
+  11:../../libtinyasuro/inc/asuro/time.h ****  *
+  12:../../libtinyasuro/inc/asuro/time.h ****  * Außerdem wird die Möglichkeit geboten, die Taktausgabe für die
+  13:../../libtinyasuro/inc/asuro/time.h ****  * IR-Schnittstelle ein- und auszuschalten.
+  14:../../libtinyasuro/inc/asuro/time.h ****  *
+  15:../../libtinyasuro/inc/asuro/time.h ****  * Zusätzlich besteht die Möglichkeit, eine eigene Funktion in der mit 36kHz
+  16:../../libtinyasuro/inc/asuro/time.h ****  * aufgerufenen Timer2-ISR auszuführen, sofern diese Option in hooks.h aktiviert
+  17:../../libtinyasuro/inc/asuro/time.h ****  * ist.
+  18:../../libtinyasuro/inc/asuro/time.h ****  *
+  19:../../libtinyasuro/inc/asuro/time.h ****  * @par Wichtiger Hinweis:
+  20:../../libtinyasuro/inc/asuro/time.h ****  *      Für eine korrekte Funktion des Moduls müssen Interrupts global
+  21:../../libtinyasuro/inc/asuro/time.h ****  *      freigeschaltet sein, Ausnahmen sind für kurze Zeitspannen zulässig,
+  22:../../libtinyasuro/inc/asuro/time.h ****  *      können aber die Genauigkeit negativ beeinflussen.
+  23:../../libtinyasuro/inc/asuro/time.h ****  *
+  24:../../libtinyasuro/inc/asuro/time.h ****  * @par Initialisierung:
+  25:../../libtinyasuro/inc/asuro/time.h ****  *      Vor der Verwendung des Moduls muss Timer2Init() aufgerufen werden, zudem
+  26:../../libtinyasuro/inc/asuro/time.h ****  *      wird eine globale Interruptfreigabe benötigt.
+  27:../../libtinyasuro/inc/asuro/time.h ****  *
+  28:../../libtinyasuro/inc/asuro/time.h ****  * @par Genutzte Hardwareressourcen:
+  29:../../libtinyasuro/inc/asuro/time.h ****  *      Module:
+  30:../../libtinyasuro/inc/asuro/time.h ****  *      @li Timer2
+  31:../../libtinyasuro/inc/asuro/time.h ****  *
+  32:../../libtinyasuro/inc/asuro/time.h ****  *      Interruptvektoren:
+  33:../../libtinyasuro/inc/asuro/time.h ****  *      @li TIMER2_OVF
+  34:../../libtinyasuro/inc/asuro/time.h ****  *
+  35:../../libtinyasuro/inc/asuro/time.h ****  *      I/O:
+  36:../../libtinyasuro/inc/asuro/time.h ****  *      @li Port B: Pin 3 (36kHz-Träger der IR-Schnittstelle)
+  37:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+  38:../../libtinyasuro/inc/asuro/time.h ****  *
+  39:../../libtinyasuro/inc/asuro/time.h ****  * \if en
+  40:../../libtinyasuro/inc/asuro/time.h ****  * Interface definitions to use timer2 as common clock source and time
+  41:../../libtinyasuro/inc/asuro/time.h ****  * reference.
+  42:../../libtinyasuro/inc/asuro/time.h ****  *
+  43:../../libtinyasuro/inc/asuro/time.h ****  * This interface defines functions to put the microcontroller into idle mode
+  44:../../libtinyasuro/inc/asuro/time.h ****  * for either a defined timespan or until the next interrupt occurs. The
+  45:../../libtinyasuro/inc/asuro/time.h ****  * functionality in avr/sleep.h is used for this purpose.
+  46:../../libtinyasuro/inc/asuro/time.h ****  *
+  47:../../libtinyasuro/inc/asuro/time.h ****  * The carrier clock for the IR communications interface can be controlled
+  48:../../libtinyasuro/inc/asuro/time.h ****  * using this interface.
+  49:../../libtinyasuro/inc/asuro/time.h ****  *
+  50:../../libtinyasuro/inc/asuro/time.h ****  * Timer2 is operating with a frequency of 36kHz, custom code can be executed
+  51:../../libtinyasuro/inc/asuro/time.h ****  * by an ISR of timer2 if this feature is enabled in hooks.h.
+  52:../../libtinyasuro/inc/asuro/time.h ****  *
+  53:../../libtinyasuro/inc/asuro/time.h ****  * @par Important:
+  54:../../libtinyasuro/inc/asuro/time.h ****  *      This module requires interrupts to be enabled globally. Short term
+  55:../../libtinyasuro/inc/asuro/time.h ****  *      exceptions may be permittable but can have a negative effect on the
+  56:../../libtinyasuro/inc/asuro/time.h ****  *      accuracy of the provided clock.
+  57:../../libtinyasuro/inc/asuro/time.h ****  *
+  58:../../libtinyasuro/inc/asuro/time.h ****  * @par Initialization:
+  59:../../libtinyasuro/inc/asuro/time.h ****  *      Timer2Init() must be called before using this module. Interrupts must be
+  60:../../libtinyasuro/inc/asuro/time.h ****  *      enabled globally.
+  61:../../libtinyasuro/inc/asuro/time.h ****  *
+  62:../../libtinyasuro/inc/asuro/time.h ****  * @par Hardware resources in use:
+  63:../../libtinyasuro/inc/asuro/time.h ****  *      Components:
+  64:../../libtinyasuro/inc/asuro/time.h ****  *      @li Timer2
+  65:../../libtinyasuro/inc/asuro/time.h ****  *
+  66:../../libtinyasuro/inc/asuro/time.h ****  *      Interrupt vectors:
+  67:../../libtinyasuro/inc/asuro/time.h ****  *      @li TIMER2_OVF
+  68:../../libtinyasuro/inc/asuro/time.h ****  *
+  69:../../libtinyasuro/inc/asuro/time.h ****  *      I/O:
+  70:../../libtinyasuro/inc/asuro/time.h ****  *      @li Port B: Pin 3 (36kHz carrier signal for IR communications)
+  71:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+  72:../../libtinyasuro/inc/asuro/time.h ****  *
+  73:../../libtinyasuro/inc/asuro/time.h ****  * @see hooks.h
+  74:../../libtinyasuro/inc/asuro/time.h ****  *
+  75:../../libtinyasuro/inc/asuro/time.h ****  * @author Markus Jung
+  76:../../libtinyasuro/inc/asuro/time.h ****  *
+  77:../../libtinyasuro/inc/asuro/time.h ****  * @version 23.05.2010 \n
+  78:../../libtinyasuro/inc/asuro/time.h ****  *  Schnittstellendefinition entsprechend asuro.h
+  79:../../libtinyasuro/inc/asuro/time.h ****  * @version 28.05.2010 \n
+  80:../../libtinyasuro/inc/asuro/time.h ****  *  Zählervariable zugänglich gemacht
+  81:../../libtinyasuro/inc/asuro/time.h ****  * @version 02.06.2010 \n
+  82:../../libtinyasuro/inc/asuro/time.h ****  *  sleepUntilInterrupt implementiert
+  83:../../libtinyasuro/inc/asuro/time.h ****  * @version 15.06.2010 \n
+  84:../../libtinyasuro/inc/asuro/time.h ****  *  Doku
+  85:../../libtinyasuro/inc/asuro/time.h ****  * @version 26.06.2010 \n
+  86:../../libtinyasuro/inc/asuro/time.h ****  *  Alias-Makros für sleep, msleep und sleepUntilInterrupt hinzugefügt
+  87:../../libtinyasuro/inc/asuro/time.h ****  *  (zwecks konsistentem Namensschema)
+  88:../../libtinyasuro/inc/asuro/time.h ****  * @version 16.08.2010 \n
+  89:../../libtinyasuro/inc/asuro/time.h ****  *  + Hook für Timer2ISR
+  90:../../libtinyasuro/inc/asuro/time.h ****  * @version 13.09.2013 \n
+  91:../../libtinyasuro/inc/asuro/time.h ****  *  English documentation
+  92:../../libtinyasuro/inc/asuro/time.h ****  * @version 29.10.2013 \n
+  93:../../libtinyasuro/inc/asuro/time.h ****  *  Document interrupt safety issues of TIMER2_CLOCK_OUT_ENABLE() and
+  94:../../libtinyasuro/inc/asuro/time.h ****  *  TIMER2_CLOCK_OUT_DISABLE()
+  95:../../libtinyasuro/inc/asuro/time.h ****  */
+  96:../../libtinyasuro/inc/asuro/time.h **** /*
+  97:../../libtinyasuro/inc/asuro/time.h ****  * The contents of this file are subject to the terms of the Common Development
+  98:../../libtinyasuro/inc/asuro/time.h ****  * and Distribution License Version 1.0 (the License).
+  99:../../libtinyasuro/inc/asuro/time.h ****  * You may not use this file except in compliance with the License.
+ 100:../../libtinyasuro/inc/asuro/time.h ****  *
+ 101:../../libtinyasuro/inc/asuro/time.h ****  * If not included, you can obtain a copy of the License at
+ 102:../../libtinyasuro/inc/asuro/time.h ****  * http://www.sun.com/cddl/cddl.html
+ 103:../../libtinyasuro/inc/asuro/time.h ****  *
+ 104:../../libtinyasuro/inc/asuro/time.h ****  * When distributing Covered Code, include this CDDL Header Notice in each file
+ 105:../../libtinyasuro/inc/asuro/time.h ****  * and include the provided License file.
+ 106:../../libtinyasuro/inc/asuro/time.h ****  */
+ 107:../../libtinyasuro/inc/asuro/time.h **** 
+ 108:../../libtinyasuro/inc/asuro/time.h **** #ifndef TIME_H_
+ 109:../../libtinyasuro/inc/asuro/time.h **** #define TIME_H_
+ 110:../../libtinyasuro/inc/asuro/time.h **** 
+ 111:../../libtinyasuro/inc/asuro/time.h **** #include <stdbool.h>
+ 112:../../libtinyasuro/inc/asuro/time.h **** #include <stdint.h>
+ 113:../../libtinyasuro/inc/asuro/time.h **** #include "hooks.h"
+ 114:../../libtinyasuro/inc/asuro/time.h **** #include "../util/misc.h"
+ 115:../../libtinyasuro/inc/asuro/time.h **** 
+ 116:../../libtinyasuro/inc/asuro/time.h **** #ifdef __DOXYGEN__
+ 117:../../libtinyasuro/inc/asuro/time.h **** /** \if de
+ 118:../../libtinyasuro/inc/asuro/time.h ****  * Alias-Makro für sleep().
+ 119:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 120:../../libtinyasuro/inc/asuro/time.h ****  *
+ 121:../../libtinyasuro/inc/asuro/time.h ****  * \if en
+ 122:../../libtinyasuro/inc/asuro/time.h ****  * Alias macro for sleep().
+ 123:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 124:../../libtinyasuro/inc/asuro/time.h ****  */
+ 125:../../libtinyasuro/inc/asuro/time.h **** #define Sleep
+ 126:../../libtinyasuro/inc/asuro/time.h **** /** \if de
+ 127:../../libtinyasuro/inc/asuro/time.h ****  * Alias-Makro für msleep().
+ 128:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 129:../../libtinyasuro/inc/asuro/time.h ****  *
+ 130:../../libtinyasuro/inc/asuro/time.h ****  * \if en
+ 131:../../libtinyasuro/inc/asuro/time.h ****  * Alias macro for msleep().
+ 132:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 133:../../libtinyasuro/inc/asuro/time.h ****  */
+ 134:../../libtinyasuro/inc/asuro/time.h **** #define Msleep
+ 135:../../libtinyasuro/inc/asuro/time.h **** /** \if de
+ 136:../../libtinyasuro/inc/asuro/time.h ****  * Alias-Makro für sleepUntilInterrupt().
+ 137:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 138:../../libtinyasuro/inc/asuro/time.h ****  *
+ 139:../../libtinyasuro/inc/asuro/time.h ****  * \if en
+ 140:../../libtinyasuro/inc/asuro/time.h ****  * Alias macro for sleepUntilInterrupt().
+ 141:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 142:../../libtinyasuro/inc/asuro/time.h ****  */
+ 143:../../libtinyasuro/inc/asuro/time.h **** #define SleepUntilInterrupt
+ 144:../../libtinyasuro/inc/asuro/time.h **** #else
+ 145:../../libtinyasuro/inc/asuro/time.h **** #define Sleep               sleep
+ 146:../../libtinyasuro/inc/asuro/time.h **** #define Msleep              msleep
+ 147:../../libtinyasuro/inc/asuro/time.h **** #define SleepUntilInterrupt sleepUntilInterrupt
+ 148:../../libtinyasuro/inc/asuro/time.h **** #endif
+ 149:../../libtinyasuro/inc/asuro/time.h **** 
+ 150:../../libtinyasuro/inc/asuro/time.h **** /**
+ 151:../../libtinyasuro/inc/asuro/time.h ****  * \if de
+ 152:../../libtinyasuro/inc/asuro/time.h ****  * Eine Zählvariable die im 36kHz-Takt (um eins) inkrementiert wird.
+ 153:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 154:../../libtinyasuro/inc/asuro/time.h ****  *
+ 155:../../libtinyasuro/inc/asuro/time.h ****  * \if en
+ 156:../../libtinyasuro/inc/asuro/time.h ****  * A counting variable incremented from the 36kHz clock.
+ 157:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 158:../../libtinyasuro/inc/asuro/time.h ****  */
+ 159:../../libtinyasuro/inc/asuro/time.h **** extern volatile uint8_t tick36kHz; // counts from 0 to 255
+ 160:../../libtinyasuro/inc/asuro/time.h **** 
+ 161:../../libtinyasuro/inc/asuro/time.h **** #ifdef __DOXYGEN__
+ 162:../../libtinyasuro/inc/asuro/time.h **** /**
+ 163:../../libtinyasuro/inc/asuro/time.h ****  * \if de
+ 164:../../libtinyasuro/inc/asuro/time.h ****  * Bietet die Möglichkeit, eine eigene Funktion bei jedem Aufruf der Timer-ISR
+ 165:../../libtinyasuro/inc/asuro/time.h ****  * auszuführen. Die interne Funktionalität bleibt dabei erhalten.
+ 166:../../libtinyasuro/inc/asuro/time.h ****  *
+ 167:../../libtinyasuro/inc/asuro/time.h ****  * Da die Timer-ISR mit einer Frequenz von 36kHz aufgerufen wird, sollte diese
+ 168:../../libtinyasuro/inc/asuro/time.h ****  * Funktion möglichst kurz sein.
+ 169:../../libtinyasuro/inc/asuro/time.h ****  *
+ 170:../../libtinyasuro/inc/asuro/time.h ****  * Der Aufruf erfolgt aus dem Kontext eines Interrupts!
+ 171:../../libtinyasuro/inc/asuro/time.h ****  *
+ 172:../../libtinyasuro/inc/asuro/time.h ****  * Ist (Timer2ISRHook == NULL), findet kein Aufruf statt.
+ 173:../../libtinyasuro/inc/asuro/time.h ****  *
+ 174:../../libtinyasuro/inc/asuro/time.h ****  * Diese Funktionalität steht nicht zur Verfügung, wenn TIMER2_ISR_HOOK_ENABLE
+ 175:../../libtinyasuro/inc/asuro/time.h ****  * deaktiviert ist.
+ 176:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 177:../../libtinyasuro/inc/asuro/time.h ****  *
+ 178:../../libtinyasuro/inc/asuro/time.h ****  * \if en
+ 179:../../libtinyasuro/inc/asuro/time.h ****  * Offers the ability to execute a custom function in addition to the internal
+ 180:../../libtinyasuro/inc/asuro/time.h ****  * code of the timer ISR.
+ 181:../../libtinyasuro/inc/asuro/time.h ****  *
+ 182:../../libtinyasuro/inc/asuro/time.h ****  * Since the ISR will be executed with a frequency of 36kHz, the called function
+ 183:../../libtinyasuro/inc/asuro/time.h ****  * should be as short as possible.
+ 184:../../libtinyasuro/inc/asuro/time.h ****  *
+ 185:../../libtinyasuro/inc/asuro/time.h ****  * The function will be called from an interrupt context!
+ 186:../../libtinyasuro/inc/asuro/time.h ****  *
+ 187:../../libtinyasuro/inc/asuro/time.h ****  * No function call will be executed if (Timer2ISRHook == NULL).
+ 188:../../libtinyasuro/inc/asuro/time.h ****  *
+ 189:../../libtinyasuro/inc/asuro/time.h ****  * The timer hook feature is not available if TIMER2_ISR_HOOK_ENABLE has been
+ 190:../../libtinyasuro/inc/asuro/time.h ****  * disabled.
+ 191:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 192:../../libtinyasuro/inc/asuro/time.h ****  */
+ 193:../../libtinyasuro/inc/asuro/time.h **** extern ISRHookFunc_t *Timer2ISRHook;
+ 194:../../libtinyasuro/inc/asuro/time.h **** #else  // !__DOXYGEN__
+ 195:../../libtinyasuro/inc/asuro/time.h **** #if TIMER2_ISR_HOOK_ENABLE
+ 196:../../libtinyasuro/inc/asuro/time.h **** extern ISRHookFunc_t *Timer2ISRHook;
+ 197:../../libtinyasuro/inc/asuro/time.h **** #endif
+ 198:../../libtinyasuro/inc/asuro/time.h **** #endif
+ 199:../../libtinyasuro/inc/asuro/time.h **** 
+ 200:../../libtinyasuro/inc/asuro/time.h **** /**
+ 201:../../libtinyasuro/inc/asuro/time.h ****  * \if de
+ 202:../../libtinyasuro/inc/asuro/time.h ****  * Initialisiert das Modul und den als Zeitbasis und Taktgenerator für die
+ 203:../../libtinyasuro/inc/asuro/time.h ****  * Infrarotschnittstelle verwendeten Timer2.
+ 204:../../libtinyasuro/inc/asuro/time.h ****  *
+ 205:../../libtinyasuro/inc/asuro/time.h ****  * Nach der Initialisierung ist die Taktausgabe für die Infrarotschnittstelle
+ 206:../../libtinyasuro/inc/asuro/time.h ****  * deaktiviert.
+ 207:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 208:../../libtinyasuro/inc/asuro/time.h ****  *
+ 209:../../libtinyasuro/inc/asuro/time.h ****  * \if en
+ 210:../../libtinyasuro/inc/asuro/time.h ****  * Initializes the module and timer2 which is used as time reference and clock
+ 211:../../libtinyasuro/inc/asuro/time.h ****  * source for the IR communications interface.
+ 212:../../libtinyasuro/inc/asuro/time.h ****  *
+ 213:../../libtinyasuro/inc/asuro/time.h ****  * The clock output for the IR interface will be in a disabled state after the
+ 214:../../libtinyasuro/inc/asuro/time.h ****  * initialization has been completed.
+ 215:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 216:../../libtinyasuro/inc/asuro/time.h ****  */
+ 217:../../libtinyasuro/inc/asuro/time.h **** extern void Timer2Init(void);
+ 218:../../libtinyasuro/inc/asuro/time.h **** 
+ 219:../../libtinyasuro/inc/asuro/time.h **** /**
+ 220:../../libtinyasuro/inc/asuro/time.h ****  * \if de
+ 221:../../libtinyasuro/inc/asuro/time.h ****  * Aktiviert die Ausgabe des 36kHz-Signals für die Infrarotschnittstelle.
+ 222:../../libtinyasuro/inc/asuro/time.h ****  *
+ 223:../../libtinyasuro/inc/asuro/time.h ****  * @par Wichtiger Hinweis:
+ 224:../../libtinyasuro/inc/asuro/time.h ****  * Dieses Makro ist nur eingeschänkt interruptfest. Es darf nicht "parallel" zu
+ 225:../../libtinyasuro/inc/asuro/time.h ****  * TIMER2_CLOCK_OUT_DISABLE() ausgeführt werden.
+ 226:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 227:../../libtinyasuro/inc/asuro/time.h ****  *
+ 228:../../libtinyasuro/inc/asuro/time.h ****  * \if en
+ 229:../../libtinyasuro/inc/asuro/time.h ****  * Enables the 36kHz carrier signal for the IR communications interface.
+ 230:../../libtinyasuro/inc/asuro/time.h ****  *
+ 231:../../libtinyasuro/inc/asuro/time.h ****  * @par Important:
+ 232:../../libtinyasuro/inc/asuro/time.h ****  * This macro is interrupt-safe except for one restriction. It must not be
+ 233:../../libtinyasuro/inc/asuro/time.h ****  * executed in parallel to TIMER2_CLOCK_OUT_DISABLE().
+ 234:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 235:../../libtinyasuro/inc/asuro/time.h ****  */
+ 236:../../libtinyasuro/inc/asuro/time.h **** #ifdef __DOXYGEN__
+ 237:../../libtinyasuro/inc/asuro/time.h **** #define TIMER2_CLOCK_OUT_ENABLE()
+ 238:../../libtinyasuro/inc/asuro/time.h **** #else
+ 239:../../libtinyasuro/inc/asuro/time.h **** #define TIMER2_CLOCK_OUT_ENABLE() \
+ 240:../../libtinyasuro/inc/asuro/time.h ****     do { /* Fast PWM, BOTTOM: Clear, CompMatch: Set */ \
+ 241:../../libtinyasuro/inc/asuro/time.h ****         TCCR2 |= (1 << WGM20) | (1 << WGM21) | (1 << COM20) | (1 << COM21); \
+ 242:../../libtinyasuro/inc/asuro/time.h ****     } while (false)
+ 243:../../libtinyasuro/inc/asuro/time.h **** #endif
+ 244:../../libtinyasuro/inc/asuro/time.h **** 
+ 245:../../libtinyasuro/inc/asuro/time.h **** /**
+ 246:../../libtinyasuro/inc/asuro/time.h ****  * \if de
+ 247:../../libtinyasuro/inc/asuro/time.h ****  * Deaktiviert die Ausgabe des 36kHz-Signals für die Infrarotschnittstelle.
+ 248:../../libtinyasuro/inc/asuro/time.h ****  *
+ 249:../../libtinyasuro/inc/asuro/time.h ****  * @par Wichtiger Hinweis:
+ 250:../../libtinyasuro/inc/asuro/time.h ****  * Dieses Makro ist nur eingeschränkt interruptfest. Es darf nicht "parallel"
+ 251:../../libtinyasuro/inc/asuro/time.h ****  * zu TIMER2_CLOCK_OUT_ENABLE() ausgeführt werden.
+ 252:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 253:../../libtinyasuro/inc/asuro/time.h ****  *
+ 254:../../libtinyasuro/inc/asuro/time.h ****  * \if en
+ 255:../../libtinyasuro/inc/asuro/time.h ****  * Disables the 36kHz carrier signal for the IR communications interface.
+ 256:../../libtinyasuro/inc/asuro/time.h ****  *
+ 257:../../libtinyasuro/inc/asuro/time.h ****  * @par Important:
+ 258:../../libtinyasuro/inc/asuro/time.h ****  * This macro is interrupt-safe except for one restriction. It must not be
+ 259:../../libtinyasuro/inc/asuro/time.h ****  * executed in parallel to TIMER2_CLOCK_OUT_ENABLE().
+ 260:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 261:../../libtinyasuro/inc/asuro/time.h ****  */
+ 262:../../libtinyasuro/inc/asuro/time.h **** #ifdef __DOXYGEN__
+ 263:../../libtinyasuro/inc/asuro/time.h **** #define TIMER2_CLOCK_OUT_DISABLE()
+ 264:../../libtinyasuro/inc/asuro/time.h **** #else
+ 265:../../libtinyasuro/inc/asuro/time.h **** #define TIMER2_CLOCK_OUT_DISABLE() \
+ 266:../../libtinyasuro/inc/asuro/time.h ****     do { /* PWM off */ \
+ 267:../../libtinyasuro/inc/asuro/time.h ****         TCCR2 &= ~((1 << WGM20) | (1 << WGM21) | (1 << COM20) | (1 << COM21)); \
+ 268:../../libtinyasuro/inc/asuro/time.h ****     } while (false)
+ 269:../../libtinyasuro/inc/asuro/time.h **** #endif
+ 270:../../libtinyasuro/inc/asuro/time.h **** 
+ 271:../../libtinyasuro/inc/asuro/time.h **** /**
+ 272:../../libtinyasuro/inc/asuro/time.h ****  * \if de
+ 273:../../libtinyasuro/inc/asuro/time.h ****  * Hält den Programmfluss für die vorgegebene Anzahl 36kHz-Takte an und schickt
+ 274:../../libtinyasuro/inc/asuro/time.h ****  * den Prozessor währendessen in den Idle-Mode.
+ 275:../../libtinyasuro/inc/asuro/time.h ****  *
+ 276:../../libtinyasuro/inc/asuro/time.h ****  * Alle Interrupts bleiben aktiv und werden ausgeführt, ledliglich der
+ 277:../../libtinyasuro/inc/asuro/time.h ****  * aufrufende Programmpfad wird unterbrochen.
+ 278:../../libtinyasuro/inc/asuro/time.h ****  *
+ 279:../../libtinyasuro/inc/asuro/time.h ****  * Wenn diese Funktion aufgerufen wird, geht sie davon aus, dass Interrupts
+ 280:../../libtinyasuro/inc/asuro/time.h ****  * global freigeschaltet sind - wenn nicht findet die globale Interruptfreigabe
+ 281:../../libtinyasuro/inc/asuro/time.h ****  * vor Eintritt in den Idle-Mode statt.
+ 282:../../libtinyasuro/inc/asuro/time.h ****  *
+ 283:../../libtinyasuro/inc/asuro/time.h ****  * @param timer36kHz_ticks die Anzahl der 36kHz-Takte die der Prozessor
+ 284:../../libtinyasuro/inc/asuro/time.h ****  *                         "schlafen" soll
+ 285:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 286:../../libtinyasuro/inc/asuro/time.h ****  *
+ 287:../../libtinyasuro/inc/asuro/time.h ****  * \if en
+ 288:../../libtinyasuro/inc/asuro/time.h ****  * Delays the execution for the specified amount of time, measured in 36kHz
+ 289:../../libtinyasuro/inc/asuro/time.h ****  * ticks. The microcontroller will halted (idle mode) during this time.
+ 290:../../libtinyasuro/inc/asuro/time.h ****  *
+ 291:../../libtinyasuro/inc/asuro/time.h ****  * All interrupt requests remain active and will be executed, the calling
+ 292:../../libtinyasuro/inc/asuro/time.h ****  * function itself remains halted.
+ 293:../../libtinyasuro/inc/asuro/time.h ****  *
+ 294:../../libtinyasuro/inc/asuro/time.h ****  * This function expects interrupts to be globally enabled if it gets called.
+ 295:../../libtinyasuro/inc/asuro/time.h ****  * If not, the global interrupt enable bit will be set before entering the sleep
+ 296:../../libtinyasuro/inc/asuro/time.h ****  * mode and remain in this state after the function returns.
+ 297:../../libtinyasuro/inc/asuro/time.h ****  *
+ 298:../../libtinyasuro/inc/asuro/time.h ****  * @param timer36kHz_ticks the number of 36kHz ticks the microcontroller will
+ 299:../../libtinyasuro/inc/asuro/time.h ****  *                         be halted.
+ 300:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 301:../../libtinyasuro/inc/asuro/time.h ****  */
+ 302:../../libtinyasuro/inc/asuro/time.h **** extern void sleep(uint8_t timer36kHz_ticks);
+ 303:../../libtinyasuro/inc/asuro/time.h **** /**
+ 304:../../libtinyasuro/inc/asuro/time.h ****  * \if de
+ 305:../../libtinyasuro/inc/asuro/time.h ****  * Schickt den Prozessor in den Idle-Mode und kehrt zurück, nachdem ein
+ 306:../../libtinyasuro/inc/asuro/time.h ****  * Interrupt ausgelöst wurde.
+ 307:../../libtinyasuro/inc/asuro/time.h ****  *
+ 308:../../libtinyasuro/inc/asuro/time.h ****  * Wenn diese Funktion aufgerufen wird, geht sie davon aus, dass Interrupts
+ 309:../../libtinyasuro/inc/asuro/time.h ****  * global freigeschaltet sind - wenn nicht findet die globale Interruptfreigabe
+ 310:../../libtinyasuro/inc/asuro/time.h ****  * vor Eintritt in den Idle-Mode statt.
+ 311:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 312:../../libtinyasuro/inc/asuro/time.h ****  *
+ 313:../../libtinyasuro/inc/asuro/time.h ****  * \if en
+ 314:../../libtinyasuro/inc/asuro/time.h ****  * Puts the microcontroller into idle mode until the next interrupt occurs.
+ 315:../../libtinyasuro/inc/asuro/time.h ****  *
+ 316:../../libtinyasuro/inc/asuro/time.h ****  * This function expects interrupts to be globally enabled if it gets called.
+ 317:../../libtinyasuro/inc/asuro/time.h ****  * If not, the global interrupt enable bit will be set before entering the sleep
+ 318:../../libtinyasuro/inc/asuro/time.h ****  * mode and remain in this state after the function returns.
+ 319:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 320:../../libtinyasuro/inc/asuro/time.h ****  */
+ 321:../../libtinyasuro/inc/asuro/time.h **** extern void sleepUntilInterrupt(void);
+ 322:../../libtinyasuro/inc/asuro/time.h **** 
+ 323:../../libtinyasuro/inc/asuro/time.h **** /**
+ 324:../../libtinyasuro/inc/asuro/time.h ****  * \if de
+ 325:../../libtinyasuro/inc/asuro/time.h ****  * Verhält sich wie sleep(), verwendet als Zeitbasis aber Millisekunden
+ 326:../../libtinyasuro/inc/asuro/time.h ****  *
+ 327:../../libtinyasuro/inc/asuro/time.h ****  * @param ms die Anzahl der Millisekunden die der Prozessor "schlafend"
+ 328:../../libtinyasuro/inc/asuro/time.h ****  *           verbringen soll
+ 329:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 330:../../libtinyasuro/inc/asuro/time.h ****  *
+ 331:../../libtinyasuro/inc/asuro/time.h ****  * \if en
+ 332:../../libtinyasuro/inc/asuro/time.h ****  * Behaves like sleep() but uses milliseconds as timebase.
+ 333:../../libtinyasuro/inc/asuro/time.h ****  *
+ 334:../../libtinyasuro/inc/asuro/time.h ****  * @param ms the time the microcontroller will be halted, measured in
+ 335:../../libtinyasuro/inc/asuro/time.h ****  *           milliseconds
+ 336:../../libtinyasuro/inc/asuro/time.h ****  * \endif
+ 337:../../libtinyasuro/inc/asuro/time.h ****  */
+ 338:../../libtinyasuro/inc/asuro/time.h **** #ifdef __DOXYGEN__
+ 339:../../libtinyasuro/inc/asuro/time.h **** void msleep(uint16_t ms);
+ 340:../../libtinyasuro/inc/asuro/time.h **** #else
+ 341:../../libtinyasuro/inc/asuro/time.h **** static ALWAYS_INLINE void msleep(uint16_t ms);
+ 342:../../libtinyasuro/inc/asuro/time.h **** #endif
+ 343:../../libtinyasuro/inc/asuro/time.h **** 
+ 344:../../libtinyasuro/inc/asuro/time.h **** void msleep(uint16_t ms) {
+ 345:../../libtinyasuro/inc/asuro/time.h ****     for (; ms > 0; ms--) {
+ 346:../../libtinyasuro/inc/asuro/time.h ****         sleep(36);
+ 145               		.loc 2 346 0
+ 146 0088 84E2      		ldi r24,lo8(36)	 ;  80	movqi_insn/2	[length = 1]
+ 147 008a 00D0      		rcall sleep	 ;  81	call_insn/2	[length = 1]
+ 148               	.LVL15:
+ 149 008c 0150      		subi r16,1	 ;  85	addhi3_clobber/2	[length = 2]
+ 150 008e 1109      		sbc r17,__zero_reg__
+ 151               	.LVL16:
+ 345:../../libtinyasuro/inc/asuro/time.h ****         sleep(36);
+ 152               		.loc 2 345 0
+ 153 0090 01F4      		brne .L7	 ;  88	branch	[length = 1]
+ 154               	.LVL17:
+ 155               	.LBE11:
+ 156               	.LBE10:
+  57:main.c        **** 		msleep(120);
+  58:main.c        **** 		
+  59:main.c        **** 		a_pressed = ( switches & SWITCH(1) );
+  60:main.c        ****         b_pressed = ( switches & SWITCH(3) );
+  61:main.c        **** 		
+  62:main.c        **** 		if (a_pressed | b_pressed > 0) {
+ 157               		.loc 1 62 0
+ 158 0092 D3FA      		bst r13,3	 ;  194	*extzv/5	[length = 3]
+ 159 0094 AA24      		clr r10
+ 160 0096 A0F8      		bld r10,0
+ 161 0098 B12C      		mov r11,__zero_reg__	 ;  195	movqi_insn/1	[length = 1]
+  59:main.c        ****         b_pressed = ( switches & SWITCH(3) );
+ 162               		.loc 1 59 0
+ 163 009a 8D2D      		mov r24,r13	 ;  209	movqi_insn/1	[length = 1]
+ 164 009c 8270      		andi r24,lo8(2)	 ;  95	andqi3/2	[length = 1]
+ 165               	.LVL18:
+ 166               		.loc 1 62 0
+ 167 009e 9501      		movw r18,r10	 ;  210	*movhi/1	[length = 1]
+ 168 00a0 282B      		or r18,r24	 ;  212	iorqi3/1	[length = 1]
+ 169 00a2 C901      		movw r24,r18	 ;  211	*movhi/1	[length = 1]
+ 170               	.LVL19:
+ 171 00a4 892B      		or r24,r25	 ;  98	*cmphi/1	[length = 1]
+ 172 00a6 01F4      		brne .+2	 ;  99	branch	[length = 2]
+ 173 00a8 00C0      		rjmp .L10
+  63:main.c        ****             BackLED(OFF,ON);
+ 174               		.loc 1 63 0
+ 175 00aa 61E0      		ldi r22,lo8(1)	 ;  101	movqi_insn/2	[length = 1]
+ 176 00ac 80E0      		ldi r24,0	 ;  102	movqi_insn/1	[length = 1]
+ 177 00ae 00D0      		rcall BackLED	 ;  103	call_insn/2	[length = 1]
+ 178               	.LVL20:
+ 179               	.LBB12:
+ 180               	.LBB13:
+ 181               		.loc 2 346 0
+ 182 00b0 84E2      		ldi r24,lo8(36)	 ;  106	movqi_insn/2	[length = 1]
+ 183 00b2 00D0      		rcall sleep	 ;  107	call_insn/2	[length = 1]
+ 184               	.LVL21:
+ 185               	.LBE13:
+ 186               	.LBE12:
+  64:main.c        ****             msleep(1);
+  65:main.c        ****             BackLED(ON,OFF);
+ 187               		.loc 1 65 0
+ 188 00b4 60E0      		ldi r22,0	 ;  110	movqi_insn/1	[length = 1]
+ 189 00b6 81E0      		ldi r24,lo8(1)	 ;  111	movqi_insn/2	[length = 1]
+ 190 00b8 00D0      		rcall BackLED	 ;  112	call_insn/2	[length = 1]
+ 191               	.LVL22:
+  66:main.c        **** 			MotorDir(RWD,RWD);
+ 192               		.loc 1 66 0
+ 193 00ba 60E1      		ldi r22,lo8(16)	 ;  113	movqi_insn/2	[length = 1]
+ 194 00bc 80E1      		ldi r24,lo8(16)	 ;  114	movqi_insn/2	[length = 1]
+ 195 00be 00D0      		rcall MotorDir	 ;  115	call_insn/2	[length = 1]
+ 196               	.LVL23:
+  67:main.c        **** 			MotorSpeed(120,120);
+ 197               		.loc 1 67 0
+ 198 00c0 68E7      		ldi r22,lo8(120)	 ;  116	movqi_insn/2	[length = 1]
+ 199 00c2 88E7      		ldi r24,lo8(120)	 ;  117	movqi_insn/2	[length = 1]
+ 200 00c4 00D0      		rcall MotorSpeed	 ;  118	call_insn/2	[length = 1]
+ 201               	.LVL24:
+ 202 00c6 02E3      		ldi r16,lo8(50)	 ;  6	*movhi/5	[length = 2]
+ 203 00c8 10E0      		ldi r17,0
+ 204               	.LVL25:
+ 205               	.L9:
+ 206               	.LBB14:
+ 207               	.LBB15:
+ 208               		.loc 2 346 0
+ 209 00ca 84E2      		ldi r24,lo8(36)	 ;  123	movqi_insn/2	[length = 1]
+ 210 00cc 00D0      		rcall sleep	 ;  124	call_insn/2	[length = 1]
+ 211               	.LVL26:
+ 212 00ce 0150      		subi r16,1	 ;  128	addhi3_clobber/2	[length = 2]
+ 213 00d0 1109      		sbc r17,__zero_reg__
+ 214               	.LVL27:
+ 345:../../libtinyasuro/inc/asuro/time.h ****         sleep(36);
+ 215               		.loc 2 345 0
+ 216 00d2 01F4      		brne .L9	 ;  131	branch	[length = 1]
+ 217               	.LBE15:
+ 218               	.LBE14:
+  68:main.c        **** 			msleep(50);
+  69:main.c        **** 			MotorDir(BREAK,BREAK);
+ 219               		.loc 1 69 0
+ 220 00d4 60E0      		ldi r22,0	 ;  133	movqi_insn/1	[length = 1]
+ 221 00d6 80E0      		ldi r24,0	 ;  134	movqi_insn/1	[length = 1]
+ 222 00d8 00D0      		rcall MotorDir	 ;  135	call_insn/2	[length = 1]
+ 223               	.LVL28:
+ 224               	.LBE9:
+  70:main.c        **** 
+  71:main.c        **** 
+  72:main.c        **** 		}
+  73:main.c        **** 		
+  74:main.c        **** 			 
+  75:main.c        **** 		//~ if (lineData[LEFT] > lineData[RIGHT]){
+  76:main.c        **** 			//~ MotorDir(FWD,BWD);
+  77:main.c        **** 			//~ MotorSpeed(right,left);
+  78:main.c        **** 			//~ msleep(2);
+  79:main.c        **** 			//~ MotorDir(BREAK,BREAK);
+  80:main.c        **** 
+  81:main.c        **** 
+  82:main.c        **** 			
+  83:main.c        **** 			
+  84:main.c        **** 			
+  85:main.c        **** 			//~ }
+  86:main.c        **** 		//~ else
+  87:main.c        **** 		//~ {
+  88:main.c        **** 			//~ MotorDir(BWD,FWD);
+  89:main.c        **** 			//~ MotorSpeed(right,left);
+  90:main.c        **** 			//~ msleep(2);
+  91:main.c        **** 			//~ MotorDir(BREAK,BREAK);
+  92:main.c        **** 		
+  93:main.c        **** 			
+  94:main.c        **** 			//~ }	
+  95:main.c        **** 	
+  96:main.c        **** 			
+  97:main.c        **** 		}
+ 225               		.loc 1 97 0
+ 226 00da 00C0      		rjmp .L10	 ;  226	jump	[length = 1]
+ 227               	.LVL29:
+ 228               	.L2:
+ 229               	.LBB16:
+  42:main.c        **** 			right=254;
+ 230               		.loc 1 42 0
+ 231 00dc 6F3F      		cpi r22,-1	 ;  145	*cmphi/6	[length = 2]
+ 232 00de 7105      		cpc r23,__zero_reg__
+ 233 00e0 01F0      		breq .+2	 ;  146	difficult_branch	[length = 2]
+ 234 00e2 04F4      		brge .L21
+  39:main.c        **** 		}
+ 235               		.loc 1 39 0
+ 236 00e4 9EEF      		ldi r25,lo8(-2)	 ;  222	*reload_inhi	[length = 3]
+ 237 00e6 E92E      		mov r14,r25
+ 238 00e8 F12C      		mov r15,__zero_reg__
+ 239 00ea 00C0      		rjmp .L3	 ;  229	jump	[length = 1]
+ 240               	.L21:
+  43:main.c        **** 		}
+ 241               		.loc 1 43 0
+ 242 00ec 0EEF      		ldi r16,lo8(-2)	 ;  177	*movhi/5	[length = 2]
+ 243 00ee 10E0      		ldi r17,0
+ 244               	.LVL30:
+  39:main.c        **** 		}
+ 245               		.loc 1 39 0
+ 246 00f0 8EEF      		ldi r24,lo8(-2)	 ;  221	*reload_inhi	[length = 3]
+ 247 00f2 E82E      		mov r14,r24
+ 248 00f4 F12C      		mov r15,__zero_reg__
+ 249 00f6 00C0      		rjmp .L12	 ;  231	jump	[length = 1]
+ 250               	.LBE16:
+ 251               		.cfi_endproc
+ 252               	.LFE2:
+ 254               		.text
+ 255               	.Letext0:
+ 256               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 257               		.file 4 "../../libtinyasuro/inc/asuro/sensors.h"
+ 258               		.file 5 "../../libtinyasuro/inc/asuro/led.h"
+ 259               		.file 6 "../../libtinyasuro/inc/asuro/motor.h"
+ 260               		.file 7 "../../libtinyasuro/inc/asuro/switches.h"
+ 261               		.file 8 "../../libtinyasuro/inc/asuro/asuro.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+     /tmp/ccCCMTYA.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccCCMTYA.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccCCMTYA.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccCCMTYA.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccCCMTYA.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccCCMTYA.s:13     .text.startup.main:0000000000000000 main
+
+UNDEFINED SYMBOLS
+Init
+LineData
+PollSwitch
+__divmodhi4
+BackLED
+MotorDir
+MotorSpeed
+sleep
