@@ -7,7 +7,8 @@
  ../../libtinyasuro/inc/asuro/sensors.h \
  ../../libtinyasuro/inc/asuro/hooks.h \
  ../../libtinyasuro/inc/asuro/switches.h \
- ../../libtinyasuro/inc/asuro/time.h ../../libtinyasuro/inc/asuro/uart.h
+ ../../libtinyasuro/inc/asuro/time.h ../../libtinyasuro/inc/asuro/uart.h \
+ helpers.h
 
 ../../libtinyasuro/inc/asuro/asuro.h:
 
@@ -32,3 +33,5 @@
 ../../libtinyasuro/inc/asuro/time.h:
 
 ../../libtinyasuro/inc/asuro/uart.h:
+
+helpers.h:

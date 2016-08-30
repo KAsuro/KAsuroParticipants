@@ -1,58 +1,59 @@
-/**
- * Beschreibt hier was euer Programm macht!
- */
-
 #define SWITCH(X) 1<<X
-#define SLOW 1000
-#define FAST 100
 
 #include <asuro/asuro.h>
+#include "helpers.h"
 
 void main(void) {
     Init();
-	int status = 0;
 	int x = 160;
 	int y = 200;
-	while (1) {
+	
+	while (1) {  	//Hauptschleife
+		
 		char sensor = PollSwitch();
 		sensor &= 0b00111111;
 		
-		MotorDir(FWD, FWD);
-		MotorSpeed(160, 200);
+		MotorDir(FWD, FWD); //Werkeinstellung
+		MotorSpeed(160, 200); 
 		
 		
-		if (sensor > 0)
+		if (sensor > 0) //Abfrage der sechs Drucksensoren -> backwards
 		{
-			 MotorDir(BWD, BWD);
+			 MotorDir(BWD, BWD); 
 			 MotorSpeed(80, 200);
 			 StatusLED(RED);
+			 msleep(1500);
 		}
-		msleep(1000);
+		
 		uint16_t data[] = {0,0};
 		LineData(data);
-		while (((data[LEFT] > 40) || (data[RIGHT] > 40)) && (x > 10))
+		
+		while (((data[LEFT] > 40) || (data[RIGHT] > 40)) && (x > 10)) //Geschwindigkeit geringer bei Licht über 40E
 		{	
-			MotorSpeed(x, y);
+			StatusLED(YELLOW);
 			x -= 5;
 			y -= 5;
+			MotorSpeed(x, y);
 			LineData(data);
 		} 
-		while ((data[LEFT] > 100) || (data[RIGHT] > 100))
+		while ((data[LEFT] > 100) || (data[RIGHT] > 100)) //Geschwindigkeit 0 bei Licht über 100E
 		{	
-			MotorSpeed(0, 0);
-			if (status) {
-				BackLED(ON, OFF);
-				status = 0;
-			} else {
-				BackLED(OFF, ON);
-				status = 1;
-			}
-			msleep(500);
+			stopAsuro(500);
 			LineData(data);
 		} 
+		MotorSpeed(160, 200);
+		int i = 0;
+		for(i = 0; i % 20 == 0; i++) //Gelegentlich kurzer Richtungswechsel
+		{
+			if (i%4 == 0)
+			 MotorSpeed(200, 10);
+			else 
+			 MotorSpeed(10, 200);
+			msleep(100);
+		}
 		StatusLED(GREEN);
 		BackLED(OFF, OFF);
-		msleep(500);
+		msleep(500); 				//Werkseinstellungen : LEDs auf off | StatusLED auf grün | Pause
 	}
 };
 
