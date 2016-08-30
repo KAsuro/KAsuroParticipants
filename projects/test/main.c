@@ -26,7 +26,8 @@ void main(void) {
 		if(!start_white) {
 			if (switches >= 64) {
 				LineData(data);
-				white = data;
+				white[RIGHT] = data[RIGHT];
+				white[LEFT] = data[LEFT];
 				start_white = 1;
 			}
 		}
@@ -34,7 +35,8 @@ void main(void) {
 		if(!start_black) {
 			if ((switches >= 16) && (switches < 64)) {
 				LineData(data);
-				black = data;
+				black[RIGHT] = data[RIGHT];
+				black[LEFT] = black[LEFT];
 				start_black = 1;
 			}
 		}
