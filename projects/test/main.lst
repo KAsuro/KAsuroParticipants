@@ -20,20 +20,20 @@
    6:main.c        **** void main(void) {
   16               		.loc 1 6 0
   17               		.cfi_startproc
-  18 0000 CF93      		push r28	 ;  107	pushqi1/1	[length = 1]
+  18 0000 CF93      		push r28	 ;  116	pushqi1/1	[length = 1]
   19               	.LCFI0:
   20               		.cfi_def_cfa_offset 3
   21               		.cfi_offset 28, -2
-  22 0002 DF93      		push r29	 ;  108	pushqi1/1	[length = 1]
+  22 0002 DF93      		push r29	 ;  117	pushqi1/1	[length = 1]
   23               	.LCFI1:
   24               		.cfi_def_cfa_offset 4
   25               		.cfi_offset 29, -3
-  26               		 ; SP -= 4	 ;  112	*addhi3_sp	[length = 2]
+  26               		 ; SP -= 4	 ;  121	*addhi3_sp	[length = 2]
   27 0004 00D0      		rcall .
   28 0006 00D0      		rcall .
   29               	.LCFI2:
   30               		.cfi_def_cfa_offset 8
-  31 0008 CDB7      		in r28,__SP_L__	 ;  113	*movhi/8	[length = 2]
+  31 0008 CDB7      		in r28,__SP_L__	 ;  122	*movhi/8	[length = 2]
   32 000a DEB7      		in r29,__SP_H__
   33               	.LCFI3:
   34               		.cfi_def_cfa_register 28
@@ -79,7 +79,7 @@
   19:main.c        **** 		
   20:main.c        **** 	LineData(data);
   62               		.loc 1 20 0
-  63 0024 CE01      		movw r24,r28	 ;  105	*movhi/1	[length = 1]
+  63 0024 CE01      		movw r24,r28	 ;  114	*movhi/1	[length = 1]
   64 0026 0196      		adiw r24,1	 ;  24	*addhi3/3	[length = 1]
   65 0028 00D0      		rcall LineData	 ;  25	call_insn/2	[length = 1]
   66               	.LVL6:
@@ -104,12 +104,12 @@
   82 003e 00E0      		ldi r16,0	 ;  3	*movhi/2	[length = 2]
   83 0040 10E0      		ldi r17,0
   84               	.LVL9:
-  85               	.L4:
+  85               	.L5:
   23:main.c        **** 	
   24:main.c        **** 	while(1) {
   25:main.c        **** 		LineData(data);
   86               		.loc 1 25 0
-  87 0042 CE01      		movw r24,r28	 ;  106	*movhi/1	[length = 1]
+  87 0042 CE01      		movw r24,r28	 ;  115	*movhi/1	[length = 1]
   88 0044 0196      		adiw r24,1	 ;  34	*addhi3/3	[length = 1]
   89 0046 00D0      		rcall LineData	 ;  35	call_insn/2	[length = 1]
   90               	.LVL10:
@@ -126,51 +126,62 @@
  100 0056 8A15      		cp r24,r10	 ;  41	*cmphi/3	[length = 2]
  101 0058 9B05      		cpc r25,r11
  102 005a 00F4      		brsh .L2	 ;  42	branch	[length = 1]
-  27:main.c        **** 			GoTurn(0,90,80);
- 103               		.loc 1 27 0 is_stmt 1
- 104 005c 40E5      		ldi r20,lo8(80)	 ;  44	movqi_insn/2	[length = 1]
- 105 005e 6AE5      		ldi r22,lo8(90)	 ;  45	*movhi/5	[length = 2]
- 106 0060 70E0      		ldi r23,0
- 107 0062 80E0      		ldi r24,0	 ;  46	*movhi/2	[length = 2]
- 108 0064 90E0      		ldi r25,0
- 109 0066 00D0      		rcall GoTurn	 ;  47	call_insn/2	[length = 1]
- 110               	.LVL11:
-  28:main.c        **** 			turns++;
-  29:main.c        **** 			if(turns == 2) {
- 111               		.loc 1 29 0
- 112 0068 0130      		cpi r16,1	 ;  49	*cmphi/6	[length = 2]
- 113 006a 1105      		cpc r17,__zero_reg__
- 114 006c 01F4      		brne .L6	 ;  50	branch	[length = 1]
- 115               	.LVL12:
-  30:main.c        **** 				turns = 0;
-  31:main.c        **** 				GoTurn(0,180,80);
+  27:main.c        **** 			//GoTurn(0,90,80);
+  28:main.c        **** 			StatusLED(GREEN);
+ 103               		.loc 1 28 0 is_stmt 1
+ 104 005c 81E0      		ldi r24,lo8(1)	 ;  44	movqi_insn/2	[length = 1]
+ 105 005e 00D0      		rcall StatusLED	 ;  45	call_insn/2	[length = 1]
+ 106               	.LVL11:
+  29:main.c        **** 			turns++;
+  30:main.c        **** 			if(turns == 2) {
+ 107               		.loc 1 30 0
+ 108 0060 0130      		cpi r16,1	 ;  47	*cmphi/6	[length = 2]
+ 109 0062 1105      		cpc r17,__zero_reg__
+ 110 0064 01F4      		brne .L7	 ;  48	branch	[length = 1]
+ 111               	.LVL12:
+  31:main.c        **** 				turns = 0;
+  32:main.c        **** 				//GoTurn(0,180,80);
+  33:main.c        **** 				StatusLED(RED);
+ 112               		.loc 1 33 0
+ 113 0066 82E0      		ldi r24,lo8(2)	 ;  51	movqi_insn/2	[length = 1]
+ 114 0068 00D0      		rcall StatusLED	 ;  52	call_insn/2	[length = 1]
+ 115               	.LVL13:
+  31:main.c        **** 				turns = 0;
  116               		.loc 1 31 0
- 117 006e 40E5      		ldi r20,lo8(80)	 ;  53	movqi_insn/2	[length = 1]
- 118 0070 64EB      		ldi r22,lo8(-76)	 ;  54	*movhi/5	[length = 2]
- 119 0072 70E0      		ldi r23,0
- 120 0074 80E0      		ldi r24,0	 ;  55	*movhi/2	[length = 2]
- 121 0076 90E0      		ldi r25,0
- 122 0078 00D0      		rcall GoTurn	 ;  56	call_insn/2	[length = 1]
- 123               	.LVL13:
-  30:main.c        **** 				turns = 0;
- 124               		.loc 1 30 0
- 125 007a 00E0      		ldi r16,0	 ;  5	*movhi/2	[length = 2]
- 126 007c 10E0      		ldi r17,0
- 127 007e 00C0      		rjmp .L2	 ;  118	jump	[length = 1]
- 128               	.LVL14:
- 129               	.L6:
- 130 0080 01E0      		ldi r16,lo8(1)	 ;  95	*movhi/5	[length = 2]
- 131 0082 10E0      		ldi r17,0
- 132               	.LVL15:
- 133               	.L2:
- 134 0084 85E0      		ldi r24,lo8(5)	 ;  115	*reload_inhi	[length = 3]
- 135 0086 E82E      		mov r14,r24
- 136 0088 F12C      		mov r15,__zero_reg__
- 137               	.LVL16:
- 138               	.L5:
- 139               	.LBB4:
- 140               	.LBB5:
- 141               		.file 2 "../../libtinyasuro/inc/asuro/time.h"
+ 117 006a 00E0      		ldi r16,0	 ;  102	*movhi/2	[length = 2]
+ 118 006c 10E0      		ldi r17,0
+ 119 006e 00C0      		rjmp .L3	 ;  127	jump	[length = 1]
+ 120               	.LVL14:
+ 121               	.L2:
+  34:main.c        **** 			}
+  35:main.c        **** 		} else {
+  36:main.c        **** 			MotorDir(FWD, FWD);
+ 122               		.loc 1 36 0
+ 123 0070 60E2      		ldi r22,lo8(32)	 ;  57	movqi_insn/2	[length = 1]
+ 124 0072 80E2      		ldi r24,lo8(32)	 ;  58	movqi_insn/2	[length = 1]
+ 125 0074 00D0      		rcall MotorDir	 ;  59	call_insn/2	[length = 1]
+ 126               	.LVL15:
+  37:main.c        **** 			MotorSpeed(80,80);
+ 127               		.loc 1 37 0
+ 128 0076 60E5      		ldi r22,lo8(80)	 ;  60	movqi_insn/2	[length = 1]
+ 129 0078 80E5      		ldi r24,lo8(80)	 ;  61	movqi_insn/2	[length = 1]
+ 130 007a 00D0      		rcall MotorSpeed	 ;  62	call_insn/2	[length = 1]
+ 131               	.LVL16:
+ 132 007c 00C0      		rjmp .L3	 ;  129	jump	[length = 1]
+ 133               	.LVL17:
+ 134               	.L7:
+ 135 007e 01E0      		ldi r16,lo8(1)	 ;  101	*movhi/5	[length = 2]
+ 136 0080 10E0      		ldi r17,0
+ 137               	.LVL18:
+ 138               	.L3:
+ 139 0082 85E0      		ldi r24,lo8(5)	 ;  124	*reload_inhi	[length = 3]
+ 140 0084 E82E      		mov r14,r24
+ 141 0086 F12C      		mov r15,__zero_reg__
+ 142               	.LVL19:
+ 143               	.L6:
+ 144               	.LBB4:
+ 145               	.LBB5:
+ 146               		.file 2 "../../libtinyasuro/inc/asuro/time.h"
    1:../../libtinyasuro/inc/asuro/time.h **** /**
    2:../../libtinyasuro/inc/asuro/time.h ****  * @file
    3:../../libtinyasuro/inc/asuro/time.h ****  *
@@ -517,40 +528,40 @@
  344:../../libtinyasuro/inc/asuro/time.h **** void msleep(uint16_t ms) {
  345:../../libtinyasuro/inc/asuro/time.h ****     for (; ms > 0; ms--) {
  346:../../libtinyasuro/inc/asuro/time.h ****         sleep(36);
- 142               		.loc 2 346 0
- 143 008a 84E2      		ldi r24,lo8(36)	 ;  64	movqi_insn/2	[length = 1]
- 144 008c 00D0      		rcall sleep	 ;  65	call_insn/2	[length = 1]
- 145               	.LVL17:
- 146 008e 81E0      		ldi r24,1	 ;  69	addhi3_clobber/3	[length = 3]
- 147 0090 E81A      		sub r14,r24
- 148 0092 F108      		sbc r15,__zero_reg__
- 149               	.LVL18:
+ 147               		.loc 2 346 0
+ 148 0088 84E2      		ldi r24,lo8(36)	 ;  70	movqi_insn/2	[length = 1]
+ 149 008a 00D0      		rcall sleep	 ;  71	call_insn/2	[length = 1]
+ 150               	.LVL20:
+ 151 008c 81E0      		ldi r24,1	 ;  75	addhi3_clobber/3	[length = 3]
+ 152 008e E81A      		sub r14,r24
+ 153 0090 F108      		sbc r15,__zero_reg__
+ 154               	.LVL21:
  345:../../libtinyasuro/inc/asuro/time.h ****         sleep(36);
- 150               		.loc 2 345 0
- 151 0094 E114      		cp r14,__zero_reg__	 ;  70	*cmphi/2	[length = 2]
- 152 0096 F104      		cpc r15,__zero_reg__
- 153 0098 01F4      		brne .L5	 ;  71	branch	[length = 1]
- 154 009a 00C0      		rjmp .L4	 ;  121	jump	[length = 1]
- 155               	.LBE5:
- 156               	.LBE4:
- 157               		.cfi_endproc
- 158               	.LFE2:
- 160               		.text
- 161               	.Letext0:
- 162               		.file 3 "/usr/lib/avr/include/stdint.h"
- 163               		.file 4 "../../libtinyasuro/inc/asuro/motor.h"
- 164               		.file 5 "../../libtinyasuro/inc/asuro/sensors.h"
- 165               		.file 6 "../../libtinyasuro/inc/asuro/asuro.h"
- 166               		.file 7 "../../libtinyasuro/inc/asuro/switches.h"
- 167               		.file 8 "../../libtinyasuro/inc/asuro/encoder.h"
+ 155               		.loc 2 345 0
+ 156 0092 E114      		cp r14,__zero_reg__	 ;  76	*cmphi/2	[length = 2]
+ 157 0094 F104      		cpc r15,__zero_reg__
+ 158 0096 01F4      		brne .L6	 ;  77	branch	[length = 1]
+ 159 0098 00C0      		rjmp .L5	 ;  132	jump	[length = 1]
+ 160               	.LBE5:
+ 161               	.LBE4:
+ 162               		.cfi_endproc
+ 163               	.LFE2:
+ 165               		.text
+ 166               	.Letext0:
+ 167               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 168               		.file 4 "../../libtinyasuro/inc/asuro/motor.h"
+ 169               		.file 5 "../../libtinyasuro/inc/asuro/sensors.h"
+ 170               		.file 6 "../../libtinyasuro/inc/asuro/asuro.h"
+ 171               		.file 7 "../../libtinyasuro/inc/asuro/switches.h"
+ 172               		.file 8 "../../libtinyasuro/inc/asuro/led.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/ccL8y9SJ.s:2      *ABS*:0000003e __SP_H__
-     /tmp/ccL8y9SJ.s:3      *ABS*:0000003d __SP_L__
-     /tmp/ccL8y9SJ.s:4      *ABS*:0000003f __SREG__
-     /tmp/ccL8y9SJ.s:5      *ABS*:00000000 __tmp_reg__
-     /tmp/ccL8y9SJ.s:6      *ABS*:00000001 __zero_reg__
-     /tmp/ccL8y9SJ.s:13     .text.startup.main:00000000 main
+     /tmp/cc3y7VV8.s:2      *ABS*:0000003e __SP_H__
+     /tmp/cc3y7VV8.s:3      *ABS*:0000003d __SP_L__
+     /tmp/cc3y7VV8.s:4      *ABS*:0000003f __SREG__
+     /tmp/cc3y7VV8.s:5      *ABS*:00000000 __tmp_reg__
+     /tmp/cc3y7VV8.s:6      *ABS*:00000001 __zero_reg__
+     /tmp/cc3y7VV8.s:13     .text.startup.main:00000000 main
 
 UNDEFINED SYMBOLS
 Init
@@ -558,5 +569,5 @@ MotorDir
 MotorSpeed
 PollSwitch
 LineData
-GoTurn
+StatusLED
 sleep
