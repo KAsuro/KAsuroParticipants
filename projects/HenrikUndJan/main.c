@@ -12,7 +12,7 @@
  *		   	 * *
  *		   	 * *
  * 		   	 * *
- * 1
+ * 
  */
 
 #define SWITCH(X) 1<<X
@@ -28,6 +28,10 @@ void main(void)		{
     int right 		= 0;
 	char a_pressed	= 0;
 	char b_pressed	= 0;
+	char c_pressed	= 0;
+	char d_pressed	= 0;
+	char e_pressed	= 0;
+	char f_pressed	= 0;
     
 	while(1){
 		
@@ -43,7 +47,10 @@ void main(void)		{
 		
 		a_pressed = ( switches & SWITCH(1) );
 		b_pressed = ( switches & SWITCH(4) );
-	
+		c_pressed = ( switches & SWITCH(0) );
+		d_pressed = ( switches & SWITCH(3) );
+		e_pressed = ( switches & SWITCH(2) );
+		f_pressed = ( switches & SWITCH(5) );
 		
 		//fahren
 		
@@ -54,14 +61,14 @@ void main(void)		{
 		if (left>255){
 			left=254;
 			}
-		else if(left<90){
+		else if(left<100){
 			left=0;
 			}	
 			
 		if (right>255){
 			right=254;
 			}
-		else if(right<90){
+		else if(right<100){
 			right=0;
 			}	
 					
@@ -98,11 +105,31 @@ void main(void)		{
 			msleep(600);
 			MotorDir(BREAK,BREAK);
 			}
+		
+		if (c_pressed | d_pressed > 0) {
+			BackLED(OFF,ON);
+			msleep(1);
+			BackLED(ON,OFF);
+			MotorDir(RWD,RWD);
+			MotorSpeed(120,60);
+			msleep(600);
+			MotorDir(BREAK,BREAK);
+			}
+		
+		if (e_pressed | f_pressed > 0) {
+			BackLED(OFF,ON);
+			msleep(1);
+			BackLED(ON,OFF);
+			MotorDir(RWD,RWD);
+			MotorSpeed(60,120);
+			msleep(600);
+			MotorDir(BREAK,BREAK);
+			}
 			
 			
 		//Lichtsuche
 		
-		if(left && right < 80){
+		if(left && right < 90){
 			MotorDir(RWD,FWD);
 			MotorSpeed(120,120);
 			}
