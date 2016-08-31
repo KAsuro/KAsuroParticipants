@@ -14,27 +14,33 @@ void main(void) {
     MotorSpeed(80,80);
     
     char switches = PollSwitch();
-		int start_white = 0;
-		int start_black = 0;
+	int start_white = 0;
+	int start_black = 0;
 		
-		switches &= 0b00111111;
+	switches &= 0b00111111;
 		
+	LineData(data);
+	if(!start_white) {
+	if (switches = 32) {
 		LineData(data);
-		if(!start_white) {
-			if (switches >= 64) {
-				LineData(data);
-				white[RIGHT] = data[RIGHT];
-				white[LEFT] = data[LEFT];
-				start_white = 1;
-			}
-			if(!start_black) {
-			if ((switches >= 16) && (switches < 64)) {
-				LineData(data);
-				black[RIGHT] = data[RIGHT];
-				black[LEFT] = black[LEFT];
-				start_black = 1;
-			}
-    }
+		white[RIGHT] = data[RIGHT];
+		white[LEFT] = data[LEFT];
+		start_white = 1;
+	 }
+}
+	if(!start_black) {
+	if(switches = 16) {
+		LineData(data);
+		black[RIGHT] = data[RIGHT];
+		black[LEFT] = black[LEFT];
+		start_black = 1;
+	}
+}
+    if(switches = 8) {
+		MotorDir(FWD,FWD);
+		MotorSpeed(85,85);
+	}
+       
     
     while (1) {
 		LineData(data);
@@ -42,11 +48,8 @@ void main(void) {
 		if(data[RIGHT] == start_white) {
 		   MotorDir(FWD,FWD);
 		   MotorSpeed(85,85);
-		}
-		if(data[RIGHT] == start_black) {
-		   GoTurn(0,90,80);
-		  
-		}
+		} else {
+		   GoTurn(0,90,80); 
+		}	
 	} 
-}
 }
