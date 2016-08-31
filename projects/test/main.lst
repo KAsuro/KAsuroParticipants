@@ -20,20 +20,20 @@
    6:main.c        **** void main(void) {
   16               		.loc 1 6 0
   17               		.cfi_startproc
-  18 0000 CF93      		push r28	 ;  119	pushqi1/1	[length = 1]
+  18 0000 CF93      		push r28	 ;  98	pushqi1/1	[length = 1]
   19               	.LCFI0:
   20               		.cfi_def_cfa_offset 3
   21               		.cfi_offset 28, -2
-  22 0002 DF93      		push r29	 ;  120	pushqi1/1	[length = 1]
+  22 0002 DF93      		push r29	 ;  99	pushqi1/1	[length = 1]
   23               	.LCFI1:
   24               		.cfi_def_cfa_offset 4
   25               		.cfi_offset 29, -3
-  26               		 ; SP -= 4	 ;  124	*addhi3_sp	[length = 2]
+  26               		 ; SP -= 4	 ;  103	*addhi3_sp	[length = 2]
   27 0004 00D0      		rcall .
   28 0006 00D0      		rcall .
   29               	.LCFI2:
   30               		.cfi_def_cfa_offset 8
-  31 0008 CDB7      		in r28,__SP_L__	 ;  125	*movhi/8	[length = 2]
+  31 0008 CDB7      		in r28,__SP_L__	 ;  104	*movhi/8	[length = 2]
   32 000a DEB7      		in r29,__SP_H__
   33               	.LCFI3:
   34               		.cfi_def_cfa_register 28
@@ -68,143 +68,131 @@
   55 001e 80E5      		ldi r24,lo8(80)	 ;  18	movqi_insn/2	[length = 1]
   56 0020 00D0      		rcall MotorSpeed	 ;  19	call_insn/2	[length = 1]
   57               	.LVL3:
-  58               	.L6:
-  59               	.LBB2:
   15:main.c        ****     
-  16:main.c        ****     
-  17:main.c        ****     while (1) {
-  18:main.c        **** 		char switches = PollSwitch();
-  60               		.loc 1 18 0
-  61 0022 00D0      		rcall PollSwitch	 ;  23	call_value_insn/2	[length = 1]
-  62               	.LVL4:
-  63 0024 182F      		mov r17,r24	 ;  24	movqi_insn/1	[length = 1]
-  64               	.LVL5:
-  19:main.c        **** 		int start_white = 0;
-  20:main.c        **** 		int start_black = 0;
+  16:main.c        ****     char switches = PollSwitch();
+  58               		.loc 1 16 0
+  59 0022 00D0      		rcall PollSwitch	 ;  20	call_value_insn/2	[length = 1]
+  60               	.LVL4:
+  61 0024 182F      		mov r17,r24	 ;  21	movqi_insn/1	[length = 1]
+  62               	.LVL5:
+  17:main.c        **** 		int start_white = 0;
+  18:main.c        **** 		int start_black = 0;
+  19:main.c        **** 		
+  20:main.c        **** 		switches &= 0b00111111;
   21:main.c        **** 		
-  22:main.c        **** 		switches &= 0b00111111;
-  23:main.c        **** 		
-  24:main.c        **** 		LineData(data);
-  65               		.loc 1 24 0
-  66 0026 CE01      		movw r24,r28	 ;  116	*movhi/1	[length = 1]
-  67 0028 0196      		adiw r24,1	 ;  103	*addhi3/3	[length = 1]
-  68 002a 00D0      		rcall LineData	 ;  30	call_insn/2	[length = 1]
-  69               	.LVL6:
-  22:main.c        **** 		
-  70               		.loc 1 22 0
-  71 002c 812F      		mov r24,r17	 ;  117	movqi_insn/1	[length = 1]
-  72 002e 8F73      		andi r24,lo8(63)	 ;  32	andqi3/2	[length = 1]
-  73               	.LVL7:
-  25:main.c        **** 		if(!start_white) {
-  26:main.c        **** 			if (switches >= 64) {
-  27:main.c        **** 				LineData(data);
-  28:main.c        **** 				white[RIGHT] = data[RIGHT];
-  29:main.c        **** 				white[LEFT] = data[LEFT];
-  30:main.c        **** 				start_white = 1;
-  31:main.c        **** 			}
-  32:main.c        **** 		}
-  33:main.c        **** 		
-  34:main.c        **** 		if(!start_black) {
-  35:main.c        **** 			if ((switches >= 16) && (switches < 64)) {
-  74               		.loc 1 35 0
-  75 0030 8051      		subi r24,lo8(-(-16))	 ;  33	addqi3/2	[length = 1]
-  76               	.LVL8:
-  77 0032 8033      		cpi r24,lo8(48)	 ;  34	*cmpqi/3	[length = 1]
-  78 0034 00F4      		brsh .L8	 ;  35	branch	[length = 1]
-  36:main.c        **** 				LineData(data);
-  79               		.loc 1 36 0
-  80 0036 CE01      		movw r24,r28	 ;  118	*movhi/1	[length = 1]
-  81               	.LVL9:
-  82 0038 0196      		adiw r24,1	 ;  105	*addhi3/3	[length = 1]
-  83 003a 00D0      		rcall LineData	 ;  38	call_insn/2	[length = 1]
-  84               	.LVL10:
-  37:main.c        **** 				black[RIGHT] = data[RIGHT];
-  38:main.c        **** 				black[LEFT] = black[LEFT];
-  39:main.c        **** 				start_black = 1;
-  85               		.loc 1 39 0
-  86 003c 01E0      		ldi r16,lo8(1)	 ;  106	*movhi/5	[length = 2]
-  87 003e 10E0      		ldi r17,0
-  88 0040 00C0      		rjmp .L2	 ;  129	jump	[length = 1]
-  89               	.LVL11:
-  90               	.L8:
+  22:main.c        **** 		LineData(data);
+  63               		.loc 1 22 0
+  64 0026 CE01      		movw r24,r28	 ;  94	*movhi/1	[length = 1]
+  65 0028 0196      		adiw r24,1	 ;  26	*addhi3/3	[length = 1]
+  66 002a 00D0      		rcall LineData	 ;  27	call_insn/2	[length = 1]
+  67               	.LVL6:
   20:main.c        **** 		
-  91               		.loc 1 20 0
-  92 0042 00E0      		ldi r16,0	 ;  104	*movhi/2	[length = 2]
-  93 0044 10E0      		ldi r17,0
-  94               	.LVL12:
-  95               	.L2:
-  40:main.c        **** 			}
-  41:main.c        **** 		}
-  42:main.c        ****        
-  43:main.c        **** 		if(data[RIGHT] == data[LEFT] == start_white) {
-  96               		.loc 1 43 0
-  97 0046 2B81      		ldd r18,Y+3	 ;  47	*movhi/3	[length = 2]
-  98 0048 3C81      		ldd r19,Y+4
-  99 004a 8981      		ldd r24,Y+1	 ;  48	*movhi/3	[length = 2]
- 100 004c 9A81      		ldd r25,Y+2
- 101 004e 2817      		cp r18,r24	 ;  49	*cmphi/3	[length = 2]
- 102 0050 3907      		cpc r19,r25
- 103 0052 01F0      		breq .L3	 ;  50	branch	[length = 1]
-  44:main.c        **** 		   MotorDir(FWD,FWD);
- 104               		.loc 1 44 0
- 105 0054 60E2      		ldi r22,lo8(32)	 ;  52	movqi_insn/2	[length = 1]
- 106 0056 80E2      		ldi r24,lo8(32)	 ;  53	movqi_insn/2	[length = 1]
- 107 0058 00D0      		rcall MotorDir	 ;  54	call_insn/2	[length = 1]
- 108               	.LVL13:
-  45:main.c        **** 		   MotorSpeed(85,85);
- 109               		.loc 1 45 0
- 110 005a 65E5      		ldi r22,lo8(85)	 ;  55	movqi_insn/2	[length = 1]
- 111 005c 85E5      		ldi r24,lo8(85)	 ;  56	movqi_insn/2	[length = 1]
- 112 005e 00D0      		rcall MotorSpeed	 ;  57	call_insn/2	[length = 1]
- 113               	.LVL14:
+  68               		.loc 1 20 0
+  69 002c 812F      		mov r24,r17	 ;  95	movqi_insn/1	[length = 1]
+  70 002e 8F73      		andi r24,lo8(63)	 ;  29	andqi3/2	[length = 1]
+  71               	.LVL7:
+  23:main.c        **** 		if(!start_white) {
+  24:main.c        **** 			if (switches >= 64) {
+  25:main.c        **** 				LineData(data);
+  26:main.c        **** 				white[RIGHT] = data[RIGHT];
+  27:main.c        **** 				white[LEFT] = data[LEFT];
+  28:main.c        **** 				start_white = 1;
+  29:main.c        **** 			}
+  30:main.c        **** 			if(!start_black) {
+  31:main.c        **** 			if ((switches >= 16) && (switches < 64)) {
+  72               		.loc 1 31 0
+  73 0030 8051      		subi r24,lo8(-(-16))	 ;  30	addqi3/2	[length = 1]
+  74               	.LVL8:
+  75 0032 8033      		cpi r24,lo8(48)	 ;  31	*cmpqi/3	[length = 1]
+  76 0034 00F4      		brsh .L7	 ;  32	branch	[length = 1]
+  32:main.c        **** 				LineData(data);
+  77               		.loc 1 32 0
+  78 0036 CE01      		movw r24,r28	 ;  96	*movhi/1	[length = 1]
+  79               	.LVL9:
+  80 0038 0196      		adiw r24,1	 ;  34	*addhi3/3	[length = 1]
+  81 003a 00D0      		rcall LineData	 ;  35	call_insn/2	[length = 1]
+  82               	.LVL10:
+  33:main.c        **** 				black[RIGHT] = data[RIGHT];
+  34:main.c        **** 				black[LEFT] = black[LEFT];
+  35:main.c        **** 				start_black = 1;
+  83               		.loc 1 35 0
+  84 003c 01E0      		ldi r16,lo8(1)	 ;  3	*movhi/5	[length = 2]
+  85 003e 10E0      		ldi r17,0
+  86 0040 00C0      		rjmp .L5	 ;  108	jump	[length = 1]
+  87               	.LVL11:
+  88               	.L7:
+  18:main.c        **** 		
+  89               		.loc 1 18 0
+  90 0042 00E0      		ldi r16,0	 ;  4	*movhi/2	[length = 2]
+  91 0044 10E0      		ldi r17,0
+  92               	.LVL12:
+  93               	.L5:
+  36:main.c        **** 			}
+  37:main.c        ****     }
+  38:main.c        ****     
+  39:main.c        ****     while (1) {
+  40:main.c        **** 		LineData(data);
+  94               		.loc 1 40 0
+  95 0046 CE01      		movw r24,r28	 ;  97	*movhi/1	[length = 1]
+  96 0048 0196      		adiw r24,1	 ;  45	*addhi3/3	[length = 1]
+  97 004a 00D0      		rcall LineData	 ;  46	call_insn/2	[length = 1]
+  98               	.LVL13:
+  41:main.c        **** 	
+  42:main.c        **** 		if(data[RIGHT] == start_white) {
+  99               		.loc 1 42 0
+ 100 004c 8B81      		ldd r24,Y+3	 ;  47	*movhi/3	[length = 2]
+ 101 004e 9C81      		ldd r25,Y+4
+ 102 0050 892B      		or r24,r25	 ;  48	*cmphi/1	[length = 1]
+ 103 0052 01F4      		brne .L3	 ;  49	branch	[length = 1]
+  43:main.c        **** 		   MotorDir(FWD,FWD);
+ 104               		.loc 1 43 0
+ 105 0054 60E2      		ldi r22,lo8(32)	 ;  51	movqi_insn/2	[length = 1]
+ 106 0056 80E2      		ldi r24,lo8(32)	 ;  52	movqi_insn/2	[length = 1]
+ 107 0058 00D0      		rcall MotorDir	 ;  53	call_insn/2	[length = 1]
+ 108               	.LVL14:
+  44:main.c        **** 		   MotorSpeed(85,85);
+ 109               		.loc 1 44 0
+ 110 005a 65E5      		ldi r22,lo8(85)	 ;  54	movqi_insn/2	[length = 1]
+ 111 005c 85E5      		ldi r24,lo8(85)	 ;  55	movqi_insn/2	[length = 1]
+ 112 005e 00D0      		rcall MotorSpeed	 ;  56	call_insn/2	[length = 1]
+ 113               	.LVL15:
  114               	.L3:
-  46:main.c        **** 		}
-  47:main.c        **** 		if(data[RIGHT] == data[LEFT] == start_black) {
- 115               		.loc 1 47 0
- 116 0060 81E0      		ldi r24,lo8(1)	 ;  107	*movhi/5	[length = 2]
- 117 0062 90E0      		ldi r25,0
- 118 0064 4B81      		ldd r20,Y+3	 ;  61	*movhi/3	[length = 2]
- 119 0066 5C81      		ldd r21,Y+4
- 120 0068 2981      		ldd r18,Y+1	 ;  62	*movhi/3	[length = 2]
- 121 006a 3A81      		ldd r19,Y+2
- 122 006c 4217      		cp r20,r18	 ;  63	*cmphi/3	[length = 2]
- 123 006e 5307      		cpc r21,r19
- 124 0070 01F0      		breq .L5	 ;  64	branch	[length = 1]
- 125 0072 80E0      		ldi r24,0	 ;  108	*movhi/2	[length = 2]
- 126 0074 90E0      		ldi r25,0
- 127               	.L5:
- 128 0076 8017      		cp r24,r16	 ;  67	*cmphi/3	[length = 2]
- 129 0078 9107      		cpc r25,r17
- 130 007a 01F4      		brne .L6	 ;  68	branch	[length = 1]
-  48:main.c        **** 		   GoTurn(0,90,80);
- 131               		.loc 1 48 0
- 132 007c 40E5      		ldi r20,lo8(80)	 ;  75	movqi_insn/2	[length = 1]
- 133 007e 6AE5      		ldi r22,lo8(90)	 ;  76	*movhi/5	[length = 2]
- 134 0080 70E0      		ldi r23,0
- 135 0082 80E0      		ldi r24,0	 ;  109	*movhi/2	[length = 2]
- 136 0084 90E0      		ldi r25,0
- 137 0086 00D0      		rcall GoTurn	 ;  78	call_insn/2	[length = 1]
- 138               	.LVL15:
- 139 0088 00C0      		rjmp .L6	 ;  131	jump	[length = 1]
- 140               	.LBE2:
- 141               		.cfi_endproc
- 142               	.LFE2:
- 144               		.text
- 145               	.Letext0:
- 146               		.file 2 "/usr/lib/avr/include/stdint.h"
- 147               		.file 3 "../../libtinyasuro/inc/asuro/sensors.h"
- 148               		.file 4 "../../libtinyasuro/inc/asuro/motor.h"
- 149               		.file 5 "../../libtinyasuro/inc/asuro/encoder.h"
- 150               		.file 6 "../../libtinyasuro/inc/asuro/switches.h"
- 151               		.file 7 "../../libtinyasuro/inc/asuro/asuro.h"
+  45:main.c        **** 		}
+  46:main.c        **** 		if(data[RIGHT] == start_black) {
+ 115               		.loc 1 46 0
+ 116 0060 8B81      		ldd r24,Y+3	 ;  59	*movhi/3	[length = 2]
+ 117 0062 9C81      		ldd r25,Y+4
+ 118 0064 8017      		cp r24,r16	 ;  60	*cmphi/3	[length = 2]
+ 119 0066 9107      		cpc r25,r17
+ 120 0068 01F4      		brne .L5	 ;  61	branch	[length = 1]
+  47:main.c        **** 		   GoTurn(0,90,80);
+ 121               		.loc 1 47 0
+ 122 006a 40E5      		ldi r20,lo8(80)	 ;  68	movqi_insn/2	[length = 1]
+ 123 006c 6AE5      		ldi r22,lo8(90)	 ;  69	*movhi/5	[length = 2]
+ 124 006e 70E0      		ldi r23,0
+ 125 0070 80E0      		ldi r24,0	 ;  70	*movhi/2	[length = 2]
+ 126 0072 90E0      		ldi r25,0
+ 127 0074 00D0      		rcall GoTurn	 ;  71	call_insn/2	[length = 1]
+ 128               	.LVL16:
+ 129 0076 00C0      		rjmp .L5	 ;  110	jump	[length = 1]
+ 130               		.cfi_endproc
+ 131               	.LFE2:
+ 133               		.text
+ 134               	.Letext0:
+ 135               		.file 2 "/usr/lib/avr/include/stdint.h"
+ 136               		.file 3 "../../libtinyasuro/inc/asuro/motor.h"
+ 137               		.file 4 "../../libtinyasuro/inc/asuro/sensors.h"
+ 138               		.file 5 "../../libtinyasuro/inc/asuro/asuro.h"
+ 139               		.file 6 "../../libtinyasuro/inc/asuro/switches.h"
+ 140               		.file 7 "../../libtinyasuro/inc/asuro/encoder.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/ccy4VUya.s:2      *ABS*:0000003e __SP_H__
-     /tmp/ccy4VUya.s:3      *ABS*:0000003d __SP_L__
-     /tmp/ccy4VUya.s:4      *ABS*:0000003f __SREG__
-     /tmp/ccy4VUya.s:5      *ABS*:00000000 __tmp_reg__
-     /tmp/ccy4VUya.s:6      *ABS*:00000001 __zero_reg__
-     /tmp/ccy4VUya.s:13     .text.startup.main:00000000 main
+     /tmp/ccgxBF9y.s:2      *ABS*:0000003e __SP_H__
+     /tmp/ccgxBF9y.s:3      *ABS*:0000003d __SP_L__
+     /tmp/ccgxBF9y.s:4      *ABS*:0000003f __SREG__
+     /tmp/ccgxBF9y.s:5      *ABS*:00000000 __tmp_reg__
+     /tmp/ccgxBF9y.s:6      *ABS*:00000001 __zero_reg__
+     /tmp/ccgxBF9y.s:13     .text.startup.main:00000000 main
 
 UNDEFINED SYMBOLS
 Init
