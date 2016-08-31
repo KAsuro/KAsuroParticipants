@@ -42,15 +42,10 @@ void main(void) {
 			LineData(data);
 		} 
 		MotorSpeed(160, 200);
-		int i = 0;
-		for(i = 0; i % 100 == 0; i++) //Gelegentlich kurzer Richtungswechsel
+		int i = 0, b = 30;
+		for(i = 0; ((i < 200) && (b < 230)); i++) //Gelegentlich kurzer Richtungswechsel
 		{
-			MotorSpeed(10, 200);
-			msleep(100);
-		}
-		for(i = 0; i % 101 == 0; i++) //Gelegentlich kurzer Richtungswechsel 2.0
-		{
-			MotorSpeed(200, 10);
+			MotorSpeed(i, b);
 			msleep(100);
 		}
 		StatusLED(GREEN);
