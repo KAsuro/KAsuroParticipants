@@ -25,12 +25,12 @@ void main(void) {
 	while(1) {
 		LineData(data);
 		if((white[LEFT] > data[LEFT]) && (white[RIGHT] > data[RIGHT])) {
-			//GoTurn(0,90,80);
+			GoTurn(0,90,80);
 			StatusLED(GREEN);
 			turns++;
 			if(turns == 2) {
 				turns = 0;
-				//GoTurn(0,180,80);
+				GoTurn(0,180,80);
 				StatusLED(RED);
 			}
 		} else {
