@@ -2,7 +2,6 @@
 
 #include <asuro/asuro.h>
 #include "helpers.h"
-#include <time.h>
 #include <stdlib.h>
 
 void main(void) {
@@ -47,7 +46,6 @@ void main(void) {
 		
 		if ( (i % 1000) == 0) {
 			int ran;
-			srand(clock());
 			ran = rand() % 2;
 			if (ran) {
 				StatusLED(YELLOW);
