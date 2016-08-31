@@ -1,13 +1,12 @@
 /**
  * Beschreibt hier was euer Programm macht!
  */
-
 #include <asuro/asuro.h>
 
 void main(void) {
 	int white[] = {0, 0};
 	int black[] = {0, 0};
-	int data[]  = {0, 0};
+	uint16_t data[]  = {0, 0};
 
     Init();
     
@@ -16,7 +15,7 @@ void main(void) {
     
     
     while (1) {
-		char switches = PollSwitches();
+		char switches = PollSwitch();
 		int start_white = 0;
 		int start_black = 0;
 		
@@ -41,7 +40,13 @@ void main(void) {
 			}
 		}
        
-       if(data[RIGHT] == white[RIGHT]) {
-		   
-	   }
+		if(data[RIGHT] == data[LEFT] == start_white) {
+		   MotorDir(FWD,FWD);
+		   MotorSpeed(85,85);
+		}
+		if(data[RIGHT] == data[LEFT] == start_black) {
+		   GoTurn(0,90,80);
+		  
+		}
+	} 
 }
