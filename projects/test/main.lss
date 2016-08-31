@@ -3,29 +3,29 @@ main.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         000005b2  00000000  00000000  00000094  2**1
+  0 .text         00000652  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000000  00800060  000005b2  00000646  2**0
+  1 .data         00000000  00800060  00000652  000006e6  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000012  00800060  00800060  00000646  2**0
+  2 .bss          00000015  00800060  00800060  000006e6  2**0
                   ALLOC
-  3 .comment      00000022  00000000  00000000  00000646  2**0
+  3 .comment      00000022  00000000  00000000  000006e6  2**0
                   CONTENTS, READONLY
-  4 .debug_aranges 00000210  00000000  00000000  00000668  2**0
+  4 .debug_aranges 00000210  00000000  00000000  00000708  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00001a50  00000000  00000000  00000878  2**0
+  5 .debug_info   00001abf  00000000  00000000  00000918  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000ceb  00000000  00000000  000022c8  2**0
+  6 .debug_abbrev 00000d30  00000000  00000000  000023d7  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   00000989  00000000  00000000  00002fb3  2**0
+  7 .debug_line   000009b5  00000000  00000000  00003107  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000454  00000000  00000000  0000393c  2**2
+  8 .debug_frame  00000454  00000000  00000000  00003abc  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    0000076d  00000000  00000000  00003d90  2**0
+  9 .debug_str    00000762  00000000  00000000  00003f10  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000e1d  00000000  00000000  000044fd  2**0
+ 10 .debug_loc    00000e5b  00000000  00000000  00004672  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 000001e0  00000000  00000000  0000531a  2**0
+ 11 .debug_ranges 000001e0  00000000  00000000  000054cd  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -33,9 +33,9 @@ Disassembly of section .text:
 00000000 <__vectors>:
    0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
    2:	21 c0       	rjmp	.+66     	; 0x46 <__bad_interrupt>
-   4:	1d c2       	rjmp	.+1082   	; 0x440 <__vector_2>
+   4:	58 c2       	rjmp	.+1200   	; 0x4b6 <__vector_2>
    6:	1f c0       	rjmp	.+62     	; 0x46 <__bad_interrupt>
-   8:	3b c2       	rjmp	.+1142   	; 0x480 <__vector_4>
+   8:	76 c2       	rjmp	.+1260   	; 0x4f6 <__vector_4>
    a:	1d c0       	rjmp	.+58     	; 0x46 <__bad_interrupt>
    c:	1c c0       	rjmp	.+56     	; 0x46 <__bad_interrupt>
    e:	1b c0       	rjmp	.+54     	; 0x46 <__bad_interrupt>
@@ -45,7 +45,7 @@ Disassembly of section .text:
   16:	17 c0       	rjmp	.+46     	; 0x46 <__bad_interrupt>
   18:	16 c0       	rjmp	.+44     	; 0x46 <__bad_interrupt>
   1a:	15 c0       	rjmp	.+42     	; 0x46 <__bad_interrupt>
-  1c:	80 c1       	rjmp	.+768    	; 0x31e <__vector_14>
+  1c:	bb c1       	rjmp	.+886    	; 0x394 <__vector_14>
   1e:	13 c0       	rjmp	.+38     	; 0x46 <__bad_interrupt>
   20:	12 c0       	rjmp	.+36     	; 0x46 <__bad_interrupt>
   22:	11 c0       	rjmp	.+34     	; 0x46 <__bad_interrupt>
@@ -69,11 +69,11 @@ Disassembly of section .text:
   3a:	1d 92       	st	X+, r1
 
 0000003c <.do_clear_bss_start>:
-  3c:	a2 37       	cpi	r26, 0x72	; 114
+  3c:	a5 37       	cpi	r26, 0x75	; 117
   3e:	b2 07       	cpc	r27, r18
   40:	e1 f7       	brne	.-8      	; 0x3a <.do_clear_bss_loop>
   42:	02 d0       	rcall	.+4      	; 0x48 <main>
-  44:	b4 c2       	rjmp	.+1384   	; 0x5ae <_exit>
+  44:	04 c3       	rjmp	.+1544   	; 0x64e <_exit>
 
 00000046 <__bad_interrupt>:
   46:	dc cf       	rjmp	.-72     	; 0x0 <__vectors>
@@ -91,826 +91,922 @@ void main(void) {
   4e:	00 d0       	rcall	.+0      	; 0x50 <main+0x8>
   50:	cd b7       	in	r28, 0x3d	; 61
   52:	de b7       	in	r29, 0x3e	; 62
-	int white[] = {0, 0};
-	int black[] = {0, 0};
+	uint16_t white[] = {0, 0};
 	uint16_t data[]  = {0, 0};
   54:	1a 82       	std	Y+2, r1	; 0x02
   56:	19 82       	std	Y+1, r1	; 0x01
   58:	1c 82       	std	Y+4, r1	; 0x04
   5a:	1b 82       	std	Y+3, r1	; 0x03
+	int turns = 0;
 
     Init();
-  5c:	24 d0       	rcall	.+72     	; 0xa6 <Init>
+  5c:	4f d0       	rcall	.+158    	; 0xfc <Init>
+    EncoderInit();
+  5e:	32 d1       	rcall	.+612    	; 0x2c4 <EncoderInit>
     
     MotorDir(FWD,FWD);
-  5e:	60 e2       	ldi	r22, 0x20	; 32
-  60:	80 e2       	ldi	r24, 0x20	; 32
-  62:	1e d1       	rcall	.+572    	; 0x2a0 <MotorDir>
+  60:	60 e2       	ldi	r22, 0x20	; 32
+  62:	80 e2       	ldi	r24, 0x20	; 32
+  64:	58 d1       	rcall	.+688    	; 0x316 <MotorDir>
     MotorSpeed(80,80);
-  64:	60 e5       	ldi	r22, 0x50	; 80
-  66:	80 e5       	ldi	r24, 0x50	; 80
-  68:	27 d1       	rcall	.+590    	; 0x2b8 <MotorSpeed>
+  66:	60 e5       	ldi	r22, 0x50	; 80
+  68:	80 e5       	ldi	r24, 0x50	; 80
+  6a:	61 d1       	rcall	.+706    	; 0x32e <MotorSpeed>
     
     char switches = PollSwitch();
-  6a:	c1 d1       	rcall	.+898    	; 0x3ee <PollSwitch>
-	int start_white = 0;
-	int start_black = 0;
+  6c:	fb d1       	rcall	.+1014   	; 0x464 <PollSwitch>
 		
 	switches &= 0b00111111;
 		
 	LineData(data);
-  6c:	ce 01       	movw	r24, r28
-  6e:	01 96       	adiw	r24, 0x01	; 1
-  70:	3d d1       	rcall	.+634    	; 0x2ec <LineData>
-	if(!start_white) {
-	if (switches = 32) {
-		LineData(data);
-  72:	ce 01       	movw	r24, r28
-  74:	01 96       	adiw	r24, 0x01	; 1
-  76:	3a d1       	rcall	.+628    	; 0x2ec <LineData>
-		start_white = 1;
-	 }
-}
-	if(!start_black) {
-	if(switches = 16) {
-		LineData(data);
-  78:	ce 01       	movw	r24, r28
-  7a:	01 96       	adiw	r24, 0x01	; 1
-  7c:	37 d1       	rcall	.+622    	; 0x2ec <LineData>
-		black[LEFT] = black[LEFT];
-		start_black = 1;
-	}
-}
-    if(switches = 8) {
-		MotorDir(FWD,FWD);
-  7e:	60 e2       	ldi	r22, 0x20	; 32
-  80:	80 e2       	ldi	r24, 0x20	; 32
-  82:	0e d1       	rcall	.+540    	; 0x2a0 <MotorDir>
-		MotorSpeed(85,85);
-  84:	65 e5       	ldi	r22, 0x55	; 85
-  86:	85 e5       	ldi	r24, 0x55	; 85
-  88:	17 d1       	rcall	.+558    	; 0x2b8 <MotorSpeed>
-	}
-       
-    
-    while (1) {
-		LineData(data);
-  8a:	ce 01       	movw	r24, r28
-  8c:	01 96       	adiw	r24, 0x01	; 1
-  8e:	2e d1       	rcall	.+604    	; 0x2ec <LineData>
+  6e:	ce 01       	movw	r24, r28
+  70:	01 96       	adiw	r24, 0x01	; 1
+  72:	77 d1       	rcall	.+750    	; 0x362 <LineData>
+	white[LEFT] = data[LEFT] - 200;
+  74:	c9 80       	ldd	r12, Y+1	; 0x01
+  76:	da 80       	ldd	r13, Y+2	; 0x02
+  78:	88 ec       	ldi	r24, 0xC8	; 200
+  7a:	c8 1a       	sub	r12, r24
+  7c:	d1 08       	sbc	r13, r1
+	white[RIGHT] = data[RIGHT] - 200;
+  7e:	ab 80       	ldd	r10, Y+3	; 0x03
+  80:	bc 80       	ldd	r11, Y+4	; 0x04
+  82:	88 ec       	ldi	r24, 0xC8	; 200
+  84:	a8 1a       	sub	r10, r24
+  86:	b1 08       	sbc	r11, r1
+#include <asuro/asuro.h>
+
+void main(void) {
+	uint16_t white[] = {0, 0};
+	uint16_t data[]  = {0, 0};
+	int turns = 0;
+  88:	00 e0       	ldi	r16, 0x00	; 0
+  8a:	10 e0       	ldi	r17, 0x00	; 0
+	LineData(data);
+	white[LEFT] = data[LEFT] - 200;
+	white[RIGHT] = data[RIGHT] - 200;
 	
-		if(data[RIGHT] == start_white) {
-  90:	8b 81       	ldd	r24, Y+3	; 0x03
-  92:	9c 81       	ldd	r25, Y+4	; 0x04
-  94:	01 97       	sbiw	r24, 0x01	; 1
-  96:	99 f3       	breq	.-26     	; 0x7e <main+0x36>
-		   MotorDir(FWD,FWD);
-		   MotorSpeed(85,85);
+	while(1) {
+		LineData(data);
+  8c:	ce 01       	movw	r24, r28
+  8e:	01 96       	adiw	r24, 0x01	; 1
+  90:	68 d1       	rcall	.+720    	; 0x362 <LineData>
+		if((white[LEFT] > data[LEFT]) && (white[RIGHT] > data[RIGHT])) {
+  92:	89 81       	ldd	r24, Y+1	; 0x01
+  94:	9a 81       	ldd	r25, Y+2	; 0x02
+  96:	8c 15       	cp	r24, r12
+  98:	9d 05       	cpc	r25, r13
+  9a:	d8 f4       	brcc	.+54     	; 0xd2 <main+0x8a>
+  9c:	8b 81       	ldd	r24, Y+3	; 0x03
+  9e:	9c 81       	ldd	r25, Y+4	; 0x04
+  a0:	8a 15       	cp	r24, r10
+  a2:	9b 05       	cpc	r25, r11
+  a4:	b0 f4       	brcc	.+44     	; 0xd2 <main+0x8a>
+			GoTurn(0,90,80);
+  a6:	40 e5       	ldi	r20, 0x50	; 80
+  a8:	6a e5       	ldi	r22, 0x5A	; 90
+  aa:	70 e0       	ldi	r23, 0x00	; 0
+  ac:	80 e0       	ldi	r24, 0x00	; 0
+  ae:	90 e0       	ldi	r25, 0x00	; 0
+  b0:	8b d0       	rcall	.+278    	; 0x1c8 <GoTurn>
+			StatusLED(GREEN);
+  b2:	81 e0       	ldi	r24, 0x01	; 1
+  b4:	10 d1       	rcall	.+544    	; 0x2d6 <StatusLED>
+			turns++;
+			if(turns == 2) {
+  b6:	01 30       	cpi	r16, 0x01	; 1
+  b8:	11 05       	cpc	r17, r1
+  ba:	91 f4       	brne	.+36     	; 0xe0 <main+0x98>
+				turns = 0;
+				GoTurn(0,180,80);
+  bc:	40 e5       	ldi	r20, 0x50	; 80
+  be:	64 eb       	ldi	r22, 0xB4	; 180
+  c0:	70 e0       	ldi	r23, 0x00	; 0
+  c2:	80 e0       	ldi	r24, 0x00	; 0
+  c4:	90 e0       	ldi	r25, 0x00	; 0
+  c6:	80 d0       	rcall	.+256    	; 0x1c8 <GoTurn>
+				StatusLED(RED);
+  c8:	82 e0       	ldi	r24, 0x02	; 2
+  ca:	05 d1       	rcall	.+522    	; 0x2d6 <StatusLED>
+		if((white[LEFT] > data[LEFT]) && (white[RIGHT] > data[RIGHT])) {
+			GoTurn(0,90,80);
+			StatusLED(GREEN);
+			turns++;
+			if(turns == 2) {
+				turns = 0;
+  cc:	00 e0       	ldi	r16, 0x00	; 0
+  ce:	10 e0       	ldi	r17, 0x00	; 0
+  d0:	09 c0       	rjmp	.+18     	; 0xe4 <main+0x9c>
+				GoTurn(0,180,80);
+				StatusLED(RED);
+			}
 		} else {
-		   GoTurn(0,90,80); 
-  98:	40 e5       	ldi	r20, 0x50	; 80
-  9a:	6a e5       	ldi	r22, 0x5A	; 90
-  9c:	70 e0       	ldi	r23, 0x00	; 0
-  9e:	80 e0       	ldi	r24, 0x00	; 0
-  a0:	90 e0       	ldi	r25, 0x00	; 0
-  a2:	67 d0       	rcall	.+206    	; 0x172 <GoTurn>
-  a4:	f2 cf       	rjmp	.-28     	; 0x8a <main+0x42>
+			MotorDir(FWD, FWD);
+  d2:	60 e2       	ldi	r22, 0x20	; 32
+  d4:	80 e2       	ldi	r24, 0x20	; 32
+  d6:	1f d1       	rcall	.+574    	; 0x316 <MotorDir>
+			MotorSpeed(80,80);
+  d8:	60 e5       	ldi	r22, 0x50	; 80
+  da:	80 e5       	ldi	r24, 0x50	; 80
+  dc:	28 d1       	rcall	.+592    	; 0x32e <MotorSpeed>
+  de:	02 c0       	rjmp	.+4      	; 0xe4 <main+0x9c>
+  e0:	01 e0       	ldi	r16, 0x01	; 1
+  e2:	10 e0       	ldi	r17, 0x00	; 0
+  e4:	85 e0       	ldi	r24, 0x05	; 5
+  e6:	e8 2e       	mov	r14, r24
+  e8:	f1 2c       	mov	r15, r1
+static ALWAYS_INLINE void msleep(uint16_t ms);
+#endif
 
-000000a6 <Init>:
-  a6:	de d1       	rcall	.+956    	; 0x464 <Timer2Init>
-  a8:	0e d1       	rcall	.+540    	; 0x2c6 <MotorInit>
-  aa:	ee d0       	rcall	.+476    	; 0x288 <LEDInit>
-  ac:	0a d2       	rcall	.+1044   	; 0x4c2 <ADCInit>
-  ae:	8c d1       	rcall	.+792    	; 0x3c8 <SwitchInit>
-  b0:	78 94       	sei
-  b2:	08 95       	ret
+void msleep(uint16_t ms) {
+    for (; ms > 0; ms--) {
+        sleep(36);
+  ea:	84 e2       	ldi	r24, 0x24	; 36
+  ec:	18 d2       	rcall	.+1072   	; 0x51e <sleep>
+  ee:	81 e0       	ldi	r24, 0x01	; 1
+  f0:	e8 1a       	sub	r14, r24
+  f2:	f1 08       	sbc	r15, r1
+#else
+static ALWAYS_INLINE void msleep(uint16_t ms);
+#endif
 
-000000b4 <EncoderPoll>:
-  b4:	3f b7       	in	r19, 0x3f	; 63
+void msleep(uint16_t ms) {
+    for (; ms > 0; ms--) {
+  f4:	e1 14       	cp	r14, r1
+  f6:	f1 04       	cpc	r15, r1
+  f8:	c1 f7       	brne	.-16     	; 0xea <main+0xa2>
+  fa:	c8 cf       	rjmp	.-112    	; 0x8c <main+0x44>
+
+000000fc <Init>:
+  fc:	ee d1       	rcall	.+988    	; 0x4da <Timer2Init>
+  fe:	1e d1       	rcall	.+572    	; 0x33c <MotorInit>
+ 100:	fe d0       	rcall	.+508    	; 0x2fe <LEDInit>
+ 102:	2f d2       	rcall	.+1118   	; 0x562 <ADCInit>
+ 104:	9c d1       	rcall	.+824    	; 0x43e <SwitchInit>
+ 106:	78 94       	sei
+ 108:	08 95       	ret
+
+0000010a <EncoderPoll>:
+ 10a:	3f b7       	in	r19, 0x3f	; 63
     return 1;
 }
 
 static __inline__ uint8_t __iCliRetVal(void)
 {
     cli();
-  b6:	f8 94       	cli
-  b8:	20 91 6f 00 	lds	r18, 0x006F
-  bc:	10 92 6f 00 	sts	0x006F, r1
-  c0:	80 91 6b 00 	lds	r24, 0x006B
-  c4:	90 91 6c 00 	lds	r25, 0x006C
-  c8:	e8 2f       	mov	r30, r24
-  ca:	79 2f       	mov	r23, r25
+ 10c:	f8 94       	cli
+ 10e:	20 91 72 00 	lds	r18, 0x0072
+ 112:	10 92 72 00 	sts	0x0072, r1
+ 116:	80 91 6e 00 	lds	r24, 0x006E
+ 11a:	90 91 6f 00 	lds	r25, 0x006F
+ 11e:	e8 2f       	mov	r30, r24
+ 120:	79 2f       	mov	r23, r25
     (void)__s;
 }
 
 static __inline__ void __iRestore(const  uint8_t *__s)
 {
     SREG = *__s;
-  cc:	3f bf       	out	0x3f, r19	; 63
-  ce:	22 23       	and	r18, r18
-  d0:	09 f4       	brne	.+2      	; 0xd4 <EncoderPoll+0x20>
-  d2:	45 c0       	rjmp	.+138    	; 0x15e <EncoderPoll+0xaa>
-  d4:	40 91 60 00 	lds	r20, 0x0060
-  d8:	60 91 62 00 	lds	r22, 0x0062
-  dc:	20 91 65 00 	lds	r18, 0x0065
-  e0:	30 91 66 00 	lds	r19, 0x0066
-  e4:	50 91 61 00 	lds	r21, 0x0061
-  e8:	41 fd       	sbrc	r20, 1
-  ea:	08 c0       	rjmp	.+16     	; 0xfc <EncoderPoll+0x48>
-  ec:	96 17       	cp	r25, r22
-  ee:	88 f0       	brcs	.+34     	; 0x112 <EncoderPoll+0x5e>
-  f0:	f9 2f       	mov	r31, r25
-  f2:	f6 1b       	sub	r31, r22
-  f4:	ff 31       	cpi	r31, 0x1F	; 31
-  f6:	60 f0       	brcs	.+24     	; 0x110 <EncoderPoll+0x5c>
-  f8:	42 60       	ori	r20, 0x02	; 2
-  fa:	07 c0       	rjmp	.+14     	; 0x10a <EncoderPoll+0x56>
-  fc:	69 17       	cp	r22, r25
-  fe:	48 f0       	brcs	.+18     	; 0x112 <EncoderPoll+0x5e>
- 100:	f6 2f       	mov	r31, r22
- 102:	f9 1b       	sub	r31, r25
- 104:	ff 31       	cpi	r31, 0x1F	; 31
- 106:	20 f0       	brcs	.+8      	; 0x110 <EncoderPoll+0x5c>
- 108:	4d 7f       	andi	r20, 0xFD	; 253
- 10a:	2f 5f       	subi	r18, 0xFF	; 255
- 10c:	3f 4f       	sbci	r19, 0xFF	; 255
- 10e:	01 c0       	rjmp	.+2      	; 0x112 <EncoderPoll+0x5e>
- 110:	76 2f       	mov	r23, r22
- 112:	30 93 66 00 	sts	0x0066, r19
- 116:	20 93 65 00 	sts	0x0065, r18
- 11a:	20 91 67 00 	lds	r18, 0x0067
- 11e:	30 91 68 00 	lds	r19, 0x0068
- 122:	40 ff       	sbrs	r20, 0
- 124:	08 c0       	rjmp	.+16     	; 0x136 <EncoderPoll+0x82>
- 126:	5e 17       	cp	r21, r30
- 128:	78 f0       	brcs	.+30     	; 0x148 <EncoderPoll+0x94>
- 12a:	65 2f       	mov	r22, r21
- 12c:	68 1b       	sub	r22, r24
- 12e:	6f 31       	cpi	r22, 0x1F	; 31
- 130:	60 f0       	brcs	.+24     	; 0x14a <EncoderPoll+0x96>
- 132:	4e 7f       	andi	r20, 0xFE	; 254
- 134:	07 c0       	rjmp	.+14     	; 0x144 <EncoderPoll+0x90>
- 136:	e5 17       	cp	r30, r21
- 138:	38 f0       	brcs	.+14     	; 0x148 <EncoderPoll+0x94>
- 13a:	68 2f       	mov	r22, r24
- 13c:	65 1b       	sub	r22, r21
- 13e:	6f 31       	cpi	r22, 0x1F	; 31
- 140:	20 f0       	brcs	.+8      	; 0x14a <EncoderPoll+0x96>
- 142:	41 60       	ori	r20, 0x01	; 1
- 144:	2f 5f       	subi	r18, 0xFF	; 255
- 146:	3f 4f       	sbci	r19, 0xFF	; 255
- 148:	58 2f       	mov	r21, r24
- 14a:	70 93 62 00 	sts	0x0062, r23
- 14e:	50 93 61 00 	sts	0x0061, r21
- 152:	30 93 68 00 	sts	0x0068, r19
- 156:	20 93 67 00 	sts	0x0067, r18
- 15a:	40 93 60 00 	sts	0x0060, r20
- 15e:	08 95       	ret
+ 122:	3f bf       	out	0x3f, r19	; 63
+ 124:	22 23       	and	r18, r18
+ 126:	09 f4       	brne	.+2      	; 0x12a <EncoderPoll+0x20>
+ 128:	45 c0       	rjmp	.+138    	; 0x1b4 <EncoderPoll+0xaa>
+ 12a:	40 91 63 00 	lds	r20, 0x0063
+ 12e:	60 91 65 00 	lds	r22, 0x0065
+ 132:	20 91 68 00 	lds	r18, 0x0068
+ 136:	30 91 69 00 	lds	r19, 0x0069
+ 13a:	50 91 64 00 	lds	r21, 0x0064
+ 13e:	41 fd       	sbrc	r20, 1
+ 140:	08 c0       	rjmp	.+16     	; 0x152 <EncoderPoll+0x48>
+ 142:	96 17       	cp	r25, r22
+ 144:	88 f0       	brcs	.+34     	; 0x168 <EncoderPoll+0x5e>
+ 146:	f9 2f       	mov	r31, r25
+ 148:	f6 1b       	sub	r31, r22
+ 14a:	ff 31       	cpi	r31, 0x1F	; 31
+ 14c:	60 f0       	brcs	.+24     	; 0x166 <EncoderPoll+0x5c>
+ 14e:	42 60       	ori	r20, 0x02	; 2
+ 150:	07 c0       	rjmp	.+14     	; 0x160 <EncoderPoll+0x56>
+ 152:	69 17       	cp	r22, r25
+ 154:	48 f0       	brcs	.+18     	; 0x168 <EncoderPoll+0x5e>
+ 156:	f6 2f       	mov	r31, r22
+ 158:	f9 1b       	sub	r31, r25
+ 15a:	ff 31       	cpi	r31, 0x1F	; 31
+ 15c:	20 f0       	brcs	.+8      	; 0x166 <EncoderPoll+0x5c>
+ 15e:	4d 7f       	andi	r20, 0xFD	; 253
+ 160:	2f 5f       	subi	r18, 0xFF	; 255
+ 162:	3f 4f       	sbci	r19, 0xFF	; 255
+ 164:	01 c0       	rjmp	.+2      	; 0x168 <EncoderPoll+0x5e>
+ 166:	76 2f       	mov	r23, r22
+ 168:	30 93 69 00 	sts	0x0069, r19
+ 16c:	20 93 68 00 	sts	0x0068, r18
+ 170:	20 91 6a 00 	lds	r18, 0x006A
+ 174:	30 91 6b 00 	lds	r19, 0x006B
+ 178:	40 ff       	sbrs	r20, 0
+ 17a:	08 c0       	rjmp	.+16     	; 0x18c <EncoderPoll+0x82>
+ 17c:	5e 17       	cp	r21, r30
+ 17e:	78 f0       	brcs	.+30     	; 0x19e <EncoderPoll+0x94>
+ 180:	65 2f       	mov	r22, r21
+ 182:	68 1b       	sub	r22, r24
+ 184:	6f 31       	cpi	r22, 0x1F	; 31
+ 186:	60 f0       	brcs	.+24     	; 0x1a0 <EncoderPoll+0x96>
+ 188:	4e 7f       	andi	r20, 0xFE	; 254
+ 18a:	07 c0       	rjmp	.+14     	; 0x19a <EncoderPoll+0x90>
+ 18c:	e5 17       	cp	r30, r21
+ 18e:	38 f0       	brcs	.+14     	; 0x19e <EncoderPoll+0x94>
+ 190:	68 2f       	mov	r22, r24
+ 192:	65 1b       	sub	r22, r21
+ 194:	6f 31       	cpi	r22, 0x1F	; 31
+ 196:	20 f0       	brcs	.+8      	; 0x1a0 <EncoderPoll+0x96>
+ 198:	41 60       	ori	r20, 0x01	; 1
+ 19a:	2f 5f       	subi	r18, 0xFF	; 255
+ 19c:	3f 4f       	sbci	r19, 0xFF	; 255
+ 19e:	58 2f       	mov	r21, r24
+ 1a0:	70 93 65 00 	sts	0x0065, r23
+ 1a4:	50 93 64 00 	sts	0x0064, r21
+ 1a8:	30 93 6b 00 	sts	0x006B, r19
+ 1ac:	20 93 6a 00 	sts	0x006A, r18
+ 1b0:	40 93 63 00 	sts	0x0063, r20
+ 1b4:	08 95       	ret
 
-00000160 <EncoderReset>:
- 160:	10 92 66 00 	sts	0x0066, r1
- 164:	10 92 65 00 	sts	0x0065, r1
- 168:	10 92 68 00 	sts	0x0068, r1
- 16c:	10 92 67 00 	sts	0x0067, r1
- 170:	08 95       	ret
+000001b6 <EncoderReset>:
+ 1b6:	10 92 69 00 	sts	0x0069, r1
+ 1ba:	10 92 68 00 	sts	0x0068, r1
+ 1be:	10 92 6b 00 	sts	0x006B, r1
+ 1c2:	10 92 6a 00 	sts	0x006A, r1
+ 1c6:	08 95       	ret
 
-00000172 <GoTurn>:
- 172:	df 92       	push	r13
- 174:	ef 92       	push	r14
- 176:	ff 92       	push	r15
- 178:	0f 93       	push	r16
- 17a:	1f 93       	push	r17
- 17c:	cf 93       	push	r28
- 17e:	df 93       	push	r29
- 180:	fc 01       	movw	r30, r24
- 182:	8b 01       	movw	r16, r22
- 184:	f4 2e       	mov	r15, r20
- 186:	00 97       	sbiw	r24, 0x00	; 0
- 188:	89 f0       	breq	.+34     	; 0x1ac <GoTurn+0x3a>
- 18a:	dc 01       	movw	r26, r24
- 18c:	97 ff       	sbrs	r25, 7
- 18e:	04 c0       	rjmp	.+8      	; 0x198 <GoTurn+0x26>
- 190:	aa 27       	eor	r26, r26
- 192:	bb 27       	eor	r27, r27
- 194:	a8 1b       	sub	r26, r24
- 196:	b9 0b       	sbc	r27, r25
- 198:	2c ef       	ldi	r18, 0xFC	; 252
- 19a:	3e e7       	ldi	r19, 0x7E	; 126
- 19c:	f6 d1       	rcall	.+1004   	; 0x58a <__usmulhisi3>
- 19e:	ec 01       	movw	r28, r24
- 1a0:	f7 ff       	sbrs	r31, 7
- 1a2:	02 c0       	rjmp	.+4      	; 0x1a8 <GoTurn+0x36>
- 1a4:	60 e1       	ldi	r22, 0x10	; 16
- 1a6:	10 c0       	rjmp	.+32     	; 0x1c8 <GoTurn+0x56>
- 1a8:	60 e2       	ldi	r22, 0x20	; 32
- 1aa:	11 c0       	rjmp	.+34     	; 0x1ce <GoTurn+0x5c>
- 1ac:	db 01       	movw	r26, r22
- 1ae:	77 ff       	sbrs	r23, 7
- 1b0:	04 c0       	rjmp	.+8      	; 0x1ba <GoTurn+0x48>
- 1b2:	aa 27       	eor	r26, r26
- 1b4:	bb 27       	eor	r27, r27
- 1b6:	a6 1b       	sub	r26, r22
- 1b8:	b7 0b       	sbc	r27, r23
- 1ba:	2e ec       	ldi	r18, 0xCE	; 206
- 1bc:	3b e6       	ldi	r19, 0x6B	; 107
- 1be:	e5 d1       	rcall	.+970    	; 0x58a <__usmulhisi3>
- 1c0:	ec 01       	movw	r28, r24
- 1c2:	17 ff       	sbrs	r17, 7
- 1c4:	03 c0       	rjmp	.+6      	; 0x1cc <GoTurn+0x5a>
- 1c6:	60 e2       	ldi	r22, 0x20	; 32
- 1c8:	80 e1       	ldi	r24, 0x10	; 16
- 1ca:	02 c0       	rjmp	.+4      	; 0x1d0 <GoTurn+0x5e>
- 1cc:	60 e1       	ldi	r22, 0x10	; 16
- 1ce:	80 e2       	ldi	r24, 0x20	; 32
- 1d0:	67 d0       	rcall	.+206    	; 0x2a0 <MotorDir>
- 1d2:	c6 df       	rcall	.-116    	; 0x160 <EncoderReset>
- 1d4:	6f 2d       	mov	r22, r15
- 1d6:	8f 2d       	mov	r24, r15
- 1d8:	6f d0       	rcall	.+222    	; 0x2b8 <MotorSpeed>
- 1da:	df 2c       	mov	r13, r15
- 1dc:	ef 2c       	mov	r14, r15
- 1de:	1c 16       	cp	r1, r28
- 1e0:	1d 06       	cpc	r1, r29
- 1e2:	a4 f5       	brge	.+104    	; 0x24c <GoTurn+0xda>
- 1e4:	00 91 65 00 	lds	r16, 0x0065
- 1e8:	10 91 66 00 	lds	r17, 0x0066
- 1ec:	20 91 67 00 	lds	r18, 0x0067
- 1f0:	30 91 68 00 	lds	r19, 0x0068
- 1f4:	f8 01       	movw	r30, r16
- 1f6:	a9 01       	movw	r20, r18
- 1f8:	c0 1b       	sub	r28, r16
- 1fa:	d1 0b       	sbc	r29, r17
- 1fc:	20 17       	cp	r18, r16
- 1fe:	31 07       	cpc	r19, r17
- 200:	50 f4       	brcc	.+20     	; 0x216 <GoTurn+0xa4>
- 202:	fe 14       	cp	r15, r14
- 204:	18 f0       	brcs	.+6      	; 0x20c <GoTurn+0x9a>
- 206:	84 ef       	ldi	r24, 0xF4	; 244
- 208:	8d 15       	cp	r24, r13
- 20a:	18 f4       	brcc	.+6      	; 0x212 <GoTurn+0xa0>
- 20c:	86 ef       	ldi	r24, 0xF6	; 246
- 20e:	e8 0e       	add	r14, r24
- 210:	02 c0       	rjmp	.+4      	; 0x216 <GoTurn+0xa4>
- 212:	8a e0       	ldi	r24, 0x0A	; 10
- 214:	d8 0e       	add	r13, r24
- 216:	e4 17       	cp	r30, r20
- 218:	f5 07       	cpc	r31, r21
- 21a:	50 f4       	brcc	.+20     	; 0x230 <GoTurn+0xbe>
- 21c:	fd 14       	cp	r15, r13
- 21e:	18 f0       	brcs	.+6      	; 0x226 <GoTurn+0xb4>
- 220:	84 ef       	ldi	r24, 0xF4	; 244
- 222:	8e 15       	cp	r24, r14
- 224:	18 f4       	brcc	.+6      	; 0x22c <GoTurn+0xba>
- 226:	86 ef       	ldi	r24, 0xF6	; 246
- 228:	d8 0e       	add	r13, r24
- 22a:	02 c0       	rjmp	.+4      	; 0x230 <GoTurn+0xbe>
- 22c:	8a e0       	ldi	r24, 0x0A	; 10
- 22e:	e8 0e       	add	r14, r24
- 230:	97 df       	rcall	.-210    	; 0x160 <EncoderReset>
- 232:	6d 2d       	mov	r22, r13
- 234:	8e 2d       	mov	r24, r14
- 236:	40 d0       	rcall	.+128    	; 0x2b8 <MotorSpeed>
- 238:	10 91 71 00 	lds	r17, 0x0071
- 23c:	80 91 71 00 	lds	r24, 0x0071
- 240:	81 1b       	sub	r24, r17
- 242:	84 32       	cpi	r24, 0x24	; 36
- 244:	60 f6       	brcc	.-104    	; 0x1de <GoTurn+0x6c>
- 246:	30 d1       	rcall	.+608    	; 0x4a8 <sleepUntilInterrupt>
- 248:	35 df       	rcall	.-406    	; 0xb4 <EncoderPoll>
- 24a:	f8 cf       	rjmp	.-16     	; 0x23c <GoTurn+0xca>
- 24c:	60 e0       	ldi	r22, 0x00	; 0
- 24e:	80 e0       	ldi	r24, 0x00	; 0
- 250:	df 91       	pop	r29
- 252:	cf 91       	pop	r28
- 254:	1f 91       	pop	r17
- 256:	0f 91       	pop	r16
- 258:	ff 90       	pop	r15
- 25a:	ef 90       	pop	r14
- 25c:	df 90       	pop	r13
- 25e:	2c c0       	rjmp	.+88     	; 0x2b8 <MotorSpeed>
+000001c8 <GoTurn>:
+ 1c8:	df 92       	push	r13
+ 1ca:	ef 92       	push	r14
+ 1cc:	ff 92       	push	r15
+ 1ce:	0f 93       	push	r16
+ 1d0:	1f 93       	push	r17
+ 1d2:	cf 93       	push	r28
+ 1d4:	df 93       	push	r29
+ 1d6:	fc 01       	movw	r30, r24
+ 1d8:	8b 01       	movw	r16, r22
+ 1da:	f4 2e       	mov	r15, r20
+ 1dc:	00 97       	sbiw	r24, 0x00	; 0
+ 1de:	89 f0       	breq	.+34     	; 0x202 <GoTurn+0x3a>
+ 1e0:	dc 01       	movw	r26, r24
+ 1e2:	97 ff       	sbrs	r25, 7
+ 1e4:	04 c0       	rjmp	.+8      	; 0x1ee <GoTurn+0x26>
+ 1e6:	aa 27       	eor	r26, r26
+ 1e8:	bb 27       	eor	r27, r27
+ 1ea:	a8 1b       	sub	r26, r24
+ 1ec:	b9 0b       	sbc	r27, r25
+ 1ee:	2c ef       	ldi	r18, 0xFC	; 252
+ 1f0:	3e e7       	ldi	r19, 0x7E	; 126
+ 1f2:	1b d2       	rcall	.+1078   	; 0x62a <__usmulhisi3>
+ 1f4:	ec 01       	movw	r28, r24
+ 1f6:	f7 ff       	sbrs	r31, 7
+ 1f8:	02 c0       	rjmp	.+4      	; 0x1fe <GoTurn+0x36>
+ 1fa:	60 e1       	ldi	r22, 0x10	; 16
+ 1fc:	10 c0       	rjmp	.+32     	; 0x21e <GoTurn+0x56>
+ 1fe:	60 e2       	ldi	r22, 0x20	; 32
+ 200:	11 c0       	rjmp	.+34     	; 0x224 <GoTurn+0x5c>
+ 202:	db 01       	movw	r26, r22
+ 204:	77 ff       	sbrs	r23, 7
+ 206:	04 c0       	rjmp	.+8      	; 0x210 <GoTurn+0x48>
+ 208:	aa 27       	eor	r26, r26
+ 20a:	bb 27       	eor	r27, r27
+ 20c:	a6 1b       	sub	r26, r22
+ 20e:	b7 0b       	sbc	r27, r23
+ 210:	2e ec       	ldi	r18, 0xCE	; 206
+ 212:	3b e6       	ldi	r19, 0x6B	; 107
+ 214:	0a d2       	rcall	.+1044   	; 0x62a <__usmulhisi3>
+ 216:	ec 01       	movw	r28, r24
+ 218:	17 ff       	sbrs	r17, 7
+ 21a:	03 c0       	rjmp	.+6      	; 0x222 <GoTurn+0x5a>
+ 21c:	60 e2       	ldi	r22, 0x20	; 32
+ 21e:	80 e1       	ldi	r24, 0x10	; 16
+ 220:	02 c0       	rjmp	.+4      	; 0x226 <GoTurn+0x5e>
+ 222:	60 e1       	ldi	r22, 0x10	; 16
+ 224:	80 e2       	ldi	r24, 0x20	; 32
+ 226:	77 d0       	rcall	.+238    	; 0x316 <MotorDir>
+ 228:	c6 df       	rcall	.-116    	; 0x1b6 <EncoderReset>
+ 22a:	6f 2d       	mov	r22, r15
+ 22c:	8f 2d       	mov	r24, r15
+ 22e:	7f d0       	rcall	.+254    	; 0x32e <MotorSpeed>
+ 230:	df 2c       	mov	r13, r15
+ 232:	ef 2c       	mov	r14, r15
+ 234:	1c 16       	cp	r1, r28
+ 236:	1d 06       	cpc	r1, r29
+ 238:	a4 f5       	brge	.+104    	; 0x2a2 <GoTurn+0xda>
+ 23a:	00 91 68 00 	lds	r16, 0x0068
+ 23e:	10 91 69 00 	lds	r17, 0x0069
+ 242:	20 91 6a 00 	lds	r18, 0x006A
+ 246:	30 91 6b 00 	lds	r19, 0x006B
+ 24a:	f8 01       	movw	r30, r16
+ 24c:	a9 01       	movw	r20, r18
+ 24e:	c0 1b       	sub	r28, r16
+ 250:	d1 0b       	sbc	r29, r17
+ 252:	20 17       	cp	r18, r16
+ 254:	31 07       	cpc	r19, r17
+ 256:	50 f4       	brcc	.+20     	; 0x26c <GoTurn+0xa4>
+ 258:	fe 14       	cp	r15, r14
+ 25a:	18 f0       	brcs	.+6      	; 0x262 <GoTurn+0x9a>
+ 25c:	84 ef       	ldi	r24, 0xF4	; 244
+ 25e:	8d 15       	cp	r24, r13
+ 260:	18 f4       	brcc	.+6      	; 0x268 <GoTurn+0xa0>
+ 262:	86 ef       	ldi	r24, 0xF6	; 246
+ 264:	e8 0e       	add	r14, r24
+ 266:	02 c0       	rjmp	.+4      	; 0x26c <GoTurn+0xa4>
+ 268:	8a e0       	ldi	r24, 0x0A	; 10
+ 26a:	d8 0e       	add	r13, r24
+ 26c:	e4 17       	cp	r30, r20
+ 26e:	f5 07       	cpc	r31, r21
+ 270:	50 f4       	brcc	.+20     	; 0x286 <GoTurn+0xbe>
+ 272:	fd 14       	cp	r15, r13
+ 274:	18 f0       	brcs	.+6      	; 0x27c <GoTurn+0xb4>
+ 276:	84 ef       	ldi	r24, 0xF4	; 244
+ 278:	8e 15       	cp	r24, r14
+ 27a:	18 f4       	brcc	.+6      	; 0x282 <GoTurn+0xba>
+ 27c:	86 ef       	ldi	r24, 0xF6	; 246
+ 27e:	d8 0e       	add	r13, r24
+ 280:	02 c0       	rjmp	.+4      	; 0x286 <GoTurn+0xbe>
+ 282:	8a e0       	ldi	r24, 0x0A	; 10
+ 284:	e8 0e       	add	r14, r24
+ 286:	97 df       	rcall	.-210    	; 0x1b6 <EncoderReset>
+ 288:	6d 2d       	mov	r22, r13
+ 28a:	8e 2d       	mov	r24, r14
+ 28c:	50 d0       	rcall	.+160    	; 0x32e <MotorSpeed>
+ 28e:	10 91 74 00 	lds	r17, 0x0074
+ 292:	80 91 74 00 	lds	r24, 0x0074
+ 296:	81 1b       	sub	r24, r17
+ 298:	84 32       	cpi	r24, 0x24	; 36
+ 29a:	60 f6       	brcc	.-104    	; 0x234 <GoTurn+0x6c>
+ 29c:	55 d1       	rcall	.+682    	; 0x548 <sleepUntilInterrupt>
+ 29e:	35 df       	rcall	.-406    	; 0x10a <EncoderPoll>
+ 2a0:	f8 cf       	rjmp	.-16     	; 0x292 <GoTurn+0xca>
+ 2a2:	60 e0       	ldi	r22, 0x00	; 0
+ 2a4:	80 e0       	ldi	r24, 0x00	; 0
+ 2a6:	df 91       	pop	r29
+ 2a8:	cf 91       	pop	r28
+ 2aa:	1f 91       	pop	r17
+ 2ac:	0f 91       	pop	r16
+ 2ae:	ff 90       	pop	r15
+ 2b0:	ef 90       	pop	r14
+ 2b2:	df 90       	pop	r13
+ 2b4:	3c c0       	rjmp	.+120    	; 0x32e <MotorSpeed>
 
-00000260 <StatusLED>:
- 260:	c0 98       	cbi	0x18, 0	; 24
- 262:	92 98       	cbi	0x12, 2	; 18
- 264:	80 fd       	sbrc	r24, 0
- 266:	c0 9a       	sbi	0x18, 0	; 24
- 268:	81 fd       	sbrc	r24, 1
- 26a:	92 9a       	sbi	0x12, 2	; 18
- 26c:	08 95       	ret
+000002b6 <EncoderMovementReset>:
+ 2b6:	10 92 62 00 	sts	0x0062, r1
+ 2ba:	10 92 61 00 	sts	0x0061, r1
+ 2be:	10 92 60 00 	sts	0x0060, r1
+ 2c2:	08 95       	ret
 
-0000026e <BackLEDFast>:
- 26e:	2f b7       	in	r18, 0x3f	; 63
+000002c4 <EncoderInit>:
+ 2c4:	10 92 65 00 	sts	0x0065, r1
+ 2c8:	10 92 64 00 	sts	0x0064, r1
+ 2cc:	83 e0       	ldi	r24, 0x03	; 3
+ 2ce:	80 93 63 00 	sts	0x0063, r24
+ 2d2:	71 df       	rcall	.-286    	; 0x1b6 <EncoderReset>
+ 2d4:	f0 cf       	rjmp	.-32     	; 0x2b6 <EncoderMovementReset>
+
+000002d6 <StatusLED>:
+ 2d6:	c0 98       	cbi	0x18, 0	; 24
+ 2d8:	92 98       	cbi	0x12, 2	; 18
+ 2da:	80 fd       	sbrc	r24, 0
+ 2dc:	c0 9a       	sbi	0x18, 0	; 24
+ 2de:	81 fd       	sbrc	r24, 1
+ 2e0:	92 9a       	sbi	0x12, 2	; 18
+ 2e2:	08 95       	ret
+
+000002e4 <BackLEDFast>:
+ 2e4:	2f b7       	in	r18, 0x3f	; 63
     return 1;
 }
 
 static __inline__ uint8_t __iCliRetVal(void)
 {
     cli();
- 270:	f8 94       	cli
- 272:	88 23       	and	r24, r24
- 274:	19 f0       	breq	.+6      	; 0x27c <BackLEDFast+0xe>
- 276:	97 98       	cbi	0x12, 7	; 18
- 278:	a1 9a       	sbi	0x14, 1	; 20
- 27a:	a0 9a       	sbi	0x14, 0	; 20
- 27c:	95 b3       	in	r25, 0x15	; 21
- 27e:	9c 7f       	andi	r25, 0xFC	; 252
- 280:	98 2b       	or	r25, r24
- 282:	95 bb       	out	0x15, r25	; 21
+ 2e6:	f8 94       	cli
+ 2e8:	88 23       	and	r24, r24
+ 2ea:	19 f0       	breq	.+6      	; 0x2f2 <BackLEDFast+0xe>
+ 2ec:	97 98       	cbi	0x12, 7	; 18
+ 2ee:	a1 9a       	sbi	0x14, 1	; 20
+ 2f0:	a0 9a       	sbi	0x14, 0	; 20
+ 2f2:	95 b3       	in	r25, 0x15	; 21
+ 2f4:	9c 7f       	andi	r25, 0xFC	; 252
+ 2f6:	98 2b       	or	r25, r24
+ 2f8:	95 bb       	out	0x15, r25	; 21
     (void)__s;
 }
 
 static __inline__ void __iRestore(const  uint8_t *__s)
 {
     SREG = *__s;
- 284:	2f bf       	out	0x3f, r18	; 63
+ 2fa:	2f bf       	out	0x3f, r18	; 63
     __asm__ volatile ("" ::: "memory");
- 286:	08 95       	ret
+ 2fc:	08 95       	ret
 
-00000288 <LEDInit>:
- 288:	b8 9a       	sbi	0x17, 0	; 23
- 28a:	81 b3       	in	r24, 0x11	; 17
- 28c:	84 6c       	ori	r24, 0xC4	; 196
- 28e:	81 bb       	out	0x11, r24	; 17
- 290:	96 98       	cbi	0x12, 6	; 18
- 292:	97 98       	cbi	0x12, 7	; 18
- 294:	a1 9a       	sbi	0x14, 1	; 20
- 296:	a0 9a       	sbi	0x14, 0	; 20
- 298:	80 e0       	ldi	r24, 0x00	; 0
- 29a:	e9 df       	rcall	.-46     	; 0x26e <BackLEDFast>
- 29c:	81 e0       	ldi	r24, 0x01	; 1
- 29e:	e0 cf       	rjmp	.-64     	; 0x260 <StatusLED>
+000002fe <LEDInit>:
+ 2fe:	b8 9a       	sbi	0x17, 0	; 23
+ 300:	81 b3       	in	r24, 0x11	; 17
+ 302:	84 6c       	ori	r24, 0xC4	; 196
+ 304:	81 bb       	out	0x11, r24	; 17
+ 306:	96 98       	cbi	0x12, 6	; 18
+ 308:	97 98       	cbi	0x12, 7	; 18
+ 30a:	a1 9a       	sbi	0x14, 1	; 20
+ 30c:	a0 9a       	sbi	0x14, 0	; 20
+ 30e:	80 e0       	ldi	r24, 0x00	; 0
+ 310:	e9 df       	rcall	.-46     	; 0x2e4 <BackLEDFast>
+ 312:	81 e0       	ldi	r24, 0x01	; 1
+ 314:	e0 cf       	rjmp	.-64     	; 0x2d6 <StatusLED>
 
-000002a0 <MotorDir>:
- 2a0:	2f b7       	in	r18, 0x3f	; 63
+00000316 <MotorDir>:
+ 316:	2f b7       	in	r18, 0x3f	; 63
     return 1;
 }
 
 static __inline__ uint8_t __iCliRetVal(void)
 {
     cli();
- 2a2:	f8 94       	cli
- 2a4:	92 b3       	in	r25, 0x12	; 18
- 2a6:	9f 7c       	andi	r25, 0xCF	; 207
- 2a8:	89 2b       	or	r24, r25
- 2aa:	82 bb       	out	0x12, r24	; 18
- 2ac:	88 b3       	in	r24, 0x18	; 24
- 2ae:	8f 7c       	andi	r24, 0xCF	; 207
- 2b0:	68 2b       	or	r22, r24
- 2b2:	68 bb       	out	0x18, r22	; 24
+ 318:	f8 94       	cli
+ 31a:	92 b3       	in	r25, 0x12	; 18
+ 31c:	9f 7c       	andi	r25, 0xCF	; 207
+ 31e:	89 2b       	or	r24, r25
+ 320:	82 bb       	out	0x12, r24	; 18
+ 322:	88 b3       	in	r24, 0x18	; 24
+ 324:	8f 7c       	andi	r24, 0xCF	; 207
+ 326:	68 2b       	or	r22, r24
+ 328:	68 bb       	out	0x18, r22	; 24
     (void)__s;
 }
 
 static __inline__ void __iRestore(const  uint8_t *__s)
 {
     SREG = *__s;
- 2b4:	2f bf       	out	0x3f, r18	; 63
+ 32a:	2f bf       	out	0x3f, r18	; 63
     __asm__ volatile ("" ::: "memory");
- 2b6:	08 95       	ret
+ 32c:	08 95       	ret
 
-000002b8 <MotorSpeed>:
- 2b8:	9f b7       	in	r25, 0x3f	; 63
+0000032e <MotorSpeed>:
+ 32e:	9f b7       	in	r25, 0x3f	; 63
     return 1;
 }
 
 static __inline__ uint8_t __iCliRetVal(void)
 {
     cli();
- 2ba:	f8 94       	cli
- 2bc:	1b bc       	out	0x2b, r1	; 43
- 2be:	8a bd       	out	0x2a, r24	; 42
- 2c0:	68 bd       	out	0x28, r22	; 40
+ 330:	f8 94       	cli
+ 332:	1b bc       	out	0x2b, r1	; 43
+ 334:	8a bd       	out	0x2a, r24	; 42
+ 336:	68 bd       	out	0x28, r22	; 40
     (void)__s;
 }
 
 static __inline__ void __iRestore(const  uint8_t *__s)
 {
     SREG = *__s;
- 2c2:	9f bf       	out	0x3f, r25	; 63
+ 338:	9f bf       	out	0x3f, r25	; 63
     __asm__ volatile ("" ::: "memory");
- 2c4:	08 95       	ret
+ 33a:	08 95       	ret
 
-000002c6 <MotorInit>:
- 2c6:	87 b3       	in	r24, 0x17	; 23
- 2c8:	86 63       	ori	r24, 0x36	; 54
- 2ca:	87 bb       	out	0x17, r24	; 23
- 2cc:	81 b3       	in	r24, 0x11	; 17
- 2ce:	80 63       	ori	r24, 0x30	; 48
- 2d0:	81 bb       	out	0x11, r24	; 17
- 2d2:	81 ea       	ldi	r24, 0xA1	; 161
- 2d4:	8f bd       	out	0x2f, r24	; 47
- 2d6:	82 e0       	ldi	r24, 0x02	; 2
- 2d8:	8e bd       	out	0x2e, r24	; 46
- 2da:	89 b7       	in	r24, 0x39	; 57
- 2dc:	83 7c       	andi	r24, 0xC3	; 195
- 2de:	89 bf       	out	0x39, r24	; 57
- 2e0:	60 e2       	ldi	r22, 0x20	; 32
- 2e2:	80 e2       	ldi	r24, 0x20	; 32
- 2e4:	dd df       	rcall	.-70     	; 0x2a0 <MotorDir>
- 2e6:	60 e0       	ldi	r22, 0x00	; 0
- 2e8:	80 e0       	ldi	r24, 0x00	; 0
- 2ea:	e6 cf       	rjmp	.-52     	; 0x2b8 <MotorSpeed>
+0000033c <MotorInit>:
+ 33c:	87 b3       	in	r24, 0x17	; 23
+ 33e:	86 63       	ori	r24, 0x36	; 54
+ 340:	87 bb       	out	0x17, r24	; 23
+ 342:	81 b3       	in	r24, 0x11	; 17
+ 344:	80 63       	ori	r24, 0x30	; 48
+ 346:	81 bb       	out	0x11, r24	; 17
+ 348:	81 ea       	ldi	r24, 0xA1	; 161
+ 34a:	8f bd       	out	0x2f, r24	; 47
+ 34c:	82 e0       	ldi	r24, 0x02	; 2
+ 34e:	8e bd       	out	0x2e, r24	; 46
+ 350:	89 b7       	in	r24, 0x39	; 57
+ 352:	83 7c       	andi	r24, 0xC3	; 195
+ 354:	89 bf       	out	0x39, r24	; 57
+ 356:	60 e2       	ldi	r22, 0x20	; 32
+ 358:	80 e2       	ldi	r24, 0x20	; 32
+ 35a:	dd df       	rcall	.-70     	; 0x316 <MotorDir>
+ 35c:	60 e0       	ldi	r22, 0x00	; 0
+ 35e:	80 e0       	ldi	r24, 0x00	; 0
+ 360:	e6 cf       	rjmp	.-52     	; 0x32e <MotorSpeed>
 
-000002ec <LineData>:
- 2ec:	1f 93       	push	r17
- 2ee:	cf 93       	push	r28
- 2f0:	df 93       	push	r29
- 2f2:	ec 01       	movw	r28, r24
- 2f4:	ec d0       	rcall	.+472    	; 0x4ce <__ADCBlockEnter>
- 2f6:	18 2f       	mov	r17, r24
- 2f8:	83 e4       	ldi	r24, 0x43	; 67
- 2fa:	11 d1       	rcall	.+546    	; 0x51e <ADCSelectChannel>
- 2fc:	19 d1       	rcall	.+562    	; 0x530 <ADCMeasure>
- 2fe:	24 b1       	in	r18, 0x04	; 4
- 300:	35 b1       	in	r19, 0x05	; 5
- 302:	39 83       	std	Y+1, r19	; 0x01
- 304:	28 83       	st	Y, r18
- 306:	82 e4       	ldi	r24, 0x42	; 66
- 308:	0a d1       	rcall	.+532    	; 0x51e <ADCSelectChannel>
- 30a:	12 d1       	rcall	.+548    	; 0x530 <ADCMeasure>
- 30c:	24 b1       	in	r18, 0x04	; 4
- 30e:	35 b1       	in	r19, 0x05	; 5
- 310:	3b 83       	std	Y+3, r19	; 0x03
- 312:	2a 83       	std	Y+2, r18	; 0x02
- 314:	81 2f       	mov	r24, r17
- 316:	df 91       	pop	r29
- 318:	cf 91       	pop	r28
- 31a:	1f 91       	pop	r17
- 31c:	ea c0       	rjmp	.+468    	; 0x4f2 <__ADCBlockLeave>
+00000362 <LineData>:
+ 362:	1f 93       	push	r17
+ 364:	cf 93       	push	r28
+ 366:	df 93       	push	r29
+ 368:	ec 01       	movw	r28, r24
+ 36a:	01 d1       	rcall	.+514    	; 0x56e <__ADCBlockEnter>
+ 36c:	18 2f       	mov	r17, r24
+ 36e:	83 e4       	ldi	r24, 0x43	; 67
+ 370:	26 d1       	rcall	.+588    	; 0x5be <ADCSelectChannel>
+ 372:	2e d1       	rcall	.+604    	; 0x5d0 <ADCMeasure>
+ 374:	24 b1       	in	r18, 0x04	; 4
+ 376:	35 b1       	in	r19, 0x05	; 5
+ 378:	39 83       	std	Y+1, r19	; 0x01
+ 37a:	28 83       	st	Y, r18
+ 37c:	82 e4       	ldi	r24, 0x42	; 66
+ 37e:	1f d1       	rcall	.+574    	; 0x5be <ADCSelectChannel>
+ 380:	27 d1       	rcall	.+590    	; 0x5d0 <ADCMeasure>
+ 382:	24 b1       	in	r18, 0x04	; 4
+ 384:	35 b1       	in	r19, 0x05	; 5
+ 386:	3b 83       	std	Y+3, r19	; 0x03
+ 388:	2a 83       	std	Y+2, r18	; 0x02
+ 38a:	81 2f       	mov	r24, r17
+ 38c:	df 91       	pop	r29
+ 38e:	cf 91       	pop	r28
+ 390:	1f 91       	pop	r17
+ 392:	ff c0       	rjmp	.+510    	; 0x592 <__ADCBlockLeave>
 
-0000031e <__vector_14>:
- 31e:	1f 92       	push	r1
- 320:	0f 92       	push	r0
- 322:	0f b6       	in	r0, 0x3f	; 63
- 324:	0f 92       	push	r0
- 326:	11 24       	eor	r1, r1
- 328:	2f 93       	push	r18
- 32a:	3f 93       	push	r19
- 32c:	4f 93       	push	r20
- 32e:	5f 93       	push	r21
- 330:	6f 93       	push	r22
- 332:	7f 93       	push	r23
- 334:	8f 93       	push	r24
- 336:	9f 93       	push	r25
- 338:	af 93       	push	r26
- 33a:	bf 93       	push	r27
- 33c:	ef 93       	push	r30
- 33e:	ff 93       	push	r31
- 340:	87 b1       	in	r24, 0x07	; 7
- 342:	78 94       	sei
- 344:	81 36       	cpi	r24, 0x61	; 97
- 346:	19 f0       	breq	.+6      	; 0x34e <__vector_14+0x30>
- 348:	83 36       	cpi	r24, 0x63	; 99
- 34a:	a1 f0       	breq	.+40     	; 0x374 <__vector_14+0x56>
- 34c:	27 c0       	rjmp	.+78     	; 0x39c <__vector_14+0x7e>
- 34e:	80 91 6a 00 	lds	r24, 0x006A
- 352:	82 fd       	sbrc	r24, 2
- 354:	02 c0       	rjmp	.+4      	; 0x35a <__vector_14+0x3c>
- 356:	80 e6       	ldi	r24, 0x60	; 96
- 358:	01 c0       	rjmp	.+2      	; 0x35c <__vector_14+0x3e>
- 35a:	82 e6       	ldi	r24, 0x62	; 98
- 35c:	f8 94       	cli
- 35e:	95 b1       	in	r25, 0x05	; 5
- 360:	90 93 6c 00 	sts	0x006C, r25
- 364:	90 91 63 00 	lds	r25, 0x0063
- 368:	90 93 6b 00 	sts	0x006B, r25
- 36c:	91 e0       	ldi	r25, 0x01	; 1
- 36e:	90 93 6f 00 	sts	0x006F, r25
- 372:	12 c0       	rjmp	.+36     	; 0x398 <__vector_14+0x7a>
- 374:	80 91 6a 00 	lds	r24, 0x006A
- 378:	80 ff       	sbrs	r24, 0
- 37a:	02 c0       	rjmp	.+4      	; 0x380 <__vector_14+0x62>
- 37c:	80 e6       	ldi	r24, 0x60	; 96
- 37e:	01 c0       	rjmp	.+2      	; 0x382 <__vector_14+0x64>
- 380:	82 e6       	ldi	r24, 0x62	; 98
- 382:	f8 94       	cli
- 384:	95 b1       	in	r25, 0x05	; 5
- 386:	90 93 6e 00 	sts	0x006E, r25
- 38a:	90 91 63 00 	lds	r25, 0x0063
- 38e:	90 93 6d 00 	sts	0x006D, r25
- 392:	91 e0       	ldi	r25, 0x01	; 1
- 394:	90 93 69 00 	sts	0x0069, r25
- 398:	78 94       	sei
- 39a:	04 c0       	rjmp	.+8      	; 0x3a4 <__vector_14+0x86>
- 39c:	95 b1       	in	r25, 0x05	; 5
- 39e:	90 93 63 00 	sts	0x0063, r25
- 3a2:	8f 5f       	subi	r24, 0xFF	; 255
- 3a4:	c9 d0       	rcall	.+402    	; 0x538 <ADCInterruptEnable>
- 3a6:	ff 91       	pop	r31
- 3a8:	ef 91       	pop	r30
- 3aa:	bf 91       	pop	r27
- 3ac:	af 91       	pop	r26
- 3ae:	9f 91       	pop	r25
- 3b0:	8f 91       	pop	r24
- 3b2:	7f 91       	pop	r23
- 3b4:	6f 91       	pop	r22
- 3b6:	5f 91       	pop	r21
- 3b8:	4f 91       	pop	r20
- 3ba:	3f 91       	pop	r19
- 3bc:	2f 91       	pop	r18
- 3be:	0f 90       	pop	r0
- 3c0:	0f be       	out	0x3f, r0	; 63
- 3c2:	0f 90       	pop	r0
- 3c4:	1f 90       	pop	r1
- 3c6:	18 95       	reti
+00000394 <__vector_14>:
+ 394:	1f 92       	push	r1
+ 396:	0f 92       	push	r0
+ 398:	0f b6       	in	r0, 0x3f	; 63
+ 39a:	0f 92       	push	r0
+ 39c:	11 24       	eor	r1, r1
+ 39e:	2f 93       	push	r18
+ 3a0:	3f 93       	push	r19
+ 3a2:	4f 93       	push	r20
+ 3a4:	5f 93       	push	r21
+ 3a6:	6f 93       	push	r22
+ 3a8:	7f 93       	push	r23
+ 3aa:	8f 93       	push	r24
+ 3ac:	9f 93       	push	r25
+ 3ae:	af 93       	push	r26
+ 3b0:	bf 93       	push	r27
+ 3b2:	ef 93       	push	r30
+ 3b4:	ff 93       	push	r31
+ 3b6:	87 b1       	in	r24, 0x07	; 7
+ 3b8:	78 94       	sei
+ 3ba:	81 36       	cpi	r24, 0x61	; 97
+ 3bc:	19 f0       	breq	.+6      	; 0x3c4 <__vector_14+0x30>
+ 3be:	83 36       	cpi	r24, 0x63	; 99
+ 3c0:	a1 f0       	breq	.+40     	; 0x3ea <__vector_14+0x56>
+ 3c2:	27 c0       	rjmp	.+78     	; 0x412 <__vector_14+0x7e>
+ 3c4:	80 91 6d 00 	lds	r24, 0x006D
+ 3c8:	82 fd       	sbrc	r24, 2
+ 3ca:	02 c0       	rjmp	.+4      	; 0x3d0 <__vector_14+0x3c>
+ 3cc:	80 e6       	ldi	r24, 0x60	; 96
+ 3ce:	01 c0       	rjmp	.+2      	; 0x3d2 <__vector_14+0x3e>
+ 3d0:	82 e6       	ldi	r24, 0x62	; 98
+ 3d2:	f8 94       	cli
+ 3d4:	95 b1       	in	r25, 0x05	; 5
+ 3d6:	90 93 6f 00 	sts	0x006F, r25
+ 3da:	90 91 66 00 	lds	r25, 0x0066
+ 3de:	90 93 6e 00 	sts	0x006E, r25
+ 3e2:	91 e0       	ldi	r25, 0x01	; 1
+ 3e4:	90 93 72 00 	sts	0x0072, r25
+ 3e8:	12 c0       	rjmp	.+36     	; 0x40e <__vector_14+0x7a>
+ 3ea:	80 91 6d 00 	lds	r24, 0x006D
+ 3ee:	80 ff       	sbrs	r24, 0
+ 3f0:	02 c0       	rjmp	.+4      	; 0x3f6 <__vector_14+0x62>
+ 3f2:	80 e6       	ldi	r24, 0x60	; 96
+ 3f4:	01 c0       	rjmp	.+2      	; 0x3f8 <__vector_14+0x64>
+ 3f6:	82 e6       	ldi	r24, 0x62	; 98
+ 3f8:	f8 94       	cli
+ 3fa:	95 b1       	in	r25, 0x05	; 5
+ 3fc:	90 93 71 00 	sts	0x0071, r25
+ 400:	90 91 66 00 	lds	r25, 0x0066
+ 404:	90 93 70 00 	sts	0x0070, r25
+ 408:	91 e0       	ldi	r25, 0x01	; 1
+ 40a:	90 93 6c 00 	sts	0x006C, r25
+ 40e:	78 94       	sei
+ 410:	04 c0       	rjmp	.+8      	; 0x41a <__vector_14+0x86>
+ 412:	95 b1       	in	r25, 0x05	; 5
+ 414:	90 93 66 00 	sts	0x0066, r25
+ 418:	8f 5f       	subi	r24, 0xFF	; 255
+ 41a:	de d0       	rcall	.+444    	; 0x5d8 <ADCInterruptEnable>
+ 41c:	ff 91       	pop	r31
+ 41e:	ef 91       	pop	r30
+ 420:	bf 91       	pop	r27
+ 422:	af 91       	pop	r26
+ 424:	9f 91       	pop	r25
+ 426:	8f 91       	pop	r24
+ 428:	7f 91       	pop	r23
+ 42a:	6f 91       	pop	r22
+ 42c:	5f 91       	pop	r21
+ 42e:	4f 91       	pop	r20
+ 430:	3f 91       	pop	r19
+ 432:	2f 91       	pop	r18
+ 434:	0f 90       	pop	r0
+ 436:	0f be       	out	0x3f, r0	; 63
+ 438:	0f 90       	pop	r0
+ 43a:	1f 90       	pop	r1
+ 43c:	18 95       	reti
 
-000003c8 <SwitchInit>:
- 3c8:	9f b7       	in	r25, 0x3f	; 63
+0000043e <SwitchInit>:
+ 43e:	9f b7       	in	r25, 0x3f	; 63
     return 1;
 }
 
 static __inline__ uint8_t __iCliRetVal(void)
 {
     cli();
- 3ca:	f8 94       	cli
- 3cc:	8b b7       	in	r24, 0x3b	; 59
- 3ce:	8f 77       	andi	r24, 0x7F	; 127
- 3d0:	8b bf       	out	0x3b, r24	; 59
- 3d2:	85 b7       	in	r24, 0x35	; 53
- 3d4:	87 7f       	andi	r24, 0xF7	; 247
- 3d6:	84 60       	ori	r24, 0x04	; 4
- 3d8:	85 bf       	out	0x35, r24	; 53
+ 440:	f8 94       	cli
+ 442:	8b b7       	in	r24, 0x3b	; 59
+ 444:	8f 77       	andi	r24, 0x7F	; 127
+ 446:	8b bf       	out	0x3b, r24	; 59
+ 448:	85 b7       	in	r24, 0x35	; 53
+ 44a:	87 7f       	andi	r24, 0xF7	; 247
+ 44c:	84 60       	ori	r24, 0x04	; 4
+ 44e:	85 bf       	out	0x35, r24	; 53
     (void)__s;
 }
 
 static __inline__ void __iRestore(const  uint8_t *__s)
 {
     SREG = *__s;
- 3da:	9f bf       	out	0x3f, r25	; 63
- 3dc:	a4 98       	cbi	0x14, 4	; 20
- 3de:	85 b3       	in	r24, 0x15	; 21
- 3e0:	80 71       	andi	r24, 0x10	; 16
- 3e2:	85 bb       	out	0x15, r24	; 21
- 3e4:	8b 98       	cbi	0x11, 3	; 17
- 3e6:	93 98       	cbi	0x12, 3	; 18
- 3e8:	10 92 70 00 	sts	0x0070, r1
- 3ec:	08 95       	ret
+ 450:	9f bf       	out	0x3f, r25	; 63
+ 452:	a4 98       	cbi	0x14, 4	; 20
+ 454:	85 b3       	in	r24, 0x15	; 21
+ 456:	80 71       	andi	r24, 0x10	; 16
+ 458:	85 bb       	out	0x15, r24	; 21
+ 45a:	8b 98       	cbi	0x11, 3	; 17
+ 45c:	93 98       	cbi	0x12, 3	; 18
+ 45e:	10 92 73 00 	sts	0x0073, r1
+ 462:	08 95       	ret
 
-000003ee <PollSwitch>:
- 3ee:	0f 93       	push	r16
- 3f0:	1f 93       	push	r17
- 3f2:	cf 93       	push	r28
- 3f4:	df 93       	push	r29
- 3f6:	93 9a       	sbi	0x12, 3	; 18
- 3f8:	8b 9a       	sbi	0x11, 3	; 17
- 3fa:	69 d0       	rcall	.+210    	; 0x4ce <__ADCBlockEnter>
- 3fc:	08 2f       	mov	r16, r24
- 3fe:	84 e4       	ldi	r24, 0x44	; 68
- 400:	8e d0       	rcall	.+284    	; 0x51e <ADCSelectChannel>
- 402:	14 e0       	ldi	r17, 0x04	; 4
- 404:	c0 e0       	ldi	r28, 0x00	; 0
- 406:	d0 e0       	ldi	r29, 0x00	; 0
- 408:	93 d0       	rcall	.+294    	; 0x530 <ADCMeasure>
- 40a:	24 b1       	in	r18, 0x04	; 4
- 40c:	35 b1       	in	r19, 0x05	; 5
- 40e:	c2 0f       	add	r28, r18
- 410:	d3 1f       	adc	r29, r19
- 412:	11 50       	subi	r17, 0x01	; 1
- 414:	c9 f7       	brne	.-14     	; 0x408 <PollSwitch+0x1a>
- 416:	80 2f       	mov	r24, r16
- 418:	6c d0       	rcall	.+216    	; 0x4f2 <__ADCBlockLeave>
- 41a:	8b 98       	cbi	0x11, 3	; 17
- 41c:	93 98       	cbi	0x12, 3	; 18
- 41e:	be 01       	movw	r22, r28
- 420:	76 95       	lsr	r23
- 422:	67 95       	ror	r22
- 424:	76 95       	lsr	r23
- 426:	67 95       	ror	r22
- 428:	cb 01       	movw	r24, r22
- 42a:	96 95       	lsr	r25
- 42c:	87 95       	ror	r24
- 42e:	98 50       	subi	r25, 0x08	; 8
- 430:	98 d0       	rcall	.+304    	; 0x562 <__udivmodhi4>
- 432:	82 ec       	ldi	r24, 0xC2	; 194
- 434:	86 0f       	add	r24, r22
- 436:	df 91       	pop	r29
- 438:	cf 91       	pop	r28
- 43a:	1f 91       	pop	r17
- 43c:	0f 91       	pop	r16
- 43e:	08 95       	ret
+00000464 <PollSwitch>:
+ 464:	0f 93       	push	r16
+ 466:	1f 93       	push	r17
+ 468:	cf 93       	push	r28
+ 46a:	df 93       	push	r29
+ 46c:	93 9a       	sbi	0x12, 3	; 18
+ 46e:	8b 9a       	sbi	0x11, 3	; 17
+ 470:	7e d0       	rcall	.+252    	; 0x56e <__ADCBlockEnter>
+ 472:	08 2f       	mov	r16, r24
+ 474:	84 e4       	ldi	r24, 0x44	; 68
+ 476:	a3 d0       	rcall	.+326    	; 0x5be <ADCSelectChannel>
+ 478:	14 e0       	ldi	r17, 0x04	; 4
+ 47a:	c0 e0       	ldi	r28, 0x00	; 0
+ 47c:	d0 e0       	ldi	r29, 0x00	; 0
+ 47e:	a8 d0       	rcall	.+336    	; 0x5d0 <ADCMeasure>
+ 480:	24 b1       	in	r18, 0x04	; 4
+ 482:	35 b1       	in	r19, 0x05	; 5
+ 484:	c2 0f       	add	r28, r18
+ 486:	d3 1f       	adc	r29, r19
+ 488:	11 50       	subi	r17, 0x01	; 1
+ 48a:	c9 f7       	brne	.-14     	; 0x47e <PollSwitch+0x1a>
+ 48c:	80 2f       	mov	r24, r16
+ 48e:	81 d0       	rcall	.+258    	; 0x592 <__ADCBlockLeave>
+ 490:	8b 98       	cbi	0x11, 3	; 17
+ 492:	93 98       	cbi	0x12, 3	; 18
+ 494:	be 01       	movw	r22, r28
+ 496:	76 95       	lsr	r23
+ 498:	67 95       	ror	r22
+ 49a:	76 95       	lsr	r23
+ 49c:	67 95       	ror	r22
+ 49e:	cb 01       	movw	r24, r22
+ 4a0:	96 95       	lsr	r25
+ 4a2:	87 95       	ror	r24
+ 4a4:	98 50       	subi	r25, 0x08	; 8
+ 4a6:	ad d0       	rcall	.+346    	; 0x602 <__udivmodhi4>
+ 4a8:	82 ec       	ldi	r24, 0xC2	; 194
+ 4aa:	86 0f       	add	r24, r22
+ 4ac:	df 91       	pop	r29
+ 4ae:	cf 91       	pop	r28
+ 4b0:	1f 91       	pop	r17
+ 4b2:	0f 91       	pop	r16
+ 4b4:	08 95       	ret
 
-00000440 <__vector_2>:
- 440:	1f 92       	push	r1
- 442:	0f 92       	push	r0
- 444:	0f b6       	in	r0, 0x3f	; 63
- 446:	0f 92       	push	r0
- 448:	11 24       	eor	r1, r1
- 44a:	8f 93       	push	r24
- 44c:	81 e0       	ldi	r24, 0x01	; 1
- 44e:	80 93 70 00 	sts	0x0070, r24
- 452:	8b b7       	in	r24, 0x3b	; 59
- 454:	8f 77       	andi	r24, 0x7F	; 127
- 456:	8b bf       	out	0x3b, r24	; 59
- 458:	8f 91       	pop	r24
- 45a:	0f 90       	pop	r0
- 45c:	0f be       	out	0x3f, r0	; 63
- 45e:	0f 90       	pop	r0
- 460:	1f 90       	pop	r1
- 462:	18 95       	reti
+000004b6 <__vector_2>:
+ 4b6:	1f 92       	push	r1
+ 4b8:	0f 92       	push	r0
+ 4ba:	0f b6       	in	r0, 0x3f	; 63
+ 4bc:	0f 92       	push	r0
+ 4be:	11 24       	eor	r1, r1
+ 4c0:	8f 93       	push	r24
+ 4c2:	81 e0       	ldi	r24, 0x01	; 1
+ 4c4:	80 93 73 00 	sts	0x0073, r24
+ 4c8:	8b b7       	in	r24, 0x3b	; 59
+ 4ca:	8f 77       	andi	r24, 0x7F	; 127
+ 4cc:	8b bf       	out	0x3b, r24	; 59
+ 4ce:	8f 91       	pop	r24
+ 4d0:	0f 90       	pop	r0
+ 4d2:	0f be       	out	0x3f, r0	; 63
+ 4d4:	0f 90       	pop	r0
+ 4d6:	1f 90       	pop	r1
+ 4d8:	18 95       	reti
 
-00000464 <Timer2Init>:
- 464:	12 bc       	out	0x22, r1	; 34
- 466:	81 e0       	ldi	r24, 0x01	; 1
- 468:	85 bd       	out	0x25, r24	; 37
- 46a:	89 b7       	in	r24, 0x39	; 57
- 46c:	80 64       	ori	r24, 0x40	; 64
- 46e:	89 bf       	out	0x39, r24	; 57
- 470:	81 e9       	ldi	r24, 0x91	; 145
- 472:	83 bd       	out	0x23, r24	; 35
- 474:	85 b5       	in	r24, 0x25	; 37
- 476:	87 78       	andi	r24, 0x87	; 135
- 478:	85 bd       	out	0x25, r24	; 37
- 47a:	bb 9a       	sbi	0x17, 3	; 23
- 47c:	c3 98       	cbi	0x18, 3	; 24
- 47e:	08 95       	ret
+000004da <Timer2Init>:
+ 4da:	12 bc       	out	0x22, r1	; 34
+ 4dc:	81 e0       	ldi	r24, 0x01	; 1
+ 4de:	85 bd       	out	0x25, r24	; 37
+ 4e0:	89 b7       	in	r24, 0x39	; 57
+ 4e2:	80 64       	ori	r24, 0x40	; 64
+ 4e4:	89 bf       	out	0x39, r24	; 57
+ 4e6:	81 e9       	ldi	r24, 0x91	; 145
+ 4e8:	83 bd       	out	0x23, r24	; 35
+ 4ea:	85 b5       	in	r24, 0x25	; 37
+ 4ec:	87 78       	andi	r24, 0x87	; 135
+ 4ee:	85 bd       	out	0x25, r24	; 37
+ 4f0:	bb 9a       	sbi	0x17, 3	; 23
+ 4f2:	c3 98       	cbi	0x18, 3	; 24
+ 4f4:	08 95       	ret
 
-00000480 <__vector_4>:
- 480:	1f 92       	push	r1
- 482:	0f 92       	push	r0
- 484:	0f b6       	in	r0, 0x3f	; 63
- 486:	0f 92       	push	r0
- 488:	11 24       	eor	r1, r1
- 48a:	8f 93       	push	r24
- 48c:	84 b5       	in	r24, 0x24	; 36
- 48e:	8b 5d       	subi	r24, 0xDB	; 219
- 490:	84 bd       	out	0x24, r24	; 36
- 492:	80 91 71 00 	lds	r24, 0x0071
- 496:	8f 5f       	subi	r24, 0xFF	; 255
- 498:	80 93 71 00 	sts	0x0071, r24
- 49c:	8f 91       	pop	r24
- 49e:	0f 90       	pop	r0
- 4a0:	0f be       	out	0x3f, r0	; 63
- 4a2:	0f 90       	pop	r0
- 4a4:	1f 90       	pop	r1
- 4a6:	18 95       	reti
+000004f6 <__vector_4>:
+ 4f6:	1f 92       	push	r1
+ 4f8:	0f 92       	push	r0
+ 4fa:	0f b6       	in	r0, 0x3f	; 63
+ 4fc:	0f 92       	push	r0
+ 4fe:	11 24       	eor	r1, r1
+ 500:	8f 93       	push	r24
+ 502:	84 b5       	in	r24, 0x24	; 36
+ 504:	8b 5d       	subi	r24, 0xDB	; 219
+ 506:	84 bd       	out	0x24, r24	; 36
+ 508:	80 91 74 00 	lds	r24, 0x0074
+ 50c:	8f 5f       	subi	r24, 0xFF	; 255
+ 50e:	80 93 74 00 	sts	0x0074, r24
+ 512:	8f 91       	pop	r24
+ 514:	0f 90       	pop	r0
+ 516:	0f be       	out	0x3f, r0	; 63
+ 518:	0f 90       	pop	r0
+ 51a:	1f 90       	pop	r1
+ 51c:	18 95       	reti
 
-000004a8 <sleepUntilInterrupt>:
- 4a8:	f8 94       	cli
- 4aa:	85 b7       	in	r24, 0x35	; 53
- 4ac:	8f 70       	andi	r24, 0x0F	; 15
- 4ae:	80 68       	ori	r24, 0x80	; 128
- 4b0:	85 bf       	out	0x35, r24	; 53
- 4b2:	78 94       	sei
- 4b4:	88 95       	sleep
- 4b6:	f8 94       	cli
- 4b8:	85 b7       	in	r24, 0x35	; 53
- 4ba:	8f 77       	andi	r24, 0x7F	; 127
- 4bc:	85 bf       	out	0x35, r24	; 53
- 4be:	78 94       	sei
- 4c0:	08 95       	ret
+0000051e <sleep>:
+ 51e:	f8 94       	cli
+ 520:	95 b7       	in	r25, 0x35	; 53
+ 522:	9f 70       	andi	r25, 0x0F	; 15
+ 524:	90 68       	ori	r25, 0x80	; 128
+ 526:	95 bf       	out	0x35, r25	; 53
+ 528:	78 94       	sei
+ 52a:	90 91 74 00 	lds	r25, 0x0074
+ 52e:	89 0f       	add	r24, r25
+ 530:	90 91 74 00 	lds	r25, 0x0074
+ 534:	98 17       	cp	r25, r24
+ 536:	11 f0       	breq	.+4      	; 0x53c <sleep+0x1e>
+ 538:	88 95       	sleep
+ 53a:	fa cf       	rjmp	.-12     	; 0x530 <sleep+0x12>
+ 53c:	f8 94       	cli
+ 53e:	85 b7       	in	r24, 0x35	; 53
+ 540:	8f 77       	andi	r24, 0x7F	; 127
+ 542:	85 bf       	out	0x35, r24	; 53
+ 544:	78 94       	sei
+ 546:	08 95       	ret
 
-000004c2 <ADCInit>:
- 4c2:	8f ef       	ldi	r24, 0xFF	; 255
- 4c4:	80 93 64 00 	sts	0x0064, r24
- 4c8:	86 e0       	ldi	r24, 0x06	; 6
- 4ca:	86 b9       	out	0x06, r24	; 6
- 4cc:	08 95       	ret
-
-000004ce <__ADCBlockEnter>:
- 4ce:	2f b7       	in	r18, 0x3f	; 63
- 4d0:	f8 94       	cli
- 4d2:	87 b1       	in	r24, 0x07	; 7
- 4d4:	96 b1       	in	r25, 0x06	; 6
- 4d6:	39 2f       	mov	r19, r25
- 4d8:	38 78       	andi	r19, 0x88	; 136
- 4da:	31 f0       	breq	.+12     	; 0x4e8 <__ADCBlockEnter+0x1a>
- 4dc:	93 ff       	sbrs	r25, 3
- 4de:	05 c0       	rjmp	.+10     	; 0x4ea <__ADCBlockEnter+0x1c>
- 4e0:	80 93 64 00 	sts	0x0064, r24
- 4e4:	86 e8       	ldi	r24, 0x86	; 134
- 4e6:	86 b9       	out	0x06, r24	; 6
- 4e8:	8f ef       	ldi	r24, 0xFF	; 255
- 4ea:	2f bf       	out	0x3f, r18	; 63
- 4ec:	36 99       	sbic	0x06, 6	; 6
- 4ee:	fe cf       	rjmp	.-4      	; 0x4ec <__ADCBlockEnter+0x1e>
- 4f0:	08 95       	ret
-
-000004f2 <__ADCBlockLeave>:
- 4f2:	3f b7       	in	r19, 0x3f	; 63
- 4f4:	f8 94       	cli
- 4f6:	8f 3f       	cpi	r24, 0xFF	; 255
- 4f8:	31 f4       	brne	.+12     	; 0x506 <__ADCBlockLeave+0x14>
- 4fa:	80 91 64 00 	lds	r24, 0x0064
- 4fe:	8f 3f       	cpi	r24, 0xFF	; 255
- 500:	51 f0       	breq	.+20     	; 0x516 <__ADCBlockLeave+0x24>
- 502:	2e ed       	ldi	r18, 0xDE	; 222
- 504:	01 c0       	rjmp	.+2      	; 0x508 <__ADCBlockLeave+0x16>
- 506:	26 ed       	ldi	r18, 0xD6	; 214
- 508:	97 b1       	in	r25, 0x07	; 7
- 50a:	98 27       	eor	r25, r24
- 50c:	90 7c       	andi	r25, 0xC0	; 192
- 50e:	09 f0       	breq	.+2      	; 0x512 <__ADCBlockLeave+0x20>
- 510:	16 b8       	out	0x06, r1	; 6
- 512:	87 b9       	out	0x07, r24	; 7
- 514:	01 c0       	rjmp	.+2      	; 0x518 <__ADCBlockLeave+0x26>
- 516:	20 e0       	ldi	r18, 0x00	; 0
- 518:	26 b9       	out	0x06, r18	; 6
- 51a:	3f bf       	out	0x3f, r19	; 63
- 51c:	08 95       	ret
-
-0000051e <ADCSelectChannel>:
- 51e:	97 b1       	in	r25, 0x07	; 7
- 520:	98 27       	eor	r25, r24
- 522:	90 7c       	andi	r25, 0xC0	; 192
- 524:	09 f0       	breq	.+2      	; 0x528 <ADCSelectChannel+0xa>
- 526:	16 b8       	out	0x06, r1	; 6
- 528:	96 e8       	ldi	r25, 0x86	; 134
- 52a:	96 b9       	out	0x06, r25	; 6
- 52c:	87 b9       	out	0x07, r24	; 7
- 52e:	08 95       	ret
-
-00000530 <ADCMeasure>:
- 530:	36 9a       	sbi	0x06, 6	; 6
- 532:	36 99       	sbic	0x06, 6	; 6
- 534:	fe cf       	rjmp	.-4      	; 0x532 <ADCMeasure+0x2>
- 536:	08 95       	ret
-
-00000538 <ADCInterruptEnable>:
- 538:	2f b7       	in	r18, 0x3f	; 63
-    return 1;
-}
-
-static __inline__ uint8_t __iCliRetVal(void)
-{
-    cli();
- 53a:	f8 94       	cli
- 53c:	96 b1       	in	r25, 0x06	; 6
- 53e:	97 ff       	sbrs	r25, 7
- 540:	02 c0       	rjmp	.+4      	; 0x546 <ADCInterruptEnable+0xe>
- 542:	93 ff       	sbrs	r25, 3
- 544:	0a c0       	rjmp	.+20     	; 0x55a <ADCInterruptEnable+0x22>
- 546:	97 b1       	in	r25, 0x07	; 7
- 548:	98 27       	eor	r25, r24
- 54a:	90 7c       	andi	r25, 0xC0	; 192
- 54c:	09 f0       	breq	.+2      	; 0x550 <ADCInterruptEnable+0x18>
- 54e:	16 b8       	out	0x06, r1	; 6
- 550:	36 99       	sbic	0x06, 6	; 6
- 552:	16 b8       	out	0x06, r1	; 6
- 554:	87 b9       	out	0x07, r24	; 7
- 556:	9e ed       	ldi	r25, 0xDE	; 222
- 558:	96 b9       	out	0x06, r25	; 6
- 55a:	80 93 64 00 	sts	0x0064, r24
-    (void)__s;
-}
-
-static __inline__ void __iRestore(const  uint8_t *__s)
-{
-    SREG = *__s;
- 55e:	2f bf       	out	0x3f, r18	; 63
-    __asm__ volatile ("" ::: "memory");
+00000548 <sleepUntilInterrupt>:
+ 548:	f8 94       	cli
+ 54a:	85 b7       	in	r24, 0x35	; 53
+ 54c:	8f 70       	andi	r24, 0x0F	; 15
+ 54e:	80 68       	ori	r24, 0x80	; 128
+ 550:	85 bf       	out	0x35, r24	; 53
+ 552:	78 94       	sei
+ 554:	88 95       	sleep
+ 556:	f8 94       	cli
+ 558:	85 b7       	in	r24, 0x35	; 53
+ 55a:	8f 77       	andi	r24, 0x7F	; 127
+ 55c:	85 bf       	out	0x35, r24	; 53
+ 55e:	78 94       	sei
  560:	08 95       	ret
 
-00000562 <__udivmodhi4>:
- 562:	aa 1b       	sub	r26, r26
- 564:	bb 1b       	sub	r27, r27
- 566:	51 e1       	ldi	r21, 0x11	; 17
- 568:	07 c0       	rjmp	.+14     	; 0x578 <__udivmodhi4_ep>
+00000562 <ADCInit>:
+ 562:	8f ef       	ldi	r24, 0xFF	; 255
+ 564:	80 93 67 00 	sts	0x0067, r24
+ 568:	86 e0       	ldi	r24, 0x06	; 6
+ 56a:	86 b9       	out	0x06, r24	; 6
+ 56c:	08 95       	ret
 
-0000056a <__udivmodhi4_loop>:
- 56a:	aa 1f       	adc	r26, r26
- 56c:	bb 1f       	adc	r27, r27
- 56e:	a6 17       	cp	r26, r22
- 570:	b7 07       	cpc	r27, r23
- 572:	10 f0       	brcs	.+4      	; 0x578 <__udivmodhi4_ep>
- 574:	a6 1b       	sub	r26, r22
- 576:	b7 0b       	sbc	r27, r23
+0000056e <__ADCBlockEnter>:
+ 56e:	2f b7       	in	r18, 0x3f	; 63
+ 570:	f8 94       	cli
+ 572:	87 b1       	in	r24, 0x07	; 7
+ 574:	96 b1       	in	r25, 0x06	; 6
+ 576:	39 2f       	mov	r19, r25
+ 578:	38 78       	andi	r19, 0x88	; 136
+ 57a:	31 f0       	breq	.+12     	; 0x588 <__ADCBlockEnter+0x1a>
+ 57c:	93 ff       	sbrs	r25, 3
+ 57e:	05 c0       	rjmp	.+10     	; 0x58a <__ADCBlockEnter+0x1c>
+ 580:	80 93 67 00 	sts	0x0067, r24
+ 584:	86 e8       	ldi	r24, 0x86	; 134
+ 586:	86 b9       	out	0x06, r24	; 6
+ 588:	8f ef       	ldi	r24, 0xFF	; 255
+ 58a:	2f bf       	out	0x3f, r18	; 63
+ 58c:	36 99       	sbic	0x06, 6	; 6
+ 58e:	fe cf       	rjmp	.-4      	; 0x58c <__ADCBlockEnter+0x1e>
+ 590:	08 95       	ret
 
-00000578 <__udivmodhi4_ep>:
- 578:	88 1f       	adc	r24, r24
- 57a:	99 1f       	adc	r25, r25
- 57c:	5a 95       	dec	r21
- 57e:	a9 f7       	brne	.-22     	; 0x56a <__udivmodhi4_loop>
- 580:	80 95       	com	r24
- 582:	90 95       	com	r25
- 584:	bc 01       	movw	r22, r24
- 586:	cd 01       	movw	r24, r26
- 588:	08 95       	ret
+00000592 <__ADCBlockLeave>:
+ 592:	3f b7       	in	r19, 0x3f	; 63
+ 594:	f8 94       	cli
+ 596:	8f 3f       	cpi	r24, 0xFF	; 255
+ 598:	31 f4       	brne	.+12     	; 0x5a6 <__ADCBlockLeave+0x14>
+ 59a:	80 91 67 00 	lds	r24, 0x0067
+ 59e:	8f 3f       	cpi	r24, 0xFF	; 255
+ 5a0:	51 f0       	breq	.+20     	; 0x5b6 <__ADCBlockLeave+0x24>
+ 5a2:	2e ed       	ldi	r18, 0xDE	; 222
+ 5a4:	01 c0       	rjmp	.+2      	; 0x5a8 <__ADCBlockLeave+0x16>
+ 5a6:	26 ed       	ldi	r18, 0xD6	; 214
+ 5a8:	97 b1       	in	r25, 0x07	; 7
+ 5aa:	98 27       	eor	r25, r24
+ 5ac:	90 7c       	andi	r25, 0xC0	; 192
+ 5ae:	09 f0       	breq	.+2      	; 0x5b2 <__ADCBlockLeave+0x20>
+ 5b0:	16 b8       	out	0x06, r1	; 6
+ 5b2:	87 b9       	out	0x07, r24	; 7
+ 5b4:	01 c0       	rjmp	.+2      	; 0x5b8 <__ADCBlockLeave+0x26>
+ 5b6:	20 e0       	ldi	r18, 0x00	; 0
+ 5b8:	26 b9       	out	0x06, r18	; 6
+ 5ba:	3f bf       	out	0x3f, r19	; 63
+ 5bc:	08 95       	ret
 
-0000058a <__usmulhisi3>:
- 58a:	05 d0       	rcall	.+10     	; 0x596 <__umulhisi3>
+000005be <ADCSelectChannel>:
+ 5be:	97 b1       	in	r25, 0x07	; 7
+ 5c0:	98 27       	eor	r25, r24
+ 5c2:	90 7c       	andi	r25, 0xC0	; 192
+ 5c4:	09 f0       	breq	.+2      	; 0x5c8 <ADCSelectChannel+0xa>
+ 5c6:	16 b8       	out	0x06, r1	; 6
+ 5c8:	96 e8       	ldi	r25, 0x86	; 134
+ 5ca:	96 b9       	out	0x06, r25	; 6
+ 5cc:	87 b9       	out	0x07, r24	; 7
+ 5ce:	08 95       	ret
 
-0000058c <__usmulhisi3_tail>:
- 58c:	b7 ff       	sbrs	r27, 7
- 58e:	08 95       	ret
- 590:	82 1b       	sub	r24, r18
- 592:	93 0b       	sbc	r25, r19
- 594:	08 95       	ret
+000005d0 <ADCMeasure>:
+ 5d0:	36 9a       	sbi	0x06, 6	; 6
+ 5d2:	36 99       	sbic	0x06, 6	; 6
+ 5d4:	fe cf       	rjmp	.-4      	; 0x5d2 <ADCMeasure+0x2>
+ 5d6:	08 95       	ret
 
-00000596 <__umulhisi3>:
- 596:	a2 9f       	mul	r26, r18
- 598:	b0 01       	movw	r22, r0
- 59a:	b3 9f       	mul	r27, r19
- 59c:	c0 01       	movw	r24, r0
- 59e:	a3 9f       	mul	r26, r19
- 5a0:	01 d0       	rcall	.+2      	; 0x5a4 <__umulhisi3+0xe>
- 5a2:	b2 9f       	mul	r27, r18
- 5a4:	70 0d       	add	r23, r0
- 5a6:	81 1d       	adc	r24, r1
- 5a8:	11 24       	eor	r1, r1
- 5aa:	91 1d       	adc	r25, r1
- 5ac:	08 95       	ret
+000005d8 <ADCInterruptEnable>:
+ 5d8:	2f b7       	in	r18, 0x3f	; 63
+    return 1;
+}
 
-000005ae <_exit>:
- 5ae:	f8 94       	cli
+static __inline__ uint8_t __iCliRetVal(void)
+{
+    cli();
+ 5da:	f8 94       	cli
+ 5dc:	96 b1       	in	r25, 0x06	; 6
+ 5de:	97 ff       	sbrs	r25, 7
+ 5e0:	02 c0       	rjmp	.+4      	; 0x5e6 <ADCInterruptEnable+0xe>
+ 5e2:	93 ff       	sbrs	r25, 3
+ 5e4:	0a c0       	rjmp	.+20     	; 0x5fa <ADCInterruptEnable+0x22>
+ 5e6:	97 b1       	in	r25, 0x07	; 7
+ 5e8:	98 27       	eor	r25, r24
+ 5ea:	90 7c       	andi	r25, 0xC0	; 192
+ 5ec:	09 f0       	breq	.+2      	; 0x5f0 <ADCInterruptEnable+0x18>
+ 5ee:	16 b8       	out	0x06, r1	; 6
+ 5f0:	36 99       	sbic	0x06, 6	; 6
+ 5f2:	16 b8       	out	0x06, r1	; 6
+ 5f4:	87 b9       	out	0x07, r24	; 7
+ 5f6:	9e ed       	ldi	r25, 0xDE	; 222
+ 5f8:	96 b9       	out	0x06, r25	; 6
+ 5fa:	80 93 67 00 	sts	0x0067, r24
+    (void)__s;
+}
 
-000005b0 <__stop_program>:
- 5b0:	ff cf       	rjmp	.-2      	; 0x5b0 <__stop_program>
+static __inline__ void __iRestore(const  uint8_t *__s)
+{
+    SREG = *__s;
+ 5fe:	2f bf       	out	0x3f, r18	; 63
+    __asm__ volatile ("" ::: "memory");
+ 600:	08 95       	ret
+
+00000602 <__udivmodhi4>:
+ 602:	aa 1b       	sub	r26, r26
+ 604:	bb 1b       	sub	r27, r27
+ 606:	51 e1       	ldi	r21, 0x11	; 17
+ 608:	07 c0       	rjmp	.+14     	; 0x618 <__udivmodhi4_ep>
+
+0000060a <__udivmodhi4_loop>:
+ 60a:	aa 1f       	adc	r26, r26
+ 60c:	bb 1f       	adc	r27, r27
+ 60e:	a6 17       	cp	r26, r22
+ 610:	b7 07       	cpc	r27, r23
+ 612:	10 f0       	brcs	.+4      	; 0x618 <__udivmodhi4_ep>
+ 614:	a6 1b       	sub	r26, r22
+ 616:	b7 0b       	sbc	r27, r23
+
+00000618 <__udivmodhi4_ep>:
+ 618:	88 1f       	adc	r24, r24
+ 61a:	99 1f       	adc	r25, r25
+ 61c:	5a 95       	dec	r21
+ 61e:	a9 f7       	brne	.-22     	; 0x60a <__udivmodhi4_loop>
+ 620:	80 95       	com	r24
+ 622:	90 95       	com	r25
+ 624:	bc 01       	movw	r22, r24
+ 626:	cd 01       	movw	r24, r26
+ 628:	08 95       	ret
+
+0000062a <__usmulhisi3>:
+ 62a:	05 d0       	rcall	.+10     	; 0x636 <__umulhisi3>
+
+0000062c <__usmulhisi3_tail>:
+ 62c:	b7 ff       	sbrs	r27, 7
+ 62e:	08 95       	ret
+ 630:	82 1b       	sub	r24, r18
+ 632:	93 0b       	sbc	r25, r19
+ 634:	08 95       	ret
+
+00000636 <__umulhisi3>:
+ 636:	a2 9f       	mul	r26, r18
+ 638:	b0 01       	movw	r22, r0
+ 63a:	b3 9f       	mul	r27, r19
+ 63c:	c0 01       	movw	r24, r0
+ 63e:	a3 9f       	mul	r26, r19
+ 640:	01 d0       	rcall	.+2      	; 0x644 <__umulhisi3+0xe>
+ 642:	b2 9f       	mul	r27, r18
+ 644:	70 0d       	add	r23, r0
+ 646:	81 1d       	adc	r24, r1
+ 648:	11 24       	eor	r1, r1
+ 64a:	91 1d       	adc	r25, r1
+ 64c:	08 95       	ret
+
+0000064e <_exit>:
+ 64e:	f8 94       	cli
+
+00000650 <__stop_program>:
+ 650:	ff cf       	rjmp	.-2      	; 0x650 <__stop_program>
