@@ -2,14 +2,17 @@
 
 #include <asuro/asuro.h>
 #include "helpers.h"
+#include <time.h>
+#include <stdlib.h>
 
 void main(void) {
     Init();
 	int x = 160;
 	int y = 200;
+	int i = -1;
 	
 	while (1) {  	//Hauptschleife
-		
+		i++;
 		char sensor = PollSwitch();
 		sensor &= 0b00111111;
 		
@@ -42,10 +45,14 @@ void main(void) {
 			LineData(data);
 		} 
 		
-		for (int i=0; i % 10000==0; i++)
-		{
-			StatusLED(YELLOW);
-			stopAsuro(1000);
+		if ( (i % 1000) == 0) {
+			int ran;
+			srand(clock());
+			ran = rand() % 2;
+			if (ran) {
+				StatusLED(YELLOW);
+				stopAsuro(1000);
+			}
 		}
 		
 		msleep(1000); 
