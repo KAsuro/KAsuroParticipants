@@ -9,6 +9,7 @@ void main(void) {
 	int turns = 0;
 
     Init();
+    EncoderInit();
     
     MotorDir(FWD,FWD);
     MotorSpeed(80,80);
