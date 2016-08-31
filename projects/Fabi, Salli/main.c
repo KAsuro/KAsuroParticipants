@@ -43,12 +43,14 @@ void main(void) {
 		} 
 		MotorSpeed(160, 200);
 		int i = 0;
-		for(i = 0; i % 20 == 0; i++) //Gelegentlich kurzer Richtungswechsel
+		for(i = 0; i % 100 == 0; i++) //Gelegentlich kurzer Richtungswechsel
 		{
-			if (i%4 == 0)
-			 MotorSpeed(200, 10);
-			else 
-			 MotorSpeed(10, 200);
+			MotorSpeed(10, 200);
+			msleep(100);
+		}
+		for(i = 0; i % 101 == 0; i++) //Gelegentlich kurzer Richtungswechsel 2.0
+		{
+			MotorSpeed(200, 10);
 			msleep(100);
 		}
 		StatusLED(GREEN);
