@@ -14,7 +14,7 @@ void main(void) {
 		sensor &= 0b00111111;
 		
 		MotorDir(FWD, FWD); //Werkeinstellung
-		MotorSpeed(160, 200); 
+		MotorSpeed(170, 130); 
 		
 		
 		if (sensor > 0) //Abfrage der sechs Drucksensoren -> backwards
@@ -41,13 +41,15 @@ void main(void) {
 			stopAsuro(500);
 			LineData(data);
 		} 
-		MotorSpeed(160, 200);
-		int i = 0, b = 30;
-		for(i = 0; ((i < 200) && (b < 230)); i++) //Gelegentlich kurzer Richtungswechsel
+		
+		for (int i=0; i % 10000==0; i++)
 		{
-			MotorSpeed(i, b);
-			msleep(100);
+			StatusLED(YELLOW);
+			stopAsuro(1000);
 		}
+		
+		msleep(1000); 
+		MotorSpeed(160, 200);
 		StatusLED(GREEN);
 		BackLED(OFF, OFF);
 		msleep(500); 				//Werkseinstellungen : LEDs auf off | StatusLED auf grün | Pause
