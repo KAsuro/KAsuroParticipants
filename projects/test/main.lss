@@ -9,23 +9,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   2 .bss          00000015  00800060  00800060  000006e6  2**0
                   ALLOC
-  3 .comment      00000022  00000000  00000000  000006e6  2**0
+  3 .comment      00000011  00000000  00000000  000006e6  2**0
                   CONTENTS, READONLY
-  4 .debug_aranges 00000210  00000000  00000000  00000708  2**0
+  4 .debug_aranges 00000210  00000000  00000000  000006f7  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00001abf  00000000  00000000  00000918  2**0
+  5 .debug_info   00001abf  00000000  00000000  00000907  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000d30  00000000  00000000  000023d7  2**0
+  6 .debug_abbrev 00000d30  00000000  00000000  000023c6  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000009b5  00000000  00000000  00003107  2**0
+  7 .debug_line   000009b5  00000000  00000000  000030f6  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000454  00000000  00000000  00003abc  2**2
+  8 .debug_frame  00000454  00000000  00000000  00003aac  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00000762  00000000  00000000  00003f10  2**0
+  9 .debug_str    000006c8  00000000  00000000  00003f00  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000e5b  00000000  00000000  00004672  2**0
+ 10 .debug_loc    00000e5b  00000000  00000000  000045c8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 000001e0  00000000  00000000  000054cd  2**0
+ 11 .debug_ranges 000001e0  00000000  00000000  00005423  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -238,15 +238,34 @@ void msleep(uint16_t ms) {
   fa:	c8 cf       	rjmp	.-112    	; 0x8c <main+0x44>
 
 000000fc <Init>:
+
+void Init(void) {
+    // The serial interface has already been initialized from the bootloader
+    // SerInit();
+
+    Timer2Init();
   fc:	ee d1       	rcall	.+988    	; 0x4da <Timer2Init>
+    MotorInit();
   fe:	1e d1       	rcall	.+572    	; 0x33c <MotorInit>
+    LEDInit();
  100:	fe d0       	rcall	.+508    	; 0x2fe <LEDInit>
+
+    ADCInit();
  102:	2f d2       	rcall	.+1118   	; 0x562 <ADCInit>
+    SwitchInit();
  104:	9c d1       	rcall	.+824    	; 0x43e <SwitchInit>
+
+    sei();
  106:	78 94       	sei
  108:	08 95       	ret
 
 0000010a <EncoderPoll>:
+
+void EncoderPoll(void) {
+    bool updated;
+    SensorValues_t newValues;
+
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
  10a:	3f b7       	in	r19, 0x3f	; 63
     return 1;
 }
@@ -255,8 +274,11 @@ static __inline__ uint8_t __iCliRetVal(void)
 {
     cli();
  10c:	f8 94       	cli
+        updated = odoDataUpdated;
  10e:	20 91 72 00 	lds	r18, 0x0072
+        odoDataUpdated = false;
  112:	10 92 72 00 	sts	0x0072, r1
+        newValues = odoData;
  116:	80 91 6e 00 	lds	r24, 0x006E
  11a:	90 91 6f 00 	lds	r25, 0x006F
  11e:	e8 2f       	mov	r30, r24
@@ -268,74 +290,169 @@ static __inline__ void __iRestore(const  uint8_t *__s)
 {
     SREG = *__s;
  122:	3f bf       	out	0x3f, r19	; 63
+    }
+
+    if (updated) {
  124:	22 23       	and	r18, r18
  126:	09 f4       	brne	.+2      	; 0x12a <EncoderPoll+0x20>
  128:	45 c0       	rjmp	.+138    	; 0x1b4 <EncoderPoll+0xaa>
+        uint8_t last_state_buf = last_state;
  12a:	40 91 63 00 	lds	r20, 0x0063
+
+        uint8_t mask = ENCODER_STATE_LEFT;
+        uint8_t new = newValues.left;
+        uint8_t ref = reference.left;
  12e:	60 91 65 00 	lds	r22, 0x0065
+        uint16_t ticks = encoderTicks.left;
  132:	20 91 68 00 	lds	r18, 0x0068
  136:	30 91 69 00 	lds	r19, 0x0069
+            if (mask == ENCODER_STATE_LEFT) {
+                // writeback LEFT, load RIGHT
+                reference.left = ref;
+                encoderTicks.left = ticks;
+                new = newValues.right;
+                ref = reference.right;
  13a:	50 91 64 00 	lds	r21, 0x0064
+        uint8_t new = newValues.left;
+        uint8_t ref = reference.left;
+        uint16_t ticks = encoderTicks.left;
+
+        do {
+            if (last_state_buf & mask) { // last edge: low->high
  13e:	41 fd       	sbrc	r20, 1
  140:	08 c0       	rjmp	.+16     	; 0x152 <EncoderPoll+0x48>
+                    ref = new;
+                    last_state_buf &= ~mask;
+                    ticks++;
+                }
+            } else { // last edge: high->low
+                if (ref > new) { // decrease low value
  142:	96 17       	cp	r25, r22
  144:	88 f0       	brcs	.+34     	; 0x168 <EncoderPoll+0x5e>
+                    ref = new;
+                } else if ((uint8_t) (new - ref) > ODO_EDGE_THRESHOLD) { // rising edge
  146:	f9 2f       	mov	r31, r25
  148:	f6 1b       	sub	r31, r22
- 14a:	ff 31       	cpi	r31, 0x1F	; 31
+ 14a:	f5 31       	cpi	r31, 0x15	; 21
  14c:	60 f0       	brcs	.+24     	; 0x166 <EncoderPoll+0x5c>
+                    ref = new;
+                    last_state_buf |= mask;
  14e:	42 60       	ori	r20, 0x02	; 2
  150:	07 c0       	rjmp	.+14     	; 0x160 <EncoderPoll+0x56>
+        uint8_t ref = reference.left;
+        uint16_t ticks = encoderTicks.left;
+
+        do {
+            if (last_state_buf & mask) { // last edge: low->high
+                if (ref < new) { // increase high value
  152:	69 17       	cp	r22, r25
  154:	48 f0       	brcs	.+18     	; 0x168 <EncoderPoll+0x5e>
+                    ref = new;
+                } else if ((uint8_t) (ref - new) > ODO_EDGE_THRESHOLD) { // falling edge
  156:	f6 2f       	mov	r31, r22
  158:	f9 1b       	sub	r31, r25
- 15a:	ff 31       	cpi	r31, 0x1F	; 31
+ 15a:	f5 31       	cpi	r31, 0x15	; 21
  15c:	20 f0       	brcs	.+8      	; 0x166 <EncoderPoll+0x5c>
+                    ref = new;
+                    last_state_buf &= ~mask;
  15e:	4d 7f       	andi	r20, 0xFD	; 253
+                    ticks++;
  160:	2f 5f       	subi	r18, 0xFF	; 255
  162:	3f 4f       	sbci	r19, 0xFF	; 255
  164:	01 c0       	rjmp	.+2      	; 0x168 <EncoderPoll+0x5e>
+
+        do {
+            if (last_state_buf & mask) { // last edge: low->high
+                if (ref < new) { // increase high value
+                    ref = new;
+                } else if ((uint8_t) (ref - new) > ODO_EDGE_THRESHOLD) { // falling edge
  166:	76 2f       	mov	r23, r22
+            }
+
+            if (mask == ENCODER_STATE_LEFT) {
+                // writeback LEFT, load RIGHT
+                reference.left = ref;
+                encoderTicks.left = ticks;
  168:	30 93 69 00 	sts	0x0069, r19
  16c:	20 93 68 00 	sts	0x0068, r18
+                new = newValues.right;
+                ref = reference.right;
+                ticks = encoderTicks.right;
  170:	20 91 6a 00 	lds	r18, 0x006A
  174:	30 91 6b 00 	lds	r19, 0x006B
+        uint8_t new = newValues.left;
+        uint8_t ref = reference.left;
+        uint16_t ticks = encoderTicks.left;
+
+        do {
+            if (last_state_buf & mask) { // last edge: low->high
  178:	40 ff       	sbrs	r20, 0
  17a:	08 c0       	rjmp	.+16     	; 0x18c <EncoderPoll+0x82>
+                if (ref < new) { // increase high value
  17c:	5e 17       	cp	r21, r30
  17e:	78 f0       	brcs	.+30     	; 0x19e <EncoderPoll+0x94>
+                    ref = new;
+                } else if ((uint8_t) (ref - new) > ODO_EDGE_THRESHOLD) { // falling edge
  180:	65 2f       	mov	r22, r21
  182:	68 1b       	sub	r22, r24
- 184:	6f 31       	cpi	r22, 0x1F	; 31
+ 184:	65 31       	cpi	r22, 0x15	; 21
  186:	60 f0       	brcs	.+24     	; 0x1a0 <EncoderPoll+0x96>
+                    ref = new;
+                    last_state_buf &= ~mask;
  188:	4e 7f       	andi	r20, 0xFE	; 254
  18a:	07 c0       	rjmp	.+14     	; 0x19a <EncoderPoll+0x90>
+                    ticks++;
+                }
+            } else { // last edge: high->low
+                if (ref > new) { // decrease low value
  18c:	e5 17       	cp	r30, r21
  18e:	38 f0       	brcs	.+14     	; 0x19e <EncoderPoll+0x94>
+                    ref = new;
+                } else if ((uint8_t) (new - ref) > ODO_EDGE_THRESHOLD) { // rising edge
  190:	68 2f       	mov	r22, r24
  192:	65 1b       	sub	r22, r21
- 194:	6f 31       	cpi	r22, 0x1F	; 31
+ 194:	65 31       	cpi	r22, 0x15	; 21
  196:	20 f0       	brcs	.+8      	; 0x1a0 <EncoderPoll+0x96>
+                    ref = new;
+                    last_state_buf |= mask;
  198:	41 60       	ori	r20, 0x01	; 1
+                    ticks++;
  19a:	2f 5f       	subi	r18, 0xFF	; 255
  19c:	3f 4f       	sbci	r19, 0xFF	; 255
  19e:	58 2f       	mov	r21, r24
  1a0:	70 93 65 00 	sts	0x0065, r23
+                ref = reference.right;
+                ticks = encoderTicks.right;
+            }
+        } while (--mask > 0); // LEFT:(1 << 1): 2 -> RIGHT:(1 << 0): 1 -> 0
+        // writeback RIGHT
+        reference.right = ref;
  1a4:	50 93 64 00 	sts	0x0064, r21
+        encoderTicks.right = ticks;
  1a8:	30 93 6b 00 	sts	0x006B, r19
  1ac:	20 93 6a 00 	sts	0x006A, r18
+
+        last_state = last_state_buf;
  1b0:	40 93 63 00 	sts	0x0063, r20
  1b4:	08 95       	ret
 
 000001b6 <EncoderReset>:
+    }
+}
+
+void EncoderReset(void) {
+    encoderTicks.left = 0;
  1b6:	10 92 69 00 	sts	0x0069, r1
  1ba:	10 92 68 00 	sts	0x0068, r1
+    encoderTicks.right = 0;
  1be:	10 92 6b 00 	sts	0x006B, r1
  1c2:	10 92 6a 00 	sts	0x006A, r1
  1c6:	08 95       	ret
 
 000001c8 <GoTurn>:
+}
+
+void GoTurn(int16_t distance, int16_t degree, uint8_t speed) {
  1c8:	df 92       	push	r13
  1ca:	ef 92       	push	r14
  1cc:	ff 92       	push	r15
@@ -346,8 +463,14 @@ static __inline__ void __iRestore(const  uint8_t *__s)
  1d6:	fc 01       	movw	r30, r24
  1d8:	8b 01       	movw	r16, r22
  1da:	f4 2e       	mov	r15, r20
+    int16_t tick_count;
+    uint8_t l_speed = speed;
+    uint8_t r_speed = speed;
+
+    if (distance != 0) { // either Go (distance) ...
  1dc:	00 97       	sbiw	r24, 0x00	; 0
  1de:	89 f0       	breq	.+34     	; 0x202 <GoTurn+0x3a>
+        tick_count = (((uint16_t) abs(distance)) * ENC_GO_FACTOR) / ENC_DIVIDER;
  1e0:	dc 01       	movw	r26, r24
  1e2:	97 ff       	sbrs	r25, 7
  1e4:	04 c0       	rjmp	.+8      	; 0x1ee <GoTurn+0x26>
@@ -359,12 +482,19 @@ static __inline__ void __iRestore(const  uint8_t *__s)
  1f0:	3e e7       	ldi	r19, 0x7E	; 126
  1f2:	1b d2       	rcall	.+1078   	; 0x62a <__usmulhisi3>
  1f4:	ec 01       	movw	r28, r24
+
+        if (distance < 0)
  1f6:	f7 ff       	sbrs	r31, 7
  1f8:	02 c0       	rjmp	.+4      	; 0x1fe <GoTurn+0x36>
+            MotorDir(RWD, RWD);
  1fa:	60 e1       	ldi	r22, 0x10	; 16
  1fc:	10 c0       	rjmp	.+32     	; 0x21e <GoTurn+0x56>
+        else
+            MotorDir(FWD, FWD);
  1fe:	60 e2       	ldi	r22, 0x20	; 32
  200:	11 c0       	rjmp	.+34     	; 0x224 <GoTurn+0x5c>
+    } else { // ... or Turn (degree)
+        tick_count = (((uint16_t) abs(degree)) * ENC_TURN_FACTOR) / ENC_DIVIDER;
  202:	db 01       	movw	r26, r22
  204:	77 ff       	sbrs	r23, 7
  206:	04 c0       	rjmp	.+8      	; 0x210 <GoTurn+0x48>
@@ -376,71 +506,114 @@ static __inline__ void __iRestore(const  uint8_t *__s)
  212:	3b e6       	ldi	r19, 0x6B	; 107
  214:	0a d2       	rcall	.+1044   	; 0x62a <__usmulhisi3>
  216:	ec 01       	movw	r28, r24
+
+        if (degree < 0)
  218:	17 ff       	sbrs	r17, 7
  21a:	03 c0       	rjmp	.+6      	; 0x222 <GoTurn+0x5a>
+            MotorDir(RWD, FWD);
  21c:	60 e2       	ldi	r22, 0x20	; 32
  21e:	80 e1       	ldi	r24, 0x10	; 16
  220:	02 c0       	rjmp	.+4      	; 0x226 <GoTurn+0x5e>
+        else
+            MotorDir(FWD, RWD);
  222:	60 e1       	ldi	r22, 0x10	; 16
  224:	80 e2       	ldi	r24, 0x20	; 32
  226:	77 d0       	rcall	.+238    	; 0x316 <MotorDir>
+    }
+
+    EncoderReset();
  228:	c6 df       	rcall	.-116    	; 0x1b6 <EncoderReset>
+    MotorSpeed(l_speed, r_speed);
  22a:	6f 2d       	mov	r22, r15
  22c:	8f 2d       	mov	r24, r15
  22e:	7f d0       	rcall	.+254    	; 0x32e <MotorSpeed>
+
+    while (tick_count > 0) {
  230:	df 2c       	mov	r13, r15
  232:	ef 2c       	mov	r14, r15
  234:	1c 16       	cp	r1, r28
  236:	1d 06       	cpc	r1, r29
  238:	a4 f5       	brge	.+104    	; 0x2a2 <GoTurn+0xda>
+        const EncoderTicks_t encoder = encoderTicks;
  23a:	00 91 68 00 	lds	r16, 0x0068
  23e:	10 91 69 00 	lds	r17, 0x0069
  242:	20 91 6a 00 	lds	r18, 0x006A
  246:	30 91 6b 00 	lds	r19, 0x006B
  24a:	f8 01       	movw	r30, r16
  24c:	a9 01       	movw	r20, r18
+
+        tick_count -= encoder.left;
  24e:	c0 1b       	sub	r28, r16
  250:	d1 0b       	sbc	r29, r17
+
+        if (encoder.left > encoder.right) {
  252:	20 17       	cp	r18, r16
  254:	31 07       	cpc	r19, r17
  256:	50 f4       	brcc	.+20     	; 0x26c <GoTurn+0xa4>
+            if ((l_speed > speed) || (r_speed > 244)) {
  258:	fe 14       	cp	r15, r14
  25a:	18 f0       	brcs	.+6      	; 0x262 <GoTurn+0x9a>
  25c:	84 ef       	ldi	r24, 0xF4	; 244
  25e:	8d 15       	cp	r24, r13
  260:	18 f4       	brcc	.+6      	; 0x268 <GoTurn+0xa0>
+                l_speed -= 10;
  262:	86 ef       	ldi	r24, 0xF6	; 246
  264:	e8 0e       	add	r14, r24
  266:	02 c0       	rjmp	.+4      	; 0x26c <GoTurn+0xa4>
+            } else {
+                r_speed += 10;
  268:	8a e0       	ldi	r24, 0x0A	; 10
  26a:	d8 0e       	add	r13, r24
+            }
+        }
+
+        if (encoder.left < encoder.right) {
  26c:	e4 17       	cp	r30, r20
  26e:	f5 07       	cpc	r31, r21
  270:	50 f4       	brcc	.+20     	; 0x286 <GoTurn+0xbe>
+            if ((r_speed > speed) || (l_speed > 244)) {
  272:	fd 14       	cp	r15, r13
  274:	18 f0       	brcs	.+6      	; 0x27c <GoTurn+0xb4>
  276:	84 ef       	ldi	r24, 0xF4	; 244
  278:	8e 15       	cp	r24, r14
  27a:	18 f4       	brcc	.+6      	; 0x282 <GoTurn+0xba>
+                r_speed -= 10;
  27c:	86 ef       	ldi	r24, 0xF6	; 246
  27e:	d8 0e       	add	r13, r24
  280:	02 c0       	rjmp	.+4      	; 0x286 <GoTurn+0xbe>
+            } else {
+                l_speed += 10;
  282:	8a e0       	ldi	r24, 0x0A	; 10
  284:	e8 0e       	add	r14, r24
+            }
+        }
+
+        EncoderReset(); // reset encoder counter after each iteration
  286:	97 df       	rcall	.-210    	; 0x1b6 <EncoderReset>
+        MotorSpeed(l_speed, r_speed);
  288:	6d 2d       	mov	r22, r13
  28a:	8e 2d       	mov	r24, r14
  28c:	50 d0       	rcall	.+160    	; 0x32e <MotorSpeed>
+
+        // sleep for 1ms without missing any new sensor measurments
+        for (const uint8_t start = tick36kHz; (uint8_t) (tick36kHz - start) < 36;) {
  28e:	10 91 74 00 	lds	r17, 0x0074
  292:	80 91 74 00 	lds	r24, 0x0074
  296:	81 1b       	sub	r24, r17
  298:	84 32       	cpi	r24, 0x24	; 36
  29a:	60 f6       	brcc	.-104    	; 0x234 <GoTurn+0x6c>
+            sleepUntilInterrupt();
  29c:	55 d1       	rcall	.+682    	; 0x548 <sleepUntilInterrupt>
+            EncoderPoll();
  29e:	35 df       	rcall	.-406    	; 0x10a <EncoderPoll>
  2a0:	f8 cf       	rjmp	.-16     	; 0x292 <GoTurn+0xca>
+        }
+    }
+
+    MotorSpeed(0, 0); // stop controlling the motors
  2a2:	60 e0       	ldi	r22, 0x00	; 0
  2a4:	80 e0       	ldi	r24, 0x00	; 0
+}
  2a6:	df 91       	pop	r29
  2a8:	cf 91       	pop	r28
  2aa:	1f 91       	pop	r17
@@ -448,32 +621,75 @@ static __inline__ void __iRestore(const  uint8_t *__s)
  2ae:	ff 90       	pop	r15
  2b0:	ef 90       	pop	r14
  2b2:	df 90       	pop	r13
+            sleepUntilInterrupt();
+            EncoderPoll();
+        }
+    }
+
+    MotorSpeed(0, 0); // stop controlling the motors
  2b4:	3c c0       	rjmp	.+120    	; 0x32e <MotorSpeed>
 
 000002b6 <EncoderMovementReset>:
+}
+
+void EncoderMovementReset(void) {
+    leftMovementSpeed = 0;
  2b6:	10 92 62 00 	sts	0x0062, r1
+    rightMovementSpeed = 0;
  2ba:	10 92 61 00 	sts	0x0061, r1
+    deltaMovementSpeed = 0;
  2be:	10 92 60 00 	sts	0x0060, r1
  2c2:	08 95       	ret
 
 000002c4 <EncoderInit>:
+static int8_t deltaMovementSpeed;
+
+void EncoderInit(void) {
+    // reference 0 + last_state "high" -> adjustment to the current odometry
+    // sensor value at next call of EncoderPoll()
+    reference.left = 0;
  2c4:	10 92 65 00 	sts	0x0065, r1
+    reference.right = 0;
  2c8:	10 92 64 00 	sts	0x0064, r1
+    last_state = ENCODER_STATE_LEFT | ENCODER_STATE_RIGHT;
  2cc:	83 e0       	ldi	r24, 0x03	; 3
  2ce:	80 93 63 00 	sts	0x0063, r24
+
+    EncoderReset();
  2d2:	71 df       	rcall	.-286    	; 0x1b6 <EncoderReset>
+    EncoderMovementReset();
  2d4:	f0 cf       	rjmp	.-32     	; 0x2b6 <EncoderMovementReset>
 
 000002d6 <StatusLED>:
+    BackLEDFast(OFF);
+    StatusLED(GREEN);
+}
+
+void StatusLED(const uint8_t color) {
+    GREEN_LED_OFF();
  2d6:	c0 98       	cbi	0x18, 0	; 24
+    RED_LED_OFF();
  2d8:	92 98       	cbi	0x12, 2	; 18
+
+    if (color & GREEN) {
  2da:	80 fd       	sbrc	r24, 0
+        GREEN_LED_ON();
  2dc:	c0 9a       	sbi	0x18, 0	; 24
+    }
+
+    if (color & RED) {
  2de:	81 fd       	sbrc	r24, 1
+        RED_LED_ON();
  2e0:	92 9a       	sbi	0x12, 2	; 18
  2e2:	08 95       	ret
 
 000002e4 <BackLEDFast>:
+        FRONT_LED_OFF();
+    }
+}
+
+void BackLEDFast(const uint8_t leds) {
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
  2e4:	2f b7       	in	r18, 0x3f	; 63
     return 1;
 }
@@ -482,11 +698,16 @@ static __inline__ uint8_t __iCliRetVal(void)
 {
     cli();
  2e6:	f8 94       	cli
+        if (leds > 0) {
  2e8:	88 23       	and	r24, r24
  2ea:	19 f0       	breq	.+6      	; 0x2f2 <BackLEDFast+0xe>
+            LED_CONFIGURE_BACK();
  2ec:	97 98       	cbi	0x12, 7	; 18
  2ee:	a1 9a       	sbi	0x14, 1	; 20
  2f0:	a0 9a       	sbi	0x14, 0	; 20
+        }
+
+        PORTC = (PORTC & ~BACK_LED_BOTH) | leds;
  2f2:	95 b3       	in	r25, 0x15	; 21
  2f4:	9c 7f       	andi	r25, 0xFC	; 252
  2f6:	98 2b       	or	r25, r24
@@ -502,20 +723,38 @@ static __inline__ void __iRestore(const  uint8_t *__s)
  2fc:	08 95       	ret
 
 000002fe <LEDInit>:
+
+#include <asuro/led.h>
+#include <util/misc.h>
+
+void LEDInit(void) {
+    DDRB |= GREEN_LED;
  2fe:	b8 9a       	sbi	0x17, 0	; 23
+    DDRD |= FRONT_LED | ODOMETRY_LED | RED_LED;
  300:	81 b3       	in	r24, 0x11	; 17
  302:	84 6c       	ori	r24, 0xC4	; 196
  304:	81 bb       	out	0x11, r24	; 17
+
+    FRONT_LED_OFF();
  306:	96 98       	cbi	0x12, 6	; 18
+    LED_CONFIGURE_BACK();
  308:	97 98       	cbi	0x12, 7	; 18
  30a:	a1 9a       	sbi	0x14, 1	; 20
  30c:	a0 9a       	sbi	0x14, 0	; 20
+    BackLEDFast(OFF);
  30e:	80 e0       	ldi	r24, 0x00	; 0
  310:	e9 df       	rcall	.-46     	; 0x2e4 <BackLEDFast>
+    StatusLED(GREEN);
  312:	81 e0       	ldi	r24, 0x01	; 1
  314:	e0 cf       	rjmp	.-64     	; 0x2d6 <StatusLED>
 
 00000316 <MotorDir>:
+    MotorSpeed(0,0);
+}
+
+void MotorDir(const uint8_t left_dir, const uint8_t right_dir)
+{
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
  316:	2f b7       	in	r18, 0x3f	; 63
     return 1;
 }
@@ -524,10 +763,12 @@ static __inline__ uint8_t __iCliRetVal(void)
 {
     cli();
  318:	f8 94       	cli
+        PORTD = (PORTD & ~LEFT_DIR) | left_dir;
  31a:	92 b3       	in	r25, 0x12	; 18
  31c:	9f 7c       	andi	r25, 0xCF	; 207
  31e:	89 2b       	or	r24, r25
  320:	82 bb       	out	0x12, r24	; 18
+        PORTB = (PORTB & ~RIGHT_DIR) | right_dir;
  322:	88 b3       	in	r24, 0x18	; 24
  324:	8f 7c       	andi	r24, 0xCF	; 207
  326:	68 2b       	or	r22, r24
@@ -543,6 +784,11 @@ static __inline__ void __iRestore(const  uint8_t *__s)
  32c:	08 95       	ret
 
 0000032e <MotorSpeed>:
+    }
+}
+
+void MotorSpeed(const uint8_t left_speed, const uint8_t right_speed) {
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
  32e:	9f b7       	in	r25, 0x3f	; 63
     return 1;
 }
@@ -551,8 +797,11 @@ static __inline__ uint8_t __iCliRetVal(void)
 {
     cli();
  330:	f8 94       	cli
+        OCR1AH = 0; // highbyte = 0, used for both write operations
  332:	1b bc       	out	0x2b, r1	; 43
+        OCR1AL = left_speed;
  334:	8a bd       	out	0x2a, r24	; 42
+        OCR1BL = right_speed;
  336:	68 bd       	out	0x28, r22	; 40
     (void)__s;
 }
@@ -565,54 +814,99 @@ static __inline__ void __iRestore(const  uint8_t *__s)
  33a:	08 95       	ret
 
 0000033c <MotorInit>:
+#define RIGHT_DIR ((1 << PB4) | (1 << PB5))
+#define LEFT_DIR  ((1 << PD4) | (1 << PD5))
+#endif
+
+void MotorInit(void) {
+    DDRB |= LEFT_DIR | PWM;
  33c:	87 b3       	in	r24, 0x17	; 23
  33e:	86 63       	ori	r24, 0x36	; 54
  340:	87 bb       	out	0x17, r24	; 23
+    DDRD |= RIGHT_DIR;
  342:	81 b3       	in	r24, 0x11	; 17
  344:	80 63       	ori	r24, 0x30	; 48
  346:	81 bb       	out	0x11, r24	; 17
+
+    // 8 bit PWM using OC1A & OC1B
+    TCCR1A = (1 << WGM10) | (1 << COM1A1) | (1 << COM1B1);
  348:	81 ea       	ldi	r24, 0xA1	; 161
  34a:	8f bd       	out	0x2f, r24	; 47
+    // Timer1 CLK: F_CPU/8
+    TCCR1B = (1 << CS11);
  34c:	82 e0       	ldi	r24, 0x02	; 2
  34e:	8e bd       	out	0x2e, r24	; 46
+    // Turn off all interrupts of Timer1
+    TIMSK &= ~((1 << TICIE1) | (1 << OCIE1A) | (1 << OCIE1B) | (1 << TOIE1));
  350:	89 b7       	in	r24, 0x39	; 57
  352:	83 7c       	andi	r24, 0xC3	; 195
  354:	89 bf       	out	0x39, r24	; 57
+
+    MotorDir(FWD,FWD);
  356:	60 e2       	ldi	r22, 0x20	; 32
  358:	80 e2       	ldi	r24, 0x20	; 32
  35a:	dd df       	rcall	.-70     	; 0x316 <MotorDir>
+    MotorSpeed(0,0);
  35c:	60 e0       	ldi	r22, 0x00	; 0
  35e:	80 e0       	ldi	r24, 0x00	; 0
  360:	e6 cf       	rjmp	.-52     	; 0x32e <MotorSpeed>
 
 00000362 <LineData>:
+    }
+
+    amMode = mode;
+}
+
+void LineData(uint16_t * const data) {
  362:	1f 93       	push	r17
  364:	cf 93       	push	r28
  366:	df 93       	push	r29
  368:	ec 01       	movw	r28, r24
+    ADC_BLOCK {
  36a:	01 d1       	rcall	.+514    	; 0x56e <__ADCBlockEnter>
  36c:	18 2f       	mov	r17, r24
+        ADCSelectChannel(ADC_IR_LEFT);
  36e:	83 e4       	ldi	r24, 0x43	; 67
  370:	26 d1       	rcall	.+588    	; 0x5be <ADCSelectChannel>
+        ADCMeasure();
  372:	2e d1       	rcall	.+604    	; 0x5d0 <ADCMeasure>
+        data[LEFT] = ADC;
  374:	24 b1       	in	r18, 0x04	; 4
  376:	35 b1       	in	r19, 0x05	; 5
  378:	39 83       	std	Y+1, r19	; 0x01
  37a:	28 83       	st	Y, r18
+
+        ADCSelectChannel(ADC_IR_RIGHT);
  37c:	82 e4       	ldi	r24, 0x42	; 66
  37e:	1f d1       	rcall	.+574    	; 0x5be <ADCSelectChannel>
+        ADCMeasure();
  380:	27 d1       	rcall	.+590    	; 0x5d0 <ADCMeasure>
+        data[RIGHT] = ADC;
  382:	24 b1       	in	r18, 0x04	; 4
  384:	35 b1       	in	r19, 0x05	; 5
  386:	3b 83       	std	Y+3, r19	; 0x03
  388:	2a 83       	std	Y+2, r18	; 0x02
+ * @param ptr a pointer to the ADC channel configuration which will be passed to
+ *            ADCBlockLeave()
+ * \endif
+ */
+static ALWAYS_INLINE void __ADCBlockLeaveByPtr(const uint8_t * const ptr) {
+    __ADCBlockLeave(*ptr);
  38a:	81 2f       	mov	r24, r17
+    }
+}
  38c:	df 91       	pop	r29
  38e:	cf 91       	pop	r28
  390:	1f 91       	pop	r17
  392:	ff c0       	rjmp	.+510    	; 0x592 <__ADCBlockLeave>
 
 00000394 <__vector_14>:
+#endif
+#endif
+}
+
+ISR(ADC_vect)
+{
  394:	1f 92       	push	r1
  396:	0f 92       	push	r0
  398:	0f b6       	in	r0, 0x3f	; 63
@@ -630,46 +924,101 @@ static __inline__ void __iRestore(const  uint8_t *__s)
  3b0:	bf 93       	push	r27
  3b2:	ef 93       	push	r30
  3b4:	ff 93       	push	r31
+    static uint8_t right;
+    uint8_t channel = ADC_GET_CHANNEL();
  3b6:	87 b1       	in	r24, 0x07	; 7
+
+    sei(); // re-enable interrupts
  3b8:	78 94       	sei
+
+    switch (channel) {
  3ba:	81 36       	cpi	r24, 0x61	; 97
  3bc:	19 f0       	breq	.+6      	; 0x3c4 <__vector_14+0x30>
  3be:	83 36       	cpi	r24, 0x63	; 99
  3c0:	a1 f0       	breq	.+40     	; 0x3ea <__vector_14+0x56>
  3c2:	27 c0       	rjmp	.+78     	; 0x412 <__vector_14+0x7e>
+    case AUTOMODE_ADC_CH(AUTOMODE_CH_ODO_LEFT):
+        if (amMode & am_line) {
  3c4:	80 91 6d 00 	lds	r24, 0x006D
  3c8:	82 fd       	sbrc	r24, 2
  3ca:	02 c0       	rjmp	.+4      	; 0x3d0 <__vector_14+0x3c>
+            channel++; // IR_RIGHT is the successor of ODO_LEFT
+        } else {
+            channel = AUTOMODE_ADC_CH(AUTOMODE_CH_ODO_RIGHT);
  3cc:	80 e6       	ldi	r24, 0x60	; 96
  3ce:	01 c0       	rjmp	.+2      	; 0x3d2 <__vector_14+0x3e>
+    sei(); // re-enable interrupts
+
+    switch (channel) {
+    case AUTOMODE_ADC_CH(AUTOMODE_CH_ODO_LEFT):
+        if (amMode & am_line) {
+            channel++; // IR_RIGHT is the successor of ODO_LEFT
  3d0:	82 e6       	ldi	r24, 0x62	; 98
+        } else {
+            channel = AUTOMODE_ADC_CH(AUTOMODE_CH_ODO_RIGHT);
+        }
+
+        cli();
  3d2:	f8 94       	cli
+        odoData.left = ADCH;
  3d4:	95 b1       	in	r25, 0x05	; 5
  3d6:	90 93 6f 00 	sts	0x006F, r25
+        odoData.right = right;
  3da:	90 91 66 00 	lds	r25, 0x0066
  3de:	90 93 6e 00 	sts	0x006E, r25
+        odoDataUpdated = true;
  3e2:	91 e0       	ldi	r25, 0x01	; 1
  3e4:	90 93 72 00 	sts	0x0072, r25
  3e8:	12 c0       	rjmp	.+36     	; 0x40e <__vector_14+0x7a>
+        sei();
+
+        break;
+    case AUTOMODE_ADC_CH(AUTOMODE_CH_IR_LEFT):
+        if (amMode & am_odo) {
  3ea:	80 91 6d 00 	lds	r24, 0x006D
  3ee:	80 ff       	sbrs	r24, 0
  3f0:	02 c0       	rjmp	.+4      	; 0x3f6 <__vector_14+0x62>
+            channel = AUTOMODE_ADC_CH(AUTOMODE_CH_ODO_RIGHT);
  3f2:	80 e6       	ldi	r24, 0x60	; 96
  3f4:	01 c0       	rjmp	.+2      	; 0x3f8 <__vector_14+0x64>
+        } else {
+            channel = AUTOMODE_ADC_CH(AUTOMODE_CH_IR_RIGHT);
  3f6:	82 e6       	ldi	r24, 0x62	; 98
+        }
+
+        cli();
  3f8:	f8 94       	cli
+        lineData.left = ADCH;
  3fa:	95 b1       	in	r25, 0x05	; 5
  3fc:	90 93 71 00 	sts	0x0071, r25
+        lineData.right = right;
  400:	90 91 66 00 	lds	r25, 0x0066
  404:	90 93 70 00 	sts	0x0070, r25
+        lineDataUpdated = true;
  408:	91 e0       	ldi	r25, 0x01	; 1
  40a:	90 93 6c 00 	sts	0x006C, r25
+        sei();
  40e:	78 94       	sei
+
+        break;
  410:	04 c0       	rjmp	.+8      	; 0x41a <__vector_14+0x86>
+    default:
+        right = ADCH;
  412:	95 b1       	in	r25, 0x05	; 5
  414:	90 93 66 00 	sts	0x0066, r25
+        channel++;
  418:	8f 5f       	subi	r24, 0xFF	; 255
+        break;
+    }
+
+    ADCInterruptEnable(channel);
  41a:	de d0       	rcall	.+444    	; 0x5d8 <ADCInterruptEnable>
+#if ADC_ISR_HOOK_ENABLE
+    if (ADCISRHook != NULL) {
+        ADCISRHook();
+    }
+#endif
+}
  41c:	ff 91       	pop	r31
  41e:	ef 91       	pop	r30
  420:	bf 91       	pop	r27
@@ -689,6 +1038,12 @@ static __inline__ void __iRestore(const  uint8_t *__s)
  43c:	18 95       	reti
 
 0000043e <SwitchInit>:
+#if SWITCH_ISR_HOOK_ENABLE
+    ISRHookFunc_t *SwitchISRHook;
+#endif
+
+void SwitchInit(void) {
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
  43e:	9f b7       	in	r25, 0x3f	; 63
     return 1;
 }
@@ -697,12 +1052,20 @@ static __inline__ uint8_t __iCliRetVal(void)
 {
     cli();
  440:	f8 94       	cli
+        GICR &= ~(1 << INT1); // switch interrupt (INT1) off
  442:	8b b7       	in	r24, 0x3b	; 59
  444:	8f 77       	andi	r24, 0x7F	; 127
  446:	8b bf       	out	0x3b, r24	; 59
+
+        uint8_t mcucr = MCUCR;
  448:	85 b7       	in	r24, 0x35	; 53
+
+        mcucr |= (1 << ISC10); // trigger interrupt on rising or falling edge
+        mcucr &= ~(1 << ISC11);
  44a:	87 7f       	andi	r24, 0xF7	; 247
  44c:	84 60       	ori	r24, 0x04	; 4
+
+        MCUCR = mcucr;
  44e:	85 bf       	out	0x35, r24	; 53
     (void)__s;
 }
@@ -711,51 +1074,97 @@ static __inline__ void __iRestore(const  uint8_t *__s)
 {
     SREG = *__s;
  450:	9f bf       	out	0x3f, r25	; 63
+    }
+
+    DDRC &= ~(1 << DDC4); // configure measurment input to input, low
  452:	a4 98       	cbi	0x14, 4	; 20
+    PORTC &= (1 << PC4);
  454:	85 b3       	in	r24, 0x15	; 21
  456:	80 71       	andi	r24, 0x10	; 16
  458:	85 bb       	out	0x15, r24	; 21
+
+    SWITCH_INPUT();
  45a:	8b 98       	cbi	0x11, 3	; 17
+    SWITCH_OFF();
  45c:	93 98       	cbi	0x12, 3	; 18
+    switch_event = false;
  45e:	10 92 73 00 	sts	0x0073, r1
  462:	08 95       	ret
 
 00000464 <PollSwitch>:
+}
+
+uint8_t PollSwitch(void) {
  464:	0f 93       	push	r16
  466:	1f 93       	push	r17
  468:	cf 93       	push	r28
  46a:	df 93       	push	r29
+    uint16_t value = 0;
+
+    SWITCH_ON();
  46c:	93 9a       	sbi	0x12, 3	; 18
+    SWITCH_OUTPUT();
  46e:	8b 9a       	sbi	0x11, 3	; 17
+
+    ADC_BLOCK {
  470:	7e d0       	rcall	.+252    	; 0x56e <__ADCBlockEnter>
  472:	08 2f       	mov	r16, r24
+        ADCSelectChannel(ADC_SWITCH);
  474:	84 e4       	ldi	r24, 0x44	; 68
  476:	a3 d0       	rcall	.+326    	; 0x5be <ADCSelectChannel>
  478:	14 e0       	ldi	r17, 0x04	; 4
  47a:	c0 e0       	ldi	r28, 0x00	; 0
  47c:	d0 e0       	ldi	r29, 0x00	; 0
+
+        for (uint8_t i = 0; i < 4; i++) { // 4x oversampling
+            ADCMeasure();
  47e:	a8 d0       	rcall	.+336    	; 0x5d0 <ADCMeasure>
+            value += ADC;
  480:	24 b1       	in	r18, 0x04	; 4
  482:	35 b1       	in	r19, 0x05	; 5
  484:	c2 0f       	add	r28, r18
  486:	d3 1f       	adc	r29, r19
  488:	11 50       	subi	r17, 0x01	; 1
+    SWITCH_OUTPUT();
+
+    ADC_BLOCK {
+        ADCSelectChannel(ADC_SWITCH);
+
+        for (uint8_t i = 0; i < 4; i++) { // 4x oversampling
  48a:	c9 f7       	brne	.-14     	; 0x47e <PollSwitch+0x1a>
  48c:	80 2f       	mov	r24, r16
  48e:	81 d0       	rcall	.+258    	; 0x592 <__ADCBlockLeave>
+            ADCMeasure();
+            value += ADC;
+        }
+    }
+
+    SWITCH_INPUT();
  490:	8b 98       	cbi	0x11, 3	; 17
+    SWITCH_OFF();
  492:	93 98       	cbi	0x12, 3	; 18
+
+    value /= 4; // divide by four, filter out some noise
  494:	be 01       	movw	r22, r28
  496:	76 95       	lsr	r23
  498:	67 95       	ror	r22
  49a:	76 95       	lsr	r23
  49c:	67 95       	ror	r22
+     */
+    if ((uint32_t) (SWITCH_FACTOR * 1024UL) + (1023 / 2) > UINT16_MAX) {
+        return ((uint8_t) (((uint32_t) (1024UL * SWITCH_FACTOR) + value / 2) / value))
+                - (uint8_t) SWITCH_FACTOR;
+    } else {
+        return ((uint8_t) (((uint16_t) (1024U * SWITCH_FACTOR) + value / 2) / value))
  49e:	cb 01       	movw	r24, r22
  4a0:	96 95       	lsr	r25
  4a2:	87 95       	ror	r24
- 4a4:	98 50       	subi	r25, 0x08	; 8
+ 4a4:	94 50       	subi	r25, 0x04	; 4
  4a6:	ad d0       	rcall	.+346    	; 0x602 <__udivmodhi4>
- 4a8:	82 ec       	ldi	r24, 0xC2	; 194
+                - (uint8_t) SWITCH_FACTOR;
+    }
+}
+ 4a8:	81 ec       	ldi	r24, 0xC1	; 193
  4aa:	86 0f       	add	r24, r22
  4ac:	df 91       	pop	r29
  4ae:	cf 91       	pop	r28
@@ -764,17 +1173,35 @@ static __inline__ void __iRestore(const  uint8_t *__s)
  4b4:	08 95       	ret
 
 000004b6 <__vector_2>:
+        GICR &= ~(1 << INT1); // disable interrupt
+    }
+}
+
+ISR(INT1_vect)
+{
  4b6:	1f 92       	push	r1
  4b8:	0f 92       	push	r0
  4ba:	0f b6       	in	r0, 0x3f	; 63
  4bc:	0f 92       	push	r0
  4be:	11 24       	eor	r1, r1
  4c0:	8f 93       	push	r24
+    switch_event = true;
  4c2:	81 e0       	ldi	r24, 0x01	; 1
  4c4:	80 93 73 00 	sts	0x0073, r24
+
+    // SwitchInterruptDisable();
+    // disabled function call to the equivalent function since GCC does not
+    // inline it and produces a lot of stack push/pop operations.
+    GICR &= ~(1 << INT1); // disable interrupt
  4c8:	8b b7       	in	r24, 0x3b	; 59
  4ca:	8f 77       	andi	r24, 0x7F	; 127
  4cc:	8b bf       	out	0x3b, r24	; 59
+#if SWITCH_ISR_HOOK_ENABLE
+    if (SwitchISRHook != NULL) {
+        SwitchISRHook();
+    }
+#endif
+}
  4ce:	8f 91       	pop	r24
  4d0:	0f 90       	pop	r0
  4d2:	0f be       	out	0x3f, r0	; 63
@@ -783,34 +1210,69 @@ static __inline__ void __iRestore(const  uint8_t *__s)
  4d8:	18 95       	reti
 
 000004da <Timer2Init>:
+    // A 36kHz square wave signal matches F_CPU / 222
+    // Operation mode: Fast PWM, range 0 - 221 (T = 222)
+    // 50% duty cycle square wave -> Compare match at TCNT2 = T/2 = 111
+    // Manually added offset: 256 - 222 = 34 cycles
+
+    ASSR = 0x00; // synchronous operation
  4da:	12 bc       	out	0x22, r1	; 34
+    TCCR2 = (1 << CS20); // T2_CLK: F_CPU
  4dc:	81 e0       	ldi	r24, 0x01	; 1
  4de:	85 bd       	out	0x25, r24	; 37
+    TIMSK |= (1 << TOIE2); // overflow interrupt
  4e0:	89 b7       	in	r24, 0x39	; 57
  4e2:	80 64       	ori	r24, 0x40	; 64
  4e4:	89 bf       	out	0x39, r24	; 57
+    OCR2 = 111 + 34; // compare match at T/2 + offset
  4e6:	81 e9       	ldi	r24, 0x91	; 145
  4e8:	83 bd       	out	0x23, r24	; 35
+    TIMER2_CLOCK_OUT_DISABLE();
  4ea:	85 b5       	in	r24, 0x25	; 37
  4ec:	87 78       	andi	r24, 0x87	; 135
  4ee:	85 bd       	out	0x25, r24	; 37
+
+    // configure PB3 (36kHz carrier output) as output, low
+    DDRB |= (1 << DDB3);
  4f0:	bb 9a       	sbi	0x17, 3	; 23
+    PORTB &= ~(1 << PB3);
  4f2:	c3 98       	cbi	0x18, 3	; 24
  4f4:	08 95       	ret
 
 000004f6 <__vector_4>:
+ *
+ * Updating the TCNT2 register requires three clock cycles/instructions, which
+ * results in a total offset value of +37.
+ */
+ISR(TIMER2_OVF_vect)
+{
  4f6:	1f 92       	push	r1
  4f8:	0f 92       	push	r0
  4fa:	0f b6       	in	r0, 0x3f	; 63
  4fc:	0f 92       	push	r0
  4fe:	11 24       	eor	r1, r1
  500:	8f 93       	push	r24
+    uint8_t temp_reg;
+
+    __asm volatile( // TCNT2 += 37;
  502:	84 b5       	in	r24, 0x24	; 36
  504:	8b 5d       	subi	r24, 0xDB	; 219
  506:	84 bd       	out	0x24, r24	; 36
+            : /* in operands */
+              [TIMER_REG] "I" (_SFR_IO_ADDR(TCNT2)),
+              [OFFSET_2COMP] "i" (-37)
+    );
+
+    tick36kHz++;
  508:	80 91 74 00 	lds	r24, 0x0074
  50c:	8f 5f       	subi	r24, 0xFF	; 255
  50e:	80 93 74 00 	sts	0x0074, r24
+#if TIMER2_ISR_HOOK_ENABLE
+    if (Timer2ISRHook != NULL) {
+        Timer2ISRHook();
+    }
+#endif
+}
  512:	8f 91       	pop	r24
  514:	0f 90       	pop	r0
  516:	0f be       	out	0x3f, r0	; 63
@@ -819,108 +1281,276 @@ static __inline__ void __iRestore(const  uint8_t *__s)
  51c:	18 95       	reti
 
 0000051e <sleep>:
+
+void sleep(uint8_t timer36kHz_ticks) {
+    // Interrupts have to be enabled to wake up the microcontroller from sleep
+    // mode, which legitimates the usage of cli/sei in this case
+    cli();
  51e:	f8 94       	cli
+    set_sleep_mode(SLEEP_MODE_IDLE | _SLEEP_ENABLE_MASK); // prepare/unlock
  520:	95 b7       	in	r25, 0x35	; 53
  522:	9f 70       	andi	r25, 0x0F	; 15
  524:	90 68       	ori	r25, 0x80	; 128
  526:	95 bf       	out	0x35, r25	; 53
+    sei();
  528:	78 94       	sei
+
+    timer36kHz_ticks += tick36kHz;
  52a:	90 91 74 00 	lds	r25, 0x0074
  52e:	89 0f       	add	r24, r25
+    while (tick36kHz != timer36kHz_ticks) {
  530:	90 91 74 00 	lds	r25, 0x0074
  534:	98 17       	cp	r25, r24
  536:	11 f0       	breq	.+4      	; 0x53c <sleep+0x1e>
+        sleep_cpu();
  538:	88 95       	sleep
  53a:	fa cf       	rjmp	.-12     	; 0x530 <sleep+0x12>
+    }
+
+    cli();
  53c:	f8 94       	cli
+    sleep_disable();
  53e:	85 b7       	in	r24, 0x35	; 53
  540:	8f 77       	andi	r24, 0x7F	; 127
  542:	85 bf       	out	0x35, r24	; 53
+    sei();
  544:	78 94       	sei
  546:	08 95       	ret
 
 00000548 <sleepUntilInterrupt>:
+}
+
+void sleepUntilInterrupt(void) {
+    cli();
  548:	f8 94       	cli
+    set_sleep_mode(SLEEP_MODE_IDLE | _SLEEP_ENABLE_MASK); // prepare/unlock
  54a:	85 b7       	in	r24, 0x35	; 53
  54c:	8f 70       	andi	r24, 0x0F	; 15
  54e:	80 68       	ori	r24, 0x80	; 128
  550:	85 bf       	out	0x35, r24	; 53
+    sei();
  552:	78 94       	sei
+
+    sleep_cpu();
  554:	88 95       	sleep
+
+    cli();
  556:	f8 94       	cli
+    sleep_disable();
  558:	85 b7       	in	r24, 0x35	; 53
  55a:	8f 77       	andi	r24, 0x7F	; 127
  55c:	85 bf       	out	0x35, r24	; 53
+    sei();
  55e:	78 94       	sei
  560:	08 95       	ret
 
 00000562 <ADCInit>:
+        ADCOff();
+    }
+}
+
+void ADCInit(void) {
+    old_channel = ADMUX_RESERVED_VALUE;
  562:	8f ef       	ldi	r24, 0xFF	; 255
  564:	80 93 67 00 	sts	0x0067, r24
+    ADCSRA = ADCSRA_BASE_VALUE;
  568:	86 e0       	ldi	r24, 0x06	; 6
  56a:	86 b9       	out	0x06, r24	; 6
  56c:	08 95       	ret
 
 0000056e <__ADCBlockEnter>:
+}
+
+uint8_t __ADCBlockEnter(void) {
+    const uint8_t _sreg = SREG;
  56e:	2f b7       	in	r18, 0x3f	; 63
+
+    cli();
  570:	f8 94       	cli
+    const uint8_t _admux = ADMUX;
  572:	87 b1       	in	r24, 0x07	; 7
+    const uint8_t _adcsra = ADCSRA & ((1 << ADEN) | (1 << ADIE));
  574:	96 b1       	in	r25, 0x06	; 6
  576:	39 2f       	mov	r19, r25
  578:	38 78       	andi	r19, 0x88	; 136
+
+    uint8_t result = ADMUX_RESERVED_VALUE;
+
+    if (_adcsra) { // ADC is already enabled
  57a:	31 f0       	breq	.+12     	; 0x588 <__ADCBlockEnter+0x1a>
+        if (_adcsra & (1 << ADIE)) {
  57c:	93 ff       	sbrs	r25, 3
  57e:	05 c0       	rjmp	.+10     	; 0x58a <__ADCBlockEnter+0x1c>
+            // interrupt asynchronous mode
+            old_channel = _admux;
  580:	80 93 67 00 	sts	0x0067, r24
+            ADCSRA = ADCSRA_BASE_VALUE | (1 << ADEN); // ADIE off, ADC left on
  584:	86 e8       	ldi	r24, 0x86	; 134
  586:	86 b9       	out	0x06, r24	; 6
+
+    cli();
+    const uint8_t _admux = ADMUX;
+    const uint8_t _adcsra = ADCSRA & ((1 << ADEN) | (1 << ADIE));
+
+    uint8_t result = ADMUX_RESERVED_VALUE;
  588:	8f ef       	ldi	r24, 0xFF	; 255
+            // interrupt a "normal" AD conversion
+            result = _admux;
+        }
+    }
+
+    SREG = _sreg; // restore interrupt flag before blocking/polling loop
  58a:	2f bf       	out	0x3f, r18	; 63
+
+    while (ADCSRA & (1 << ADSC))
  58c:	36 99       	sbic	0x06, 6	; 6
  58e:	fe cf       	rjmp	.-4      	; 0x58c <__ADCBlockEnter+0x1e>
+        ; // wait until the conversion has been finished
+
+    return result;
+}
  590:	08 95       	ret
 
 00000592 <__ADCBlockLeave>:
+
+void __ADCBlockLeave(uint8_t stored) {
+    uint8_t adcsra_restore = ADCSRA_BASE_VALUE | (1 << ADEN) | (1 << ADSC) | (1 << ADIF);
+    // sets ADC state to: on, start (foreign) conversion, clear interrupt flag
+    const uint8_t _sreg = SREG;
  592:	3f b7       	in	r19, 0x3f	; 63
+
+    cli();
  594:	f8 94       	cli
+
+    if (stored == ADMUX_RESERVED_VALUE) {
  596:	8f 3f       	cpi	r24, 0xFF	; 255
  598:	31 f4       	brne	.+12     	; 0x5a6 <__ADCBlockLeave+0x14>
+        stored = old_channel;
  59a:	80 91 67 00 	lds	r24, 0x0067
+        // interrupted asynchronous mode, re-enable ADC interrupt
+        adcsra_restore |= (1 << ADIE);
+    }
+
+    if (stored == ADMUX_RESERVED_VALUE) {
  59e:	8f 3f       	cpi	r24, 0xFF	; 255
  5a0:	51 f0       	breq	.+20     	; 0x5b6 <__ADCBlockLeave+0x24>
+    cli();
+
+    if (stored == ADMUX_RESERVED_VALUE) {
+        stored = old_channel;
+        // interrupted asynchronous mode, re-enable ADC interrupt
+        adcsra_restore |= (1 << ADIE);
  5a2:	2e ed       	ldi	r18, 0xDE	; 222
  5a4:	01 c0       	rjmp	.+2      	; 0x5a8 <__ADCBlockLeave+0x16>
+
+    return result;
+}
+
+void __ADCBlockLeave(uint8_t stored) {
+    uint8_t adcsra_restore = ADCSRA_BASE_VALUE | (1 << ADEN) | (1 << ADSC) | (1 << ADIF);
  5a6:	26 ed       	ldi	r18, 0xD6	; 214
+    }
+
+    if (stored == ADMUX_RESERVED_VALUE) {
+        adcsra_restore = 0; // ADC off
+    } else {
+        disableADCOnRefChange(ADMUX, stored);
  5a8:	97 b1       	in	r25, 0x07	; 7
+ * @param newmux the new channel configuration
+ * \endif
+ */
+static inline void disableADCOnRefChange(const uint8_t oldmux,
+        const uint8_t newmux) {
+    if ((oldmux & ADC_REF_MASK) != (newmux & ADC_REF_MASK)) {
  5aa:	98 27       	eor	r25, r24
  5ac:	90 7c       	andi	r25, 0xC0	; 192
  5ae:	09 f0       	breq	.+2      	; 0x5b2 <__ADCBlockLeave+0x20>
+ * \if en
+ * Shuts down the ADC completely.
+ * \endif
+ */
+static inline void ADCOff(void) {
+    ADCSRA = 0;
  5b0:	16 b8       	out	0x06, r1	; 6
+
+    if (stored == ADMUX_RESERVED_VALUE) {
+        adcsra_restore = 0; // ADC off
+    } else {
+        disableADCOnRefChange(ADMUX, stored);
+        ADMUX = stored;
  5b2:	87 b9       	out	0x07, r24	; 7
  5b4:	01 c0       	rjmp	.+2      	; 0x5b8 <__ADCBlockLeave+0x26>
+        // interrupted asynchronous mode, re-enable ADC interrupt
+        adcsra_restore |= (1 << ADIE);
+    }
+
+    if (stored == ADMUX_RESERVED_VALUE) {
+        adcsra_restore = 0; // ADC off
  5b6:	20 e0       	ldi	r18, 0x00	; 0
+    } else {
+        disableADCOnRefChange(ADMUX, stored);
+        ADMUX = stored;
+    }
+
+    ADCSRA = adcsra_restore;
  5b8:	26 b9       	out	0x06, r18	; 6
+    SREG = _sreg;
  5ba:	3f bf       	out	0x3f, r19	; 63
  5bc:	08 95       	ret
 
 000005be <ADCSelectChannel>:
+}
+
+void ADCSelectChannel(const uint8_t channel) {
+    // enforce "long" conversion if reference voltage changes
+    disableADCOnRefChange(ADMUX, channel);
  5be:	97 b1       	in	r25, 0x07	; 7
+ * @param newmux the new channel configuration
+ * \endif
+ */
+static inline void disableADCOnRefChange(const uint8_t oldmux,
+        const uint8_t newmux) {
+    if ((oldmux & ADC_REF_MASK) != (newmux & ADC_REF_MASK)) {
  5c0:	98 27       	eor	r25, r24
  5c2:	90 7c       	andi	r25, 0xC0	; 192
  5c4:	09 f0       	breq	.+2      	; 0x5c8 <ADCSelectChannel+0xa>
+ * \if en
+ * Shuts down the ADC completely.
+ * \endif
+ */
+static inline void ADCOff(void) {
+    ADCSRA = 0;
  5c6:	16 b8       	out	0x06, r1	; 6
+}
+
+void ADCSelectChannel(const uint8_t channel) {
+    // enforce "long" conversion if reference voltage changes
+    disableADCOnRefChange(ADMUX, channel);
+    ADCSRA = ADCSRA_BASE_VALUE | (1 << ADEN); // ADC on
  5c8:	96 e8       	ldi	r25, 0x86	; 134
  5ca:	96 b9       	out	0x06, r25	; 6
+    ADMUX = channel;
  5cc:	87 b9       	out	0x07, r24	; 7
  5ce:	08 95       	ret
 
 000005d0 <ADCMeasure>:
+}
+
+void ADCMeasure(void) {
+    ADCSRA |= (1 << ADSC); // do not take care of ADIF since ADIE should be off
  5d0:	36 9a       	sbi	0x06, 6	; 6
+
+    while (ADCSRA & (1 << ADSC))
  5d2:	36 99       	sbic	0x06, 6	; 6
  5d4:	fe cf       	rjmp	.-4      	; 0x5d2 <ADCMeasure+0x2>
+        ; // wait until the conversion has been finishied
+}
  5d6:	08 95       	ret
 
 000005d8 <ADCInterruptEnable>:
+
+void ADCInterruptEnable(const uint8_t channel) {
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
  5d8:	2f b7       	in	r18, 0x3f	; 63
     return 1;
 }
@@ -929,21 +1559,64 @@ static __inline__ uint8_t __iCliRetVal(void)
 {
     cli();
  5da:	f8 94       	cli
+        const uint8_t _adcsra = ADCSRA;
  5dc:	96 b1       	in	r25, 0x06	; 6
+
+        if (!(_adcsra & (1 << ADEN)) || (_adcsra & (1 << ADIE))) {
  5de:	97 ff       	sbrs	r25, 7
  5e0:	02 c0       	rjmp	.+4      	; 0x5e6 <ADCInterruptEnable+0xe>
  5e2:	93 ff       	sbrs	r25, 3
  5e4:	0a c0       	rjmp	.+20     	; 0x5fa <ADCInterruptEnable+0x22>
+            // ADC is off or asynchronous mode is already enabled
+
+            disableADCOnRefChange(ADMUX, channel);
  5e6:	97 b1       	in	r25, 0x07	; 7
+ * @param newmux the new channel configuration
+ * \endif
+ */
+static inline void disableADCOnRefChange(const uint8_t oldmux,
+        const uint8_t newmux) {
+    if ((oldmux & ADC_REF_MASK) != (newmux & ADC_REF_MASK)) {
  5e8:	98 27       	eor	r25, r24
  5ea:	90 7c       	andi	r25, 0xC0	; 192
  5ec:	09 f0       	breq	.+2      	; 0x5f0 <ADCInterruptEnable+0x18>
+ * \if en
+ * Shuts down the ADC completely.
+ * \endif
+ */
+static inline void ADCOff(void) {
+    ADCSRA = 0;
  5ee:	16 b8       	out	0x06, r1	; 6
+        if (!(_adcsra & (1 << ADEN)) || (_adcsra & (1 << ADIE))) {
+            // ADC is off or asynchronous mode is already enabled
+
+            disableADCOnRefChange(ADMUX, channel);
+
+            if (ADCSRA & (1 << ADSC)) { // interrupt running conversion, if any
  5f0:	36 99       	sbic	0x06, 6	; 6
+ * \if en
+ * Shuts down the ADC completely.
+ * \endif
+ */
+static inline void ADCOff(void) {
+    ADCSRA = 0;
  5f2:	16 b8       	out	0x06, r1	; 6
+
+            if (ADCSRA & (1 << ADSC)) { // interrupt running conversion, if any
+                ADCOff();
+            }
+
+            ADMUX = channel;
  5f4:	87 b9       	out	0x07, r24	; 7
+            ADCSRA = ADCSRA_BASE_VALUE | (1 << ADEN) | (1 << ADSC)
  5f6:	9e ed       	ldi	r25, 0xDE	; 222
  5f8:	96 b9       	out	0x06, r25	; 6
+        }
+
+        // would normally be an "else", but this way is faster
+        // At least one ADC_BLOCK ist active, store desired channel
+        // configuration until the ADC_BLOCK is left.
+        old_channel = channel;
  5fa:	80 93 67 00 	sts	0x0067, r24
     (void)__s;
 }

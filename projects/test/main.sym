@@ -120,7 +120,7 @@
 00800062 b leftMovementSpeed
 00800063 b last_state
 00800064 b reference
-00800066 b right.1605
+00800066 b right.1574
 00800067 b old_channel
 00800068 B encoderTicks
 0080006c B lineDataUpdated

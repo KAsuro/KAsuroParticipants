@@ -495,7 +495,7 @@ END GROUP
                 0x00800063        0x1 ../../libtinyasuro/libtinyasuro.a(encoder.o)
  .bss.reference
                 0x00800064        0x2 ../../libtinyasuro/libtinyasuro.a(encoder.o)
- .bss.right.1605
+ .bss.right.1574
                 0x00800066        0x1 ../../libtinyasuro/libtinyasuro.a(sensors.o)
  .bss.old_channel
                 0x00800067        0x1 ../../libtinyasuro/libtinyasuro.a(adc.o)
@@ -560,12 +560,11 @@ END GROUP
 .stab.indexstr
  *(.stab.indexstr)
 
-.comment        0x00000000       0x22
+.comment        0x00000000       0x11
  *(.comment)
  .comment       0x00000000       0x11 *.o
                                  0x12 (size before relaxing)
- .comment       0x00000011       0x11 ../../libtinyasuro/libtinyasuro.a(asuro.o)
-                                 0x12 (size before relaxing)
+ .comment       0x00000000       0x12 ../../libtinyasuro/libtinyasuro.a(asuro.o)
  .comment       0x00000000       0x12 ../../libtinyasuro/libtinyasuro.a(encoder.o)
  .comment       0x00000000       0x12 ../../libtinyasuro/libtinyasuro.a(led.o)
  .comment       0x00000000       0x12 ../../libtinyasuro/libtinyasuro.a(motor.o)
@@ -661,26 +660,26 @@ END GROUP
  .debug_frame   0x00000368       0x68 ../../libtinyasuro/libtinyasuro.a(time.o)
  .debug_frame   0x000003d0       0x84 ../../libtinyasuro/libtinyasuro.a(adc.o)
 
-.debug_str      0x00000000      0x762
+.debug_str      0x00000000      0x6c8
  *(.debug_str)
  .debug_str     0x00000000      0x193 *.o
                                 0x1df (size before relaxing)
- .debug_str     0x00000193      0x113 ../../libtinyasuro/libtinyasuro.a(asuro.o)
-                                0x17f (size before relaxing)
- .debug_str     0x000002a6      0x1fd ../../libtinyasuro/libtinyasuro.a(encoder.o)
-                                0x39b (size before relaxing)
- .debug_str     0x000004a3       0x3f ../../libtinyasuro/libtinyasuro.a(led.o)
+ .debug_str     0x00000193       0x79 ../../libtinyasuro/libtinyasuro.a(asuro.o)
+                                0x181 (size before relaxing)
+ .debug_str     0x0000020c      0x1fd ../../libtinyasuro/libtinyasuro.a(encoder.o)
+                                0x39d (size before relaxing)
+ .debug_str     0x00000409       0x3f ../../libtinyasuro/libtinyasuro.a(led.o)
+                                0x1c7 (size before relaxing)
+ .debug_str     0x00000448       0x3c ../../libtinyasuro/libtinyasuro.a(motor.o)
                                 0x1c5 (size before relaxing)
- .debug_str     0x000004e2       0x3c ../../libtinyasuro/libtinyasuro.a(motor.o)
-                                0x1c3 (size before relaxing)
- .debug_str     0x0000051e      0x136 ../../libtinyasuro/libtinyasuro.a(sensors.o)
-                                0x2d1 (size before relaxing)
- .debug_str     0x00000654       0x66 ../../libtinyasuro/libtinyasuro.a(switches.o)
-                                0x25e (size before relaxing)
- .debug_str     0x000006ba       0x36 ../../libtinyasuro/libtinyasuro.a(time.o)
-                                0x1ae (size before relaxing)
- .debug_str     0x000006f0       0x72 ../../libtinyasuro/libtinyasuro.a(adc.o)
-                                0x255 (size before relaxing)
+ .debug_str     0x00000484      0x136 ../../libtinyasuro/libtinyasuro.a(sensors.o)
+                                0x2d3 (size before relaxing)
+ .debug_str     0x000005ba       0x66 ../../libtinyasuro/libtinyasuro.a(switches.o)
+                                0x260 (size before relaxing)
+ .debug_str     0x00000620       0x36 ../../libtinyasuro/libtinyasuro.a(time.o)
+                                0x1b0 (size before relaxing)
+ .debug_str     0x00000656       0x72 ../../libtinyasuro/libtinyasuro.a(adc.o)
+                                0x257 (size before relaxing)
 
 .debug_loc      0x00000000      0xe5b
  *(.debug_loc)
