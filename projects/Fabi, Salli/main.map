@@ -354,7 +354,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x6a0
+.text           0x00000000      0x696
  *(.vectors)
  .vectors       0x00000000       0x26 /usr/lib/gcc/avr/4.8.1/../../../avr/lib/avr4/crtm8.o
                 0x00000000                __vectors
@@ -430,108 +430,108 @@ END GROUP
                 0x0000005e                . = ALIGN (0x2)
  *(.text.*)
  .text.stopAsuro
-                0x0000005e       0x28 *.o
+                0x0000005e       0x22 *.o
                 0x0000005e                stopAsuro
  .text.startup.main
-                0x00000086      0x130 *.o
-                0x00000086                main
- .text.Init     0x000001b6        0xe ../../libtinyasuro/libtinyasuro.a(asuro.o)
-                0x000001b6                Init
+                0x00000080      0x12c *.o
+                0x00000080                main
+ .text.Init     0x000001ac        0xe ../../libtinyasuro/libtinyasuro.a(asuro.o)
+                0x000001ac                Init
  .text.StatusLED
-                0x000001c4        0xe ../../libtinyasuro/libtinyasuro.a(led.o)
-                0x000001c4                StatusLED
+                0x000001ba        0xe ../../libtinyasuro/libtinyasuro.a(led.o)
+                0x000001ba                StatusLED
  .text.BackLEDFast
-                0x000001d2       0x1a ../../libtinyasuro/libtinyasuro.a(led.o)
-                0x000001d2                BackLEDFast
- .text.LEDInit  0x000001ec       0x18 ../../libtinyasuro/libtinyasuro.a(led.o)
-                0x000001ec                LEDInit
- .text.BackLED  0x00000204       0x16 ../../libtinyasuro/libtinyasuro.a(led.o)
-                0x00000204                BackLED
+                0x000001c8       0x1a ../../libtinyasuro/libtinyasuro.a(led.o)
+                0x000001c8                BackLEDFast
+ .text.LEDInit  0x000001e2       0x18 ../../libtinyasuro/libtinyasuro.a(led.o)
+                0x000001e2                LEDInit
+ .text.BackLED  0x000001fa       0x16 ../../libtinyasuro/libtinyasuro.a(led.o)
+                0x000001fa                BackLED
  .text.MotorDir
-                0x0000021a       0x18 ../../libtinyasuro/libtinyasuro.a(motor.o)
-                0x0000021a                MotorDir
+                0x00000210       0x18 ../../libtinyasuro/libtinyasuro.a(motor.o)
+                0x00000210                MotorDir
  .text.MotorSpeed
-                0x00000232        0xe ../../libtinyasuro/libtinyasuro.a(motor.o)
-                0x00000232                MotorSpeed
+                0x00000228        0xe ../../libtinyasuro/libtinyasuro.a(motor.o)
+                0x00000228                MotorSpeed
  .text.MotorInit
-                0x00000240       0x26 ../../libtinyasuro/libtinyasuro.a(motor.o)
-                0x00000240                MotorInit
+                0x00000236       0x26 ../../libtinyasuro/libtinyasuro.a(motor.o)
+                0x00000236                MotorInit
  .text.LineData
-                0x00000266       0x32 ../../libtinyasuro/libtinyasuro.a(sensors.o)
-                0x00000266                LineData
+                0x0000025c       0x32 ../../libtinyasuro/libtinyasuro.a(sensors.o)
+                0x0000025c                LineData
  .text.__vector_14
-                0x00000298       0xaa ../../libtinyasuro/libtinyasuro.a(sensors.o)
-                0x00000298                __vector_14
+                0x0000028e       0xaa ../../libtinyasuro/libtinyasuro.a(sensors.o)
+                0x0000028e                __vector_14
  .text.SwitchInit
-                0x00000342       0x26 ../../libtinyasuro/libtinyasuro.a(switches.o)
-                0x00000342                SwitchInit
+                0x00000338       0x26 ../../libtinyasuro/libtinyasuro.a(switches.o)
+                0x00000338                SwitchInit
  .text.PollSwitch
-                0x00000368       0x52 ../../libtinyasuro/libtinyasuro.a(switches.o)
-                0x00000368                PollSwitch
+                0x0000035e       0x52 ../../libtinyasuro/libtinyasuro.a(switches.o)
+                0x0000035e                PollSwitch
  .text.__vector_2
-                0x000003ba       0x24 ../../libtinyasuro/libtinyasuro.a(switches.o)
-                0x000003ba                __vector_2
+                0x000003b0       0x24 ../../libtinyasuro/libtinyasuro.a(switches.o)
+                0x000003b0                __vector_2
  .text.Timer2Init
-                0x000003de       0x1c ../../libtinyasuro/libtinyasuro.a(time.o)
-                0x000003de                Timer2Init
+                0x000003d4       0x1c ../../libtinyasuro/libtinyasuro.a(time.o)
+                0x000003d4                Timer2Init
  .text.__vector_4
-                0x000003fa       0x28 ../../libtinyasuro/libtinyasuro.a(time.o)
-                0x000003fa                __vector_4
- .text.sleep    0x00000422       0x2a ../../libtinyasuro/libtinyasuro.a(time.o)
-                0x00000422                sleep
- .text.ADCInit  0x0000044c        0xc ../../libtinyasuro/libtinyasuro.a(adc.o)
-                0x0000044c                ADCInit
+                0x000003f0       0x28 ../../libtinyasuro/libtinyasuro.a(time.o)
+                0x000003f0                __vector_4
+ .text.sleep    0x00000418       0x2a ../../libtinyasuro/libtinyasuro.a(time.o)
+                0x00000418                sleep
+ .text.ADCInit  0x00000442        0xc ../../libtinyasuro/libtinyasuro.a(adc.o)
+                0x00000442                ADCInit
  .text.__ADCBlockEnter
-                0x00000458       0x24 ../../libtinyasuro/libtinyasuro.a(adc.o)
-                0x00000458                __ADCBlockEnter
+                0x0000044e       0x24 ../../libtinyasuro/libtinyasuro.a(adc.o)
+                0x0000044e                __ADCBlockEnter
  .text.__ADCBlockLeave
-                0x0000047c       0x2c ../../libtinyasuro/libtinyasuro.a(adc.o)
-                0x0000047c                __ADCBlockLeave
+                0x00000472       0x2c ../../libtinyasuro/libtinyasuro.a(adc.o)
+                0x00000472                __ADCBlockLeave
  .text.ADCSelectChannel
-                0x000004a8       0x12 ../../libtinyasuro/libtinyasuro.a(adc.o)
-                0x000004a8                ADCSelectChannel
+                0x0000049e       0x12 ../../libtinyasuro/libtinyasuro.a(adc.o)
+                0x0000049e                ADCSelectChannel
  .text.ADCMeasure
-                0x000004ba        0x8 ../../libtinyasuro/libtinyasuro.a(adc.o)
-                0x000004ba                ADCMeasure
+                0x000004b0        0x8 ../../libtinyasuro/libtinyasuro.a(adc.o)
+                0x000004b0                ADCMeasure
  .text.ADCInterruptEnable
-                0x000004c2       0x2a ../../libtinyasuro/libtinyasuro.a(adc.o)
-                0x000004c2                ADCInterruptEnable
+                0x000004b8       0x2a ../../libtinyasuro/libtinyasuro.a(adc.o)
+                0x000004b8                ADCInterruptEnable
  .text.libgcc.div
-                0x000004ec       0x28 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_udivmodhi4.o)
-                0x000004ec                __udivmodhi4
+                0x000004e2       0x28 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_udivmodhi4.o)
+                0x000004e2                __udivmodhi4
  .text.libgcc.div
-                0x00000514       0x26 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_divmodhi4.o)
-                0x00000514                __divmodhi4
-                0x00000514                _div
+                0x0000050a       0x26 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_divmodhi4.o)
+                0x0000050a                __divmodhi4
+                0x0000050a                _div
  .text.avr-libc
-                0x0000053a       0xae /usr/lib/gcc/avr/4.8.1/../../../avr/lib/avr4/libc.a(rand.o)
-                0x000005ca                rand_r
-                0x000005cc                rand
-                0x000005d2                srand
+                0x00000530       0xae /usr/lib/gcc/avr/4.8.1/../../../avr/lib/avr4/libc.a(rand.o)
+                0x000005c0                rand_r
+                0x000005c2                rand
+                0x000005c8                srand
  .text.libgcc.div
-                0x000005e8       0x28 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_divmodsi4.o)
-                0x000005e8                __divmodsi4
+                0x000005de       0x28 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_divmodsi4.o)
+                0x000005de                __divmodsi4
  .text.libgcc.div
-                0x00000610       0x10 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_negsi2.o)
-                0x00000610                __negsi2
+                0x00000606       0x10 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_negsi2.o)
+                0x00000606                __negsi2
  .text.libgcc.mul
-                0x00000620       0x14 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_muluhisi3.o)
-                0x00000620                __muluhisi3
+                0x00000616       0x14 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_muluhisi3.o)
+                0x00000616                __muluhisi3
  .text.libgcc.mul
-                0x00000634        0xc /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_mulshisi3.o)
-                0x00000634                __mulshisi3
-                0x00000638                __mulohisi3
+                0x0000062a        0xc /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_mulshisi3.o)
+                0x0000062a                __mulshisi3
+                0x0000062e                __mulohisi3
  .text.libgcc.div
-                0x00000640       0x44 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_udivmodsi4.o)
-                0x00000640                __udivmodsi4
+                0x00000636       0x44 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_udivmodsi4.o)
+                0x00000636                __udivmodsi4
  .text.libgcc.mul
-                0x00000684       0x18 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_umulhisi3.o)
-                0x00000684                __umulhisi3
-                0x0000069c                . = ALIGN (0x2)
+                0x0000067a       0x18 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_umulhisi3.o)
+                0x0000067a                __umulhisi3
+                0x00000692                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000069c        0x0 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_exit.o)
-                0x0000069c                exit
-                0x0000069c                _exit
+ .fini9         0x00000692        0x0 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_exit.o)
+                0x00000692                exit
+                0x00000692                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -550,11 +550,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000069c        0x4 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_exit.o)
+ .fini0         0x00000692        0x4 /usr/lib/gcc/avr/4.8.1/avr4/libgcc.a(_exit.o)
  *(.fini0)
-                0x000006a0                _etext = .
+                0x00000696                _etext = .
 
-.data           0x00800060        0x4 load address 0x000006a0
+.data           0x00800060        0x4 load address 0x00000696
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800060        0x0 /usr/lib/gcc/avr/4.8.1/../../../avr/lib/avr4/crtm8.o
@@ -606,8 +606,8 @@ END GROUP
  COMMON         0x0080006e        0x1 ../../libtinyasuro/libtinyasuro.a(time.o)
                 0x0080006e                tick36kHz
                 0x0080006f                PROVIDE (__bss_end, .)
-                0x000006a0                __data_load_start = LOADADDR (.data)
-                0x000006a4                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00000696                __data_load_start = LOADADDR (.data)
+                0x0000069a                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x0080006f        0x0
                 0x0080006f                PROVIDE (__noinit_start, .)
@@ -704,16 +704,16 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x15d9
+.debug_info     0x00000000     0x15cb
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000      0x488 *.o
- .debug_info    0x00000488       0xdd ../../libtinyasuro/libtinyasuro.a(asuro.o)
- .debug_info    0x00000565      0x1e4 ../../libtinyasuro/libtinyasuro.a(led.o)
- .debug_info    0x00000749      0x1f4 ../../libtinyasuro/libtinyasuro.a(motor.o)
- .debug_info    0x0000093d      0x49e ../../libtinyasuro/libtinyasuro.a(sensors.o)
- .debug_info    0x00000ddb      0x36a ../../libtinyasuro/libtinyasuro.a(switches.o)
- .debug_info    0x00001145      0x10b ../../libtinyasuro/libtinyasuro.a(time.o)
- .debug_info    0x00001250      0x389 ../../libtinyasuro/libtinyasuro.a(adc.o)
+ .debug_info    0x00000000      0x47a *.o
+ .debug_info    0x0000047a       0xdd ../../libtinyasuro/libtinyasuro.a(asuro.o)
+ .debug_info    0x00000557      0x1e4 ../../libtinyasuro/libtinyasuro.a(led.o)
+ .debug_info    0x0000073b      0x1f4 ../../libtinyasuro/libtinyasuro.a(motor.o)
+ .debug_info    0x0000092f      0x49e ../../libtinyasuro/libtinyasuro.a(sensors.o)
+ .debug_info    0x00000dcd      0x36a ../../libtinyasuro/libtinyasuro.a(switches.o)
+ .debug_info    0x00001137      0x10b ../../libtinyasuro/libtinyasuro.a(time.o)
+ .debug_info    0x00001242      0x389 ../../libtinyasuro/libtinyasuro.a(adc.o)
 
 .debug_abbrev   0x00000000      0xa97
  *(.debug_abbrev)
@@ -726,16 +726,16 @@ END GROUP
  .debug_abbrev  0x00000864       0xb9 ../../libtinyasuro/libtinyasuro.a(time.o)
  .debug_abbrev  0x0000091d      0x17a ../../libtinyasuro/libtinyasuro.a(adc.o)
 
-.debug_line     0x00000000      0x830
+.debug_line     0x00000000      0x82e
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x00000000      0x14b *.o
- .debug_line    0x0000014b       0x83 ../../libtinyasuro/libtinyasuro.a(asuro.o)
- .debug_line    0x000001ce       0xeb ../../libtinyasuro/libtinyasuro.a(led.o)
- .debug_line    0x000002b9       0xd2 ../../libtinyasuro/libtinyasuro.a(motor.o)
- .debug_line    0x0000038b      0x139 ../../libtinyasuro/libtinyasuro.a(sensors.o)
- .debug_line    0x000004c4      0x14a ../../libtinyasuro/libtinyasuro.a(switches.o)
- .debug_line    0x0000060e       0xae ../../libtinyasuro/libtinyasuro.a(time.o)
- .debug_line    0x000006bc      0x174 ../../libtinyasuro/libtinyasuro.a(adc.o)
+ .debug_line    0x00000000      0x149 *.o
+ .debug_line    0x00000149       0x83 ../../libtinyasuro/libtinyasuro.a(asuro.o)
+ .debug_line    0x000001cc       0xeb ../../libtinyasuro/libtinyasuro.a(led.o)
+ .debug_line    0x000002b7       0xd2 ../../libtinyasuro/libtinyasuro.a(motor.o)
+ .debug_line    0x00000389      0x139 ../../libtinyasuro/libtinyasuro.a(sensors.o)
+ .debug_line    0x000004c2      0x14a ../../libtinyasuro/libtinyasuro.a(switches.o)
+ .debug_line    0x0000060c       0xae ../../libtinyasuro/libtinyasuro.a(time.o)
+ .debug_line    0x000006ba      0x174 ../../libtinyasuro/libtinyasuro.a(adc.o)
 
 .debug_frame    0x00000000      0x3a8
  *(.debug_frame)
@@ -750,11 +750,11 @@ END GROUP
 
 .debug_str      0x00000000      0x5e7
  *(.debug_str)
- .debug_str     0x00000000      0x19d *.o
-                                0x1e1 (size before relaxing)
- .debug_str     0x0000019d      0x113 ../../libtinyasuro/libtinyasuro.a(asuro.o)
+ .debug_str     0x00000000      0x196 *.o
+                                0x1da (size before relaxing)
+ .debug_str     0x00000196      0x113 ../../libtinyasuro/libtinyasuro.a(asuro.o)
                                 0x17f (size before relaxing)
- .debug_str     0x000002b0       0x64 ../../libtinyasuro/libtinyasuro.a(led.o)
+ .debug_str     0x000002a9       0x6b ../../libtinyasuro/libtinyasuro.a(led.o)
                                 0x1c5 (size before relaxing)
  .debug_str     0x00000314       0x3c ../../libtinyasuro/libtinyasuro.a(motor.o)
                                 0x1c3 (size before relaxing)
@@ -767,15 +767,15 @@ END GROUP
  .debug_str     0x00000575       0x72 ../../libtinyasuro/libtinyasuro.a(adc.o)
                                 0x255 (size before relaxing)
 
-.debug_loc      0x00000000      0xa49
+.debug_loc      0x00000000      0xa21
  *(.debug_loc)
- .debug_loc     0x00000000      0x286 *.o
- .debug_loc     0x00000286       0x62 ../../libtinyasuro/libtinyasuro.a(led.o)
- .debug_loc     0x000002e8       0x82 ../../libtinyasuro/libtinyasuro.a(motor.o)
- .debug_loc     0x0000036a      0x340 ../../libtinyasuro/libtinyasuro.a(sensors.o)
- .debug_loc     0x000006aa      0x1be ../../libtinyasuro/libtinyasuro.a(switches.o)
- .debug_loc     0x00000868       0x5a ../../libtinyasuro/libtinyasuro.a(time.o)
- .debug_loc     0x000008c2      0x187 ../../libtinyasuro/libtinyasuro.a(adc.o)
+ .debug_loc     0x00000000      0x25e *.o
+ .debug_loc     0x0000025e       0x62 ../../libtinyasuro/libtinyasuro.a(led.o)
+ .debug_loc     0x000002c0       0x82 ../../libtinyasuro/libtinyasuro.a(motor.o)
+ .debug_loc     0x00000342      0x340 ../../libtinyasuro/libtinyasuro.a(sensors.o)
+ .debug_loc     0x00000682      0x1be ../../libtinyasuro/libtinyasuro.a(switches.o)
+ .debug_loc     0x00000840       0x5a ../../libtinyasuro/libtinyasuro.a(time.o)
+ .debug_loc     0x0000089a      0x187 ../../libtinyasuro/libtinyasuro.a(adc.o)
 
 .debug_macinfo
  *(.debug_macinfo)
