@@ -7,8 +7,8 @@
 void main(void) {
     Init();
 	
-	uint16_t data[2] = {0,0};
-	uint16_t black[2] = {0,0};
+	uint16_t data[2];
+	uint16_t black[2];
 	
 	//set black value
 	LineData(data);
@@ -17,8 +17,8 @@ void main(void) {
 
     while (1) {
 		//updated sensor value
-		LineData(data)
-        if((black[LEFT) < data[LEFT]) && (black[RIGHT) < data[RIGHT])) { //if not white
+		LineData(data);
+        if((black[LEFT] < data[LEFT]) && (black[RIGHT] < data[RIGHT])) { //if not white
 			MotorDir(FWD, RWD);
 			MotorSpeed(90, 90);
 		} else if (data[LEFT] > data[RIGHT]) { //if left is brighter than right
@@ -29,7 +29,7 @@ void main(void) {
 			MotorSpeed(100, 90);
 		} else { //else
 			MotorDir(FWD, FWD);
-			MotorSpeed(90, 90)
+			MotorSpeed(90, 90);
 		}
         msleep(5);
     }
