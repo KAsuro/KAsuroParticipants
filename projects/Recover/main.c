@@ -24,18 +24,17 @@ void main(void) {
 			MotorDir(FWD, RWD);
 			MotorSpeed(90, 90);
 			StatusLED(GREEN);
-		} else if (data[LEFT] > data[RIGHT]) { //if left is brighter than right
+		}
+		if (data[LEFT] > data[RIGHT]) { //if left is brighter than right
 			MotorDir(FWD, FWD);
 			MotorSpeed(90, 100);
 			StatusLED(RED);
-		} else if (data[RIGHT] > data[LEFT]) { // if right is brighter than left
+		}  
+		if (data[RIGHT] > data[LEFT]) { // if right is brighter than left
 			MotorDir(FWD, FWD);
 			MotorSpeed(100, 90);
-		} else { //else
-			MotorDir(FWD, FWD);
-			MotorSpeed(90, 90);
-			StausLED(ORANGE)
-		}
+			StatusLED(YELLOW);
+		} 
         msleep(5);
     }
 }

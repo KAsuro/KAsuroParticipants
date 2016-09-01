@@ -3,29 +3,29 @@ main.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         0000039e  00000000  00000000  00000094  2**1
+  0 .text         000003c0  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000000  00800060  0000039e  00000432  2**0
+  1 .data         00000000  00800060  000003c0  00000454  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          0000000b  00800060  00800060  00000432  2**0
+  2 .bss          0000000b  00800060  00800060  00000454  2**0
                   ALLOC
-  3 .comment      00000011  00000000  00000000  00000432  2**0
+  3 .comment      00000022  00000000  00000000  00000454  2**0
                   CONTENTS, READONLY
-  4 .debug_aranges 000001c0  00000000  00000000  00000443  2**0
+  4 .debug_aranges 000001c0  00000000  00000000  00000476  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00001353  00000000  00000000  00000603  2**0
+  5 .debug_info   00001404  00000000  00000000  00000636  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000a63  00000000  00000000  00001956  2**0
+  6 .debug_abbrev 00000a63  00000000  00000000  00001a3a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000007a3  00000000  00000000  000023b9  2**0
+  7 .debug_line   000007ad  00000000  00000000  0000249d  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  0000038c  00000000  00000000  00002b5c  2**2
+  8 .debug_frame  0000038c  00000000  00000000  00002c4c  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00000533  00000000  00000000  00002ee8  2**0
+  9 .debug_str    000005cd  00000000  00000000  00002fd8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    0000087c  00000000  00000000  0000341b  2**0
+ 10 .debug_loc    0000087c  00000000  00000000  000035a5  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 000001a0  00000000  00000000  00003c97  2**0
+ 11 .debug_ranges 000001a0  00000000  00000000  00003e21  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -33,9 +33,9 @@ Disassembly of section .text:
 00000000 <__vectors>:
    0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
    2:	21 c0       	rjmp	.+66     	; 0x46 <__bad_interrupt>
-   4:	98 c1       	rjmp	.+816    	; 0x336 <__vector_2>
+   4:	42 c1       	rjmp	.+644    	; 0x28a <__vector_2>
    6:	1f c0       	rjmp	.+62     	; 0x46 <__bad_interrupt>
-   8:	95 c0       	rjmp	.+298    	; 0x134 <__vector_4>
+   8:	60 c1       	rjmp	.+704    	; 0x2ca <__vector_4>
    a:	1d c0       	rjmp	.+58     	; 0x46 <__bad_interrupt>
    c:	1c c0       	rjmp	.+56     	; 0x46 <__bad_interrupt>
    e:	1b c0       	rjmp	.+54     	; 0x46 <__bad_interrupt>
@@ -45,7 +45,7 @@ Disassembly of section .text:
   16:	17 c0       	rjmp	.+46     	; 0x46 <__bad_interrupt>
   18:	16 c0       	rjmp	.+44     	; 0x46 <__bad_interrupt>
   1a:	15 c0       	rjmp	.+42     	; 0x46 <__bad_interrupt>
-  1c:	cd c0       	rjmp	.+410    	; 0x1b8 <__vector_14>
+  1c:	ce c0       	rjmp	.+412    	; 0x1ba <__vector_14>
   1e:	13 c0       	rjmp	.+38     	; 0x46 <__bad_interrupt>
   20:	12 c0       	rjmp	.+36     	; 0x46 <__bad_interrupt>
   22:	11 c0       	rjmp	.+34     	; 0x46 <__bad_interrupt>
@@ -73,7 +73,7 @@ Disassembly of section .text:
   3e:	b2 07       	cpc	r27, r18
   40:	e1 f7       	brne	.-8      	; 0x3a <.do_clear_bss_loop>
   42:	02 d0       	rcall	.+4      	; 0x48 <main>
-  44:	aa c1       	rjmp	.+852    	; 0x39a <_exit>
+  44:	bb c1       	rjmp	.+886    	; 0x3bc <_exit>
 
 00000046 <__bad_interrupt>:
   46:	dc cf       	rjmp	.-72     	; 0x0 <__vectors>
@@ -92,1001 +92,574 @@ void main(void) {
   50:	cd b7       	in	r28, 0x3d	; 61
   52:	de b7       	in	r29, 0x3e	; 62
     Init();
-  54:	06 d1       	rcall	.+524    	; 0x262 <Init>
+  54:	4c d0       	rcall	.+152    	; 0xee <Init>
 	
+	StatusLED(YELLOW);
+  56:	83 e0       	ldi	r24, 0x03	; 3
+  58:	51 d0       	rcall	.+162    	; 0xfc <StatusLED>
+
 	uint16_t data[2];
 	uint16_t black[2];
 	
 	//set black value
 	LineData(data);
-  56:	ce 01       	movw	r24, r28
-  58:	01 96       	adiw	r24, 0x01	; 1
-  5a:	95 d0       	rcall	.+298    	; 0x186 <LineData>
+  5a:	ce 01       	movw	r24, r28
+  5c:	01 96       	adiw	r24, 0x01	; 1
+  5e:	94 d0       	rcall	.+296    	; 0x188 <LineData>
 	black[LEFT] = data[LEFT] + 150;
-  5c:	e9 80       	ldd	r14, Y+1	; 0x01
-  5e:	fa 80       	ldd	r15, Y+2	; 0x02
-  60:	86 e9       	ldi	r24, 0x96	; 150
-  62:	e8 0e       	add	r14, r24
-  64:	f1 1c       	adc	r15, r1
+  60:	e9 80       	ldd	r14, Y+1	; 0x01
+  62:	fa 80       	ldd	r15, Y+2	; 0x02
+  64:	86 e9       	ldi	r24, 0x96	; 150
+  66:	e8 0e       	add	r14, r24
+  68:	f1 1c       	adc	r15, r1
 	black[RIGHT] = data[RIGHT] + 150;
-  66:	cb 80       	ldd	r12, Y+3	; 0x03
-  68:	dc 80       	ldd	r13, Y+4	; 0x04
-  6a:	86 e9       	ldi	r24, 0x96	; 150
-  6c:	c8 0e       	add	r12, r24
-  6e:	d1 1c       	adc	r13, r1
+  6a:	cb 80       	ldd	r12, Y+3	; 0x03
+  6c:	dc 80       	ldd	r13, Y+4	; 0x04
+  6e:	86 e9       	ldi	r24, 0x96	; 150
+  70:	c8 0e       	add	r12, r24
+  72:	d1 1c       	adc	r13, r1
 
     while (1) {
 		//updated sensor value
 		LineData(data);
-  70:	ce 01       	movw	r24, r28
-  72:	01 96       	adiw	r24, 0x01	; 1
-  74:	88 d0       	rcall	.+272    	; 0x186 <LineData>
+  74:	ce 01       	movw	r24, r28
+  76:	01 96       	adiw	r24, 0x01	; 1
+  78:	87 d0       	rcall	.+270    	; 0x188 <LineData>
         if((black[LEFT] < data[LEFT]) && (black[RIGHT] < data[RIGHT])) { //if not white
-  76:	89 81       	ldd	r24, Y+1	; 0x01
-  78:	9a 81       	ldd	r25, Y+2	; 0x02
-  7a:	2b 81       	ldd	r18, Y+3	; 0x03
-  7c:	3c 81       	ldd	r19, Y+4	; 0x04
+  7a:	89 81       	ldd	r24, Y+1	; 0x01
+  7c:	9a 81       	ldd	r25, Y+2	; 0x02
   7e:	e8 16       	cp	r14, r24
   80:	f9 06       	cpc	r15, r25
-  82:	60 f4       	brcc	.+24     	; 0x9c <main+0x54>
-  84:	c2 16       	cp	r12, r18
-  86:	d3 06       	cpc	r13, r19
-  88:	48 f4       	brcc	.+18     	; 0x9c <main+0x54>
+  82:	68 f4       	brcc	.+26     	; 0x9e <main+0x56>
+  84:	8b 81       	ldd	r24, Y+3	; 0x03
+  86:	9c 81       	ldd	r25, Y+4	; 0x04
+  88:	c8 16       	cp	r12, r24
+  8a:	d9 06       	cpc	r13, r25
+  8c:	40 f4       	brcc	.+16     	; 0x9e <main+0x56>
 			MotorDir(FWD, RWD);
-  8a:	60 e1       	ldi	r22, 0x10	; 16
-  8c:	80 e2       	ldi	r24, 0x20	; 32
-  8e:	1e d0       	rcall	.+60     	; 0xcc <MotorDir>
+  8e:	60 e1       	ldi	r22, 0x10	; 16
+  90:	80 e2       	ldi	r24, 0x20	; 32
+  92:	54 d0       	rcall	.+168    	; 0x13c <MotorDir>
 			MotorSpeed(90, 90);
-  90:	6a e5       	ldi	r22, 0x5A	; 90
-  92:	8a e5       	ldi	r24, 0x5A	; 90
-  94:	27 d0       	rcall	.+78     	; 0xe4 <MotorSpeed>
+  94:	6a e5       	ldi	r22, 0x5A	; 90
+  96:	8a e5       	ldi	r24, 0x5A	; 90
+  98:	5d d0       	rcall	.+186    	; 0x154 <MotorSpeed>
+			StatusLED(GREEN);
+  9a:	81 e0       	ldi	r24, 0x01	; 1
+  9c:	2f d0       	rcall	.+94     	; 0xfc <StatusLED>
+		}
+		if (data[LEFT] > data[RIGHT]) { //if left is brighter than right
+  9e:	29 81       	ldd	r18, Y+1	; 0x01
+  a0:	3a 81       	ldd	r19, Y+2	; 0x02
+  a2:	8b 81       	ldd	r24, Y+3	; 0x03
+  a4:	9c 81       	ldd	r25, Y+4	; 0x04
+  a6:	82 17       	cp	r24, r18
+  a8:	93 07       	cpc	r25, r19
+  aa:	40 f4       	brcc	.+16     	; 0xbc <main+0x74>
+			MotorDir(FWD, FWD);
+  ac:	60 e2       	ldi	r22, 0x20	; 32
+  ae:	80 e2       	ldi	r24, 0x20	; 32
+  b0:	45 d0       	rcall	.+138    	; 0x13c <MotorDir>
+			MotorSpeed(90, 100);
+  b2:	64 e6       	ldi	r22, 0x64	; 100
+  b4:	8a e5       	ldi	r24, 0x5A	; 90
+  b6:	4e d0       	rcall	.+156    	; 0x154 <MotorSpeed>
+			StatusLED(RED);
+  b8:	82 e0       	ldi	r24, 0x02	; 2
+  ba:	20 d0       	rcall	.+64     	; 0xfc <StatusLED>
+		}  
+		if (data[RIGHT] > data[LEFT]) { // if right is brighter than left
+  bc:	2b 81       	ldd	r18, Y+3	; 0x03
+  be:	3c 81       	ldd	r19, Y+4	; 0x04
+  c0:	89 81       	ldd	r24, Y+1	; 0x01
+  c2:	9a 81       	ldd	r25, Y+2	; 0x02
+  c4:	82 17       	cp	r24, r18
+  c6:	93 07       	cpc	r25, r19
+  c8:	40 f4       	brcc	.+16     	; 0xda <main+0x92>
+			MotorDir(FWD, FWD);
+  ca:	60 e2       	ldi	r22, 0x20	; 32
+  cc:	80 e2       	ldi	r24, 0x20	; 32
+  ce:	36 d0       	rcall	.+108    	; 0x13c <MotorDir>
+			MotorSpeed(100, 90);
+  d0:	6a e5       	ldi	r22, 0x5A	; 90
+  d2:	84 e6       	ldi	r24, 0x64	; 100
+  d4:	3f d0       	rcall	.+126    	; 0x154 <MotorSpeed>
+			StatusLED(YELLOW);
+  d6:	83 e0       	ldi	r24, 0x03	; 3
+  d8:	11 d0       	rcall	.+34     	; 0xfc <StatusLED>
  * Beschreibt hier was euer Programm macht!
  */
 
 #include <asuro/asuro.h>
 
 void main(void) {
-  96:	05 e0       	ldi	r16, 0x05	; 5
-  98:	10 e0       	ldi	r17, 0x00	; 0
-  9a:	10 c0       	rjmp	.+32     	; 0xbc <main+0x74>
-		LineData(data);
-        if((black[LEFT] < data[LEFT]) && (black[RIGHT] < data[RIGHT])) { //if not white
-			MotorDir(FWD, RWD);
-			MotorSpeed(90, 90);
-		} else if (data[LEFT] > data[RIGHT]) { //if left is brighter than right
-			MotorDir(FWD, FWD);
-  9c:	60 e2       	ldi	r22, 0x20	; 32
-		//updated sensor value
-		LineData(data);
-        if((black[LEFT] < data[LEFT]) && (black[RIGHT] < data[RIGHT])) { //if not white
-			MotorDir(FWD, RWD);
-			MotorSpeed(90, 90);
-		} else if (data[LEFT] > data[RIGHT]) { //if left is brighter than right
-  9e:	28 17       	cp	r18, r24
-  a0:	39 07       	cpc	r19, r25
-  a2:	20 f4       	brcc	.+8      	; 0xac <main+0x64>
-			MotorDir(FWD, FWD);
-  a4:	80 e2       	ldi	r24, 0x20	; 32
-  a6:	12 d0       	rcall	.+36     	; 0xcc <MotorDir>
-			MotorSpeed(90, 100);
-  a8:	64 e6       	ldi	r22, 0x64	; 100
-  aa:	f3 cf       	rjmp	.-26     	; 0x92 <main+0x4a>
-		} else if (data[RIGHT] > data[LEFT]) { // if right is brighter than left
-  ac:	82 17       	cp	r24, r18
-  ae:	93 07       	cpc	r25, r19
-  b0:	68 f7       	brcc	.-38     	; 0x8c <main+0x44>
-			MotorDir(FWD, FWD);
-  b2:	80 e2       	ldi	r24, 0x20	; 32
-  b4:	0b d0       	rcall	.+22     	; 0xcc <MotorDir>
-			MotorSpeed(100, 90);
-  b6:	6a e5       	ldi	r22, 0x5A	; 90
-  b8:	84 e6       	ldi	r24, 0x64	; 100
-  ba:	ec cf       	rjmp	.-40     	; 0x94 <main+0x4c>
+  da:	05 e0       	ldi	r16, 0x05	; 5
+  dc:	10 e0       	ldi	r17, 0x00	; 0
 static ALWAYS_INLINE void msleep(uint16_t ms);
 #endif
 
 void msleep(uint16_t ms) {
     for (; ms > 0; ms--) {
         sleep(36);
-  bc:	84 e2       	ldi	r24, 0x24	; 36
-  be:	4e d0       	rcall	.+156    	; 0x15c <sleep>
-  c0:	01 50       	subi	r16, 0x01	; 1
-  c2:	11 09       	sbc	r17, r1
+  de:	84 e2       	ldi	r24, 0x24	; 36
+  e0:	08 d1       	rcall	.+528    	; 0x2f2 <sleep>
+  e2:	01 50       	subi	r16, 0x01	; 1
+  e4:	11 09       	sbc	r17, r1
 #else
 static ALWAYS_INLINE void msleep(uint16_t ms);
 #endif
 
 void msleep(uint16_t ms) {
     for (; ms > 0; ms--) {
-  c4:	01 15       	cp	r16, r1
-  c6:	11 05       	cpc	r17, r1
-  c8:	c9 f7       	brne	.-14     	; 0xbc <main+0x74>
-  ca:	d2 cf       	rjmp	.-92     	; 0x70 <main+0x28>
+  e6:	01 15       	cp	r16, r1
+  e8:	11 05       	cpc	r17, r1
+  ea:	c9 f7       	brne	.-14     	; 0xde <main+0x96>
+  ec:	c3 cf       	rjmp	.-122    	; 0x74 <main+0x2c>
 
-000000cc <MotorDir>:
-    MotorSpeed(0,0);
-}
+000000ee <Init>:
+  ee:	df d0       	rcall	.+446    	; 0x2ae <Timer2Init>
+  f0:	38 d0       	rcall	.+112    	; 0x162 <MotorInit>
+  f2:	18 d0       	rcall	.+48     	; 0x124 <LEDInit>
+  f4:	13 d1       	rcall	.+550    	; 0x31c <ADCInit>
+  f6:	b6 d0       	rcall	.+364    	; 0x264 <SwitchInit>
+  f8:	78 94       	sei
+  fa:	08 95       	ret
 
-void MotorDir(const uint8_t left_dir, const uint8_t right_dir)
-{
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-  cc:	2f b7       	in	r18, 0x3f	; 63
+000000fc <StatusLED>:
+  fc:	c0 98       	cbi	0x18, 0	; 24
+  fe:	92 98       	cbi	0x12, 2	; 18
+ 100:	80 fd       	sbrc	r24, 0
+ 102:	c0 9a       	sbi	0x18, 0	; 24
+ 104:	81 fd       	sbrc	r24, 1
+ 106:	92 9a       	sbi	0x12, 2	; 18
+ 108:	08 95       	ret
+
+0000010a <BackLEDFast>:
+ 10a:	2f b7       	in	r18, 0x3f	; 63
     return 1;
 }
 
 static __inline__ uint8_t __iCliRetVal(void)
 {
     cli();
-  ce:	f8 94       	cli
-        PORTD = (PORTD & ~LEFT_DIR) | left_dir;
-  d0:	92 b3       	in	r25, 0x12	; 18
-  d2:	9f 7c       	andi	r25, 0xCF	; 207
-  d4:	89 2b       	or	r24, r25
-  d6:	82 bb       	out	0x12, r24	; 18
-        PORTB = (PORTB & ~RIGHT_DIR) | right_dir;
-  d8:	88 b3       	in	r24, 0x18	; 24
-  da:	8f 7c       	andi	r24, 0xCF	; 207
-  dc:	68 2b       	or	r22, r24
-  de:	68 bb       	out	0x18, r22	; 24
+ 10c:	f8 94       	cli
+ 10e:	88 23       	and	r24, r24
+ 110:	19 f0       	breq	.+6      	; 0x118 <BackLEDFast+0xe>
+ 112:	97 98       	cbi	0x12, 7	; 18
+ 114:	a1 9a       	sbi	0x14, 1	; 20
+ 116:	a0 9a       	sbi	0x14, 0	; 20
+ 118:	95 b3       	in	r25, 0x15	; 21
+ 11a:	9c 7f       	andi	r25, 0xFC	; 252
+ 11c:	98 2b       	or	r25, r24
+ 11e:	95 bb       	out	0x15, r25	; 21
     (void)__s;
 }
 
 static __inline__ void __iRestore(const  uint8_t *__s)
 {
     SREG = *__s;
-  e0:	2f bf       	out	0x3f, r18	; 63
+ 120:	2f bf       	out	0x3f, r18	; 63
     __asm__ volatile ("" ::: "memory");
-  e2:	08 95       	ret
+ 122:	08 95       	ret
 
-000000e4 <MotorSpeed>:
-    }
-}
+00000124 <LEDInit>:
+ 124:	b8 9a       	sbi	0x17, 0	; 23
+ 126:	81 b3       	in	r24, 0x11	; 17
+ 128:	84 6c       	ori	r24, 0xC4	; 196
+ 12a:	81 bb       	out	0x11, r24	; 17
+ 12c:	96 98       	cbi	0x12, 6	; 18
+ 12e:	97 98       	cbi	0x12, 7	; 18
+ 130:	a1 9a       	sbi	0x14, 1	; 20
+ 132:	a0 9a       	sbi	0x14, 0	; 20
+ 134:	80 e0       	ldi	r24, 0x00	; 0
+ 136:	e9 df       	rcall	.-46     	; 0x10a <BackLEDFast>
+ 138:	81 e0       	ldi	r24, 0x01	; 1
+ 13a:	e0 cf       	rjmp	.-64     	; 0xfc <StatusLED>
 
-void MotorSpeed(const uint8_t left_speed, const uint8_t right_speed) {
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-  e4:	9f b7       	in	r25, 0x3f	; 63
+0000013c <MotorDir>:
+ 13c:	2f b7       	in	r18, 0x3f	; 63
     return 1;
 }
 
 static __inline__ uint8_t __iCliRetVal(void)
 {
     cli();
-  e6:	f8 94       	cli
-        OCR1AH = 0; // highbyte = 0, used for both write operations
-  e8:	1b bc       	out	0x2b, r1	; 43
-        OCR1AL = left_speed;
-  ea:	8a bd       	out	0x2a, r24	; 42
-        OCR1BL = right_speed;
-  ec:	68 bd       	out	0x28, r22	; 40
+ 13e:	f8 94       	cli
+ 140:	92 b3       	in	r25, 0x12	; 18
+ 142:	9f 7c       	andi	r25, 0xCF	; 207
+ 144:	89 2b       	or	r24, r25
+ 146:	82 bb       	out	0x12, r24	; 18
+ 148:	88 b3       	in	r24, 0x18	; 24
+ 14a:	8f 7c       	andi	r24, 0xCF	; 207
+ 14c:	68 2b       	or	r22, r24
+ 14e:	68 bb       	out	0x18, r22	; 24
     (void)__s;
 }
 
 static __inline__ void __iRestore(const  uint8_t *__s)
 {
     SREG = *__s;
-  ee:	9f bf       	out	0x3f, r25	; 63
+ 150:	2f bf       	out	0x3f, r18	; 63
     __asm__ volatile ("" ::: "memory");
-  f0:	08 95       	ret
+ 152:	08 95       	ret
 
-000000f2 <MotorInit>:
-#define RIGHT_DIR ((1 << PB4) | (1 << PB5))
-#define LEFT_DIR  ((1 << PD4) | (1 << PD5))
-#endif
-
-void MotorInit(void) {
-    DDRB |= LEFT_DIR | PWM;
-  f2:	87 b3       	in	r24, 0x17	; 23
-  f4:	86 63       	ori	r24, 0x36	; 54
-  f6:	87 bb       	out	0x17, r24	; 23
-    DDRD |= RIGHT_DIR;
-  f8:	81 b3       	in	r24, 0x11	; 17
-  fa:	80 63       	ori	r24, 0x30	; 48
-  fc:	81 bb       	out	0x11, r24	; 17
-
-    // 8 bit PWM using OC1A & OC1B
-    TCCR1A = (1 << WGM10) | (1 << COM1A1) | (1 << COM1B1);
-  fe:	81 ea       	ldi	r24, 0xA1	; 161
- 100:	8f bd       	out	0x2f, r24	; 47
-    // Timer1 CLK: F_CPU/8
-    TCCR1B = (1 << CS11);
- 102:	82 e0       	ldi	r24, 0x02	; 2
- 104:	8e bd       	out	0x2e, r24	; 46
-    // Turn off all interrupts of Timer1
-    TIMSK &= ~((1 << TICIE1) | (1 << OCIE1A) | (1 << OCIE1B) | (1 << TOIE1));
- 106:	89 b7       	in	r24, 0x39	; 57
- 108:	83 7c       	andi	r24, 0xC3	; 195
- 10a:	89 bf       	out	0x39, r24	; 57
-
-    MotorDir(FWD,FWD);
- 10c:	60 e2       	ldi	r22, 0x20	; 32
- 10e:	80 e2       	ldi	r24, 0x20	; 32
- 110:	dd df       	rcall	.-70     	; 0xcc <MotorDir>
-    MotorSpeed(0,0);
- 112:	60 e0       	ldi	r22, 0x00	; 0
- 114:	80 e0       	ldi	r24, 0x00	; 0
- 116:	e6 cf       	rjmp	.-52     	; 0xe4 <MotorSpeed>
-
-00000118 <Timer2Init>:
-    // A 36kHz square wave signal matches F_CPU / 222
-    // Operation mode: Fast PWM, range 0 - 221 (T = 222)
-    // 50% duty cycle square wave -> Compare match at TCNT2 = T/2 = 111
-    // Manually added offset: 256 - 222 = 34 cycles
-
-    ASSR = 0x00; // synchronous operation
- 118:	12 bc       	out	0x22, r1	; 34
-    TCCR2 = (1 << CS20); // T2_CLK: F_CPU
- 11a:	81 e0       	ldi	r24, 0x01	; 1
- 11c:	85 bd       	out	0x25, r24	; 37
-    TIMSK |= (1 << TOIE2); // overflow interrupt
- 11e:	89 b7       	in	r24, 0x39	; 57
- 120:	80 64       	ori	r24, 0x40	; 64
- 122:	89 bf       	out	0x39, r24	; 57
-    OCR2 = 111 + 34; // compare match at T/2 + offset
- 124:	81 e9       	ldi	r24, 0x91	; 145
- 126:	83 bd       	out	0x23, r24	; 35
-    TIMER2_CLOCK_OUT_DISABLE();
- 128:	85 b5       	in	r24, 0x25	; 37
- 12a:	87 78       	andi	r24, 0x87	; 135
- 12c:	85 bd       	out	0x25, r24	; 37
-
-    // configure PB3 (36kHz carrier output) as output, low
-    DDRB |= (1 << DDB3);
- 12e:	bb 9a       	sbi	0x17, 3	; 23
-    PORTB &= ~(1 << PB3);
- 130:	c3 98       	cbi	0x18, 3	; 24
- 132:	08 95       	ret
-
-00000134 <__vector_4>:
- *
- * Updating the TCNT2 register requires three clock cycles/instructions, which
- * results in a total offset value of +37.
- */
-ISR(TIMER2_OVF_vect)
-{
- 134:	1f 92       	push	r1
- 136:	0f 92       	push	r0
- 138:	0f b6       	in	r0, 0x3f	; 63
- 13a:	0f 92       	push	r0
- 13c:	11 24       	eor	r1, r1
- 13e:	8f 93       	push	r24
-    uint8_t temp_reg;
-
-    __asm volatile( // TCNT2 += 37;
- 140:	84 b5       	in	r24, 0x24	; 36
- 142:	8b 5d       	subi	r24, 0xDB	; 219
- 144:	84 bd       	out	0x24, r24	; 36
-            : /* in operands */
-              [TIMER_REG] "I" (_SFR_IO_ADDR(TCNT2)),
-              [OFFSET_2COMP] "i" (-37)
-    );
-
-    tick36kHz++;
- 146:	80 91 62 00 	lds	r24, 0x0062
- 14a:	8f 5f       	subi	r24, 0xFF	; 255
- 14c:	80 93 62 00 	sts	0x0062, r24
-#if TIMER2_ISR_HOOK_ENABLE
-    if (Timer2ISRHook != NULL) {
-        Timer2ISRHook();
-    }
-#endif
-}
- 150:	8f 91       	pop	r24
- 152:	0f 90       	pop	r0
- 154:	0f be       	out	0x3f, r0	; 63
- 156:	0f 90       	pop	r0
- 158:	1f 90       	pop	r1
- 15a:	18 95       	reti
-
-0000015c <sleep>:
-
-void sleep(uint8_t timer36kHz_ticks) {
-    // Interrupts have to be enabled to wake up the microcontroller from sleep
-    // mode, which legitimates the usage of cli/sei in this case
-    cli();
- 15c:	f8 94       	cli
-    set_sleep_mode(SLEEP_MODE_IDLE | _SLEEP_ENABLE_MASK); // prepare/unlock
- 15e:	95 b7       	in	r25, 0x35	; 53
- 160:	9f 70       	andi	r25, 0x0F	; 15
- 162:	90 68       	ori	r25, 0x80	; 128
- 164:	95 bf       	out	0x35, r25	; 53
-    sei();
- 166:	78 94       	sei
-
-    timer36kHz_ticks += tick36kHz;
- 168:	90 91 62 00 	lds	r25, 0x0062
- 16c:	89 0f       	add	r24, r25
-    while (tick36kHz != timer36kHz_ticks) {
- 16e:	90 91 62 00 	lds	r25, 0x0062
- 172:	98 17       	cp	r25, r24
- 174:	11 f0       	breq	.+4      	; 0x17a <sleep+0x1e>
-        sleep_cpu();
- 176:	88 95       	sleep
- 178:	fa cf       	rjmp	.-12     	; 0x16e <sleep+0x12>
-    }
-
-    cli();
- 17a:	f8 94       	cli
-    sleep_disable();
- 17c:	85 b7       	in	r24, 0x35	; 53
- 17e:	8f 77       	andi	r24, 0x7F	; 127
- 180:	85 bf       	out	0x35, r24	; 53
-    sei();
- 182:	78 94       	sei
- 184:	08 95       	ret
-
-00000186 <LineData>:
-    }
-
-    amMode = mode;
-}
-
-void LineData(uint16_t * const data) {
- 186:	1f 93       	push	r17
- 188:	cf 93       	push	r28
- 18a:	df 93       	push	r29
- 18c:	ec 01       	movw	r28, r24
-    ADC_BLOCK {
- 18e:	76 d0       	rcall	.+236    	; 0x27c <__ADCBlockEnter>
- 190:	18 2f       	mov	r17, r24
-        ADCSelectChannel(ADC_IR_LEFT);
- 192:	83 e4       	ldi	r24, 0x43	; 67
- 194:	9b d0       	rcall	.+310    	; 0x2cc <ADCSelectChannel>
-        ADCMeasure();
- 196:	a3 d0       	rcall	.+326    	; 0x2de <ADCMeasure>
-        data[LEFT] = ADC;
- 198:	24 b1       	in	r18, 0x04	; 4
- 19a:	35 b1       	in	r19, 0x05	; 5
- 19c:	39 83       	std	Y+1, r19	; 0x01
- 19e:	28 83       	st	Y, r18
-
-        ADCSelectChannel(ADC_IR_RIGHT);
- 1a0:	82 e4       	ldi	r24, 0x42	; 66
- 1a2:	94 d0       	rcall	.+296    	; 0x2cc <ADCSelectChannel>
-        ADCMeasure();
- 1a4:	9c d0       	rcall	.+312    	; 0x2de <ADCMeasure>
-        data[RIGHT] = ADC;
- 1a6:	24 b1       	in	r18, 0x04	; 4
- 1a8:	35 b1       	in	r19, 0x05	; 5
- 1aa:	3b 83       	std	Y+3, r19	; 0x03
- 1ac:	2a 83       	std	Y+2, r18	; 0x02
- * @param ptr a pointer to the ADC channel configuration which will be passed to
- *            ADCBlockLeave()
- * \endif
- */
-static ALWAYS_INLINE void __ADCBlockLeaveByPtr(const uint8_t * const ptr) {
-    __ADCBlockLeave(*ptr);
- 1ae:	81 2f       	mov	r24, r17
-    }
-}
- 1b0:	df 91       	pop	r29
- 1b2:	cf 91       	pop	r28
- 1b4:	1f 91       	pop	r17
- 1b6:	74 c0       	rjmp	.+232    	; 0x2a0 <__ADCBlockLeave>
-
-000001b8 <__vector_14>:
-#endif
-#endif
-}
-
-ISR(ADC_vect)
-{
- 1b8:	1f 92       	push	r1
- 1ba:	0f 92       	push	r0
- 1bc:	0f b6       	in	r0, 0x3f	; 63
- 1be:	0f 92       	push	r0
- 1c0:	11 24       	eor	r1, r1
- 1c2:	2f 93       	push	r18
- 1c4:	3f 93       	push	r19
- 1c6:	4f 93       	push	r20
- 1c8:	5f 93       	push	r21
- 1ca:	6f 93       	push	r22
- 1cc:	7f 93       	push	r23
- 1ce:	8f 93       	push	r24
- 1d0:	9f 93       	push	r25
- 1d2:	af 93       	push	r26
- 1d4:	bf 93       	push	r27
- 1d6:	ef 93       	push	r30
- 1d8:	ff 93       	push	r31
-    static uint8_t right;
-    uint8_t channel = ADC_GET_CHANNEL();
- 1da:	87 b1       	in	r24, 0x07	; 7
-
-    sei(); // re-enable interrupts
- 1dc:	78 94       	sei
-
-    switch (channel) {
- 1de:	81 36       	cpi	r24, 0x61	; 97
- 1e0:	19 f0       	breq	.+6      	; 0x1e8 <__vector_14+0x30>
- 1e2:	83 36       	cpi	r24, 0x63	; 99
- 1e4:	a1 f0       	breq	.+40     	; 0x20e <__vector_14+0x56>
- 1e6:	27 c0       	rjmp	.+78     	; 0x236 <__vector_14+0x7e>
-    case AUTOMODE_ADC_CH(AUTOMODE_CH_ODO_LEFT):
-        if (amMode & am_line) {
- 1e8:	80 91 64 00 	lds	r24, 0x0064
- 1ec:	82 fd       	sbrc	r24, 2
- 1ee:	02 c0       	rjmp	.+4      	; 0x1f4 <__vector_14+0x3c>
-            channel++; // IR_RIGHT is the successor of ODO_LEFT
-        } else {
-            channel = AUTOMODE_ADC_CH(AUTOMODE_CH_ODO_RIGHT);
- 1f0:	80 e6       	ldi	r24, 0x60	; 96
- 1f2:	01 c0       	rjmp	.+2      	; 0x1f6 <__vector_14+0x3e>
-    sei(); // re-enable interrupts
-
-    switch (channel) {
-    case AUTOMODE_ADC_CH(AUTOMODE_CH_ODO_LEFT):
-        if (amMode & am_line) {
-            channel++; // IR_RIGHT is the successor of ODO_LEFT
- 1f4:	82 e6       	ldi	r24, 0x62	; 98
-        } else {
-            channel = AUTOMODE_ADC_CH(AUTOMODE_CH_ODO_RIGHT);
-        }
-
-        cli();
- 1f6:	f8 94       	cli
-        odoData.left = ADCH;
- 1f8:	95 b1       	in	r25, 0x05	; 5
- 1fa:	90 93 66 00 	sts	0x0066, r25
-        odoData.right = right;
- 1fe:	90 91 60 00 	lds	r25, 0x0060
- 202:	90 93 65 00 	sts	0x0065, r25
-        odoDataUpdated = true;
- 206:	91 e0       	ldi	r25, 0x01	; 1
- 208:	90 93 69 00 	sts	0x0069, r25
- 20c:	12 c0       	rjmp	.+36     	; 0x232 <__vector_14+0x7a>
-        sei();
-
-        break;
-    case AUTOMODE_ADC_CH(AUTOMODE_CH_IR_LEFT):
-        if (amMode & am_odo) {
- 20e:	80 91 64 00 	lds	r24, 0x0064
- 212:	80 ff       	sbrs	r24, 0
- 214:	02 c0       	rjmp	.+4      	; 0x21a <__vector_14+0x62>
-            channel = AUTOMODE_ADC_CH(AUTOMODE_CH_ODO_RIGHT);
- 216:	80 e6       	ldi	r24, 0x60	; 96
- 218:	01 c0       	rjmp	.+2      	; 0x21c <__vector_14+0x64>
-        } else {
-            channel = AUTOMODE_ADC_CH(AUTOMODE_CH_IR_RIGHT);
- 21a:	82 e6       	ldi	r24, 0x62	; 98
-        }
-
-        cli();
- 21c:	f8 94       	cli
-        lineData.left = ADCH;
- 21e:	95 b1       	in	r25, 0x05	; 5
- 220:	90 93 68 00 	sts	0x0068, r25
-        lineData.right = right;
- 224:	90 91 60 00 	lds	r25, 0x0060
- 228:	90 93 67 00 	sts	0x0067, r25
-        lineDataUpdated = true;
- 22c:	91 e0       	ldi	r25, 0x01	; 1
- 22e:	90 93 63 00 	sts	0x0063, r25
-        sei();
- 232:	78 94       	sei
-
-        break;
- 234:	04 c0       	rjmp	.+8      	; 0x23e <__vector_14+0x86>
-    default:
-        right = ADCH;
- 236:	95 b1       	in	r25, 0x05	; 5
- 238:	90 93 60 00 	sts	0x0060, r25
-        channel++;
- 23c:	8f 5f       	subi	r24, 0xFF	; 255
-        break;
-    }
-
-    ADCInterruptEnable(channel);
- 23e:	53 d0       	rcall	.+166    	; 0x2e6 <ADCInterruptEnable>
-#if ADC_ISR_HOOK_ENABLE
-    if (ADCISRHook != NULL) {
-        ADCISRHook();
-    }
-#endif
-}
- 240:	ff 91       	pop	r31
- 242:	ef 91       	pop	r30
- 244:	bf 91       	pop	r27
- 246:	af 91       	pop	r26
- 248:	9f 91       	pop	r25
- 24a:	8f 91       	pop	r24
- 24c:	7f 91       	pop	r23
- 24e:	6f 91       	pop	r22
- 250:	5f 91       	pop	r21
- 252:	4f 91       	pop	r20
- 254:	3f 91       	pop	r19
- 256:	2f 91       	pop	r18
- 258:	0f 90       	pop	r0
- 25a:	0f be       	out	0x3f, r0	; 63
- 25c:	0f 90       	pop	r0
- 25e:	1f 90       	pop	r1
- 260:	18 95       	reti
-
-00000262 <Init>:
-
-void Init(void) {
-    // The serial interface has already been initialized from the bootloader
-    // SerInit();
-
-    Timer2Init();
- 262:	5a df       	rcall	.-332    	; 0x118 <Timer2Init>
-    MotorInit();
- 264:	46 df       	rcall	.-372    	; 0xf2 <MotorInit>
-    LEDInit();
- 266:	8d d0       	rcall	.+282    	; 0x382 <LEDInit>
-
-    ADCInit();
- 268:	03 d0       	rcall	.+6      	; 0x270 <ADCInit>
-    SwitchInit();
- 26a:	52 d0       	rcall	.+164    	; 0x310 <SwitchInit>
-
-    sei();
- 26c:	78 94       	sei
- 26e:	08 95       	ret
-
-00000270 <ADCInit>:
-        ADCOff();
-    }
-}
-
-void ADCInit(void) {
-    old_channel = ADMUX_RESERVED_VALUE;
- 270:	8f ef       	ldi	r24, 0xFF	; 255
- 272:	80 93 61 00 	sts	0x0061, r24
-    ADCSRA = ADCSRA_BASE_VALUE;
- 276:	86 e0       	ldi	r24, 0x06	; 6
- 278:	86 b9       	out	0x06, r24	; 6
- 27a:	08 95       	ret
-
-0000027c <__ADCBlockEnter>:
-}
-
-uint8_t __ADCBlockEnter(void) {
-    const uint8_t _sreg = SREG;
- 27c:	2f b7       	in	r18, 0x3f	; 63
-
-    cli();
- 27e:	f8 94       	cli
-    const uint8_t _admux = ADMUX;
- 280:	87 b1       	in	r24, 0x07	; 7
-    const uint8_t _adcsra = ADCSRA & ((1 << ADEN) | (1 << ADIE));
- 282:	96 b1       	in	r25, 0x06	; 6
- 284:	39 2f       	mov	r19, r25
- 286:	38 78       	andi	r19, 0x88	; 136
-
-    uint8_t result = ADMUX_RESERVED_VALUE;
-
-    if (_adcsra) { // ADC is already enabled
- 288:	31 f0       	breq	.+12     	; 0x296 <__ADCBlockEnter+0x1a>
-        if (_adcsra & (1 << ADIE)) {
- 28a:	93 ff       	sbrs	r25, 3
- 28c:	05 c0       	rjmp	.+10     	; 0x298 <__ADCBlockEnter+0x1c>
-            // interrupt asynchronous mode
-            old_channel = _admux;
- 28e:	80 93 61 00 	sts	0x0061, r24
-            ADCSRA = ADCSRA_BASE_VALUE | (1 << ADEN); // ADIE off, ADC left on
- 292:	86 e8       	ldi	r24, 0x86	; 134
- 294:	86 b9       	out	0x06, r24	; 6
-
-    cli();
-    const uint8_t _admux = ADMUX;
-    const uint8_t _adcsra = ADCSRA & ((1 << ADEN) | (1 << ADIE));
-
-    uint8_t result = ADMUX_RESERVED_VALUE;
- 296:	8f ef       	ldi	r24, 0xFF	; 255
-            // interrupt a "normal" AD conversion
-            result = _admux;
-        }
-    }
-
-    SREG = _sreg; // restore interrupt flag before blocking/polling loop
- 298:	2f bf       	out	0x3f, r18	; 63
-
-    while (ADCSRA & (1 << ADSC))
- 29a:	36 99       	sbic	0x06, 6	; 6
- 29c:	fe cf       	rjmp	.-4      	; 0x29a <__ADCBlockEnter+0x1e>
-        ; // wait until the conversion has been finished
-
-    return result;
-}
- 29e:	08 95       	ret
-
-000002a0 <__ADCBlockLeave>:
-
-void __ADCBlockLeave(uint8_t stored) {
-    uint8_t adcsra_restore = ADCSRA_BASE_VALUE | (1 << ADEN) | (1 << ADSC) | (1 << ADIF);
-    // sets ADC state to: on, start (foreign) conversion, clear interrupt flag
-    const uint8_t _sreg = SREG;
- 2a0:	3f b7       	in	r19, 0x3f	; 63
-
-    cli();
- 2a2:	f8 94       	cli
-
-    if (stored == ADMUX_RESERVED_VALUE) {
- 2a4:	8f 3f       	cpi	r24, 0xFF	; 255
- 2a6:	31 f4       	brne	.+12     	; 0x2b4 <__ADCBlockLeave+0x14>
-        stored = old_channel;
- 2a8:	80 91 61 00 	lds	r24, 0x0061
-        // interrupted asynchronous mode, re-enable ADC interrupt
-        adcsra_restore |= (1 << ADIE);
-    }
-
-    if (stored == ADMUX_RESERVED_VALUE) {
- 2ac:	8f 3f       	cpi	r24, 0xFF	; 255
- 2ae:	51 f0       	breq	.+20     	; 0x2c4 <__ADCBlockLeave+0x24>
-    cli();
-
-    if (stored == ADMUX_RESERVED_VALUE) {
-        stored = old_channel;
-        // interrupted asynchronous mode, re-enable ADC interrupt
-        adcsra_restore |= (1 << ADIE);
- 2b0:	2e ed       	ldi	r18, 0xDE	; 222
- 2b2:	01 c0       	rjmp	.+2      	; 0x2b6 <__ADCBlockLeave+0x16>
-
-    return result;
-}
-
-void __ADCBlockLeave(uint8_t stored) {
-    uint8_t adcsra_restore = ADCSRA_BASE_VALUE | (1 << ADEN) | (1 << ADSC) | (1 << ADIF);
- 2b4:	26 ed       	ldi	r18, 0xD6	; 214
-    }
-
-    if (stored == ADMUX_RESERVED_VALUE) {
-        adcsra_restore = 0; // ADC off
-    } else {
-        disableADCOnRefChange(ADMUX, stored);
- 2b6:	97 b1       	in	r25, 0x07	; 7
- * @param newmux the new channel configuration
- * \endif
- */
-static inline void disableADCOnRefChange(const uint8_t oldmux,
-        const uint8_t newmux) {
-    if ((oldmux & ADC_REF_MASK) != (newmux & ADC_REF_MASK)) {
- 2b8:	98 27       	eor	r25, r24
- 2ba:	90 7c       	andi	r25, 0xC0	; 192
- 2bc:	09 f0       	breq	.+2      	; 0x2c0 <__ADCBlockLeave+0x20>
- * \if en
- * Shuts down the ADC completely.
- * \endif
- */
-static inline void ADCOff(void) {
-    ADCSRA = 0;
- 2be:	16 b8       	out	0x06, r1	; 6
-
-    if (stored == ADMUX_RESERVED_VALUE) {
-        adcsra_restore = 0; // ADC off
-    } else {
-        disableADCOnRefChange(ADMUX, stored);
-        ADMUX = stored;
- 2c0:	87 b9       	out	0x07, r24	; 7
- 2c2:	01 c0       	rjmp	.+2      	; 0x2c6 <__ADCBlockLeave+0x26>
-        // interrupted asynchronous mode, re-enable ADC interrupt
-        adcsra_restore |= (1 << ADIE);
-    }
-
-    if (stored == ADMUX_RESERVED_VALUE) {
-        adcsra_restore = 0; // ADC off
- 2c4:	20 e0       	ldi	r18, 0x00	; 0
-    } else {
-        disableADCOnRefChange(ADMUX, stored);
-        ADMUX = stored;
-    }
-
-    ADCSRA = adcsra_restore;
- 2c6:	26 b9       	out	0x06, r18	; 6
-    SREG = _sreg;
- 2c8:	3f bf       	out	0x3f, r19	; 63
- 2ca:	08 95       	ret
-
-000002cc <ADCSelectChannel>:
-}
-
-void ADCSelectChannel(const uint8_t channel) {
-    // enforce "long" conversion if reference voltage changes
-    disableADCOnRefChange(ADMUX, channel);
- 2cc:	97 b1       	in	r25, 0x07	; 7
- * @param newmux the new channel configuration
- * \endif
- */
-static inline void disableADCOnRefChange(const uint8_t oldmux,
-        const uint8_t newmux) {
-    if ((oldmux & ADC_REF_MASK) != (newmux & ADC_REF_MASK)) {
- 2ce:	98 27       	eor	r25, r24
- 2d0:	90 7c       	andi	r25, 0xC0	; 192
- 2d2:	09 f0       	breq	.+2      	; 0x2d6 <ADCSelectChannel+0xa>
- * \if en
- * Shuts down the ADC completely.
- * \endif
- */
-static inline void ADCOff(void) {
-    ADCSRA = 0;
- 2d4:	16 b8       	out	0x06, r1	; 6
-}
-
-void ADCSelectChannel(const uint8_t channel) {
-    // enforce "long" conversion if reference voltage changes
-    disableADCOnRefChange(ADMUX, channel);
-    ADCSRA = ADCSRA_BASE_VALUE | (1 << ADEN); // ADC on
- 2d6:	96 e8       	ldi	r25, 0x86	; 134
- 2d8:	96 b9       	out	0x06, r25	; 6
-    ADMUX = channel;
- 2da:	87 b9       	out	0x07, r24	; 7
- 2dc:	08 95       	ret
-
-000002de <ADCMeasure>:
-}
-
-void ADCMeasure(void) {
-    ADCSRA |= (1 << ADSC); // do not take care of ADIF since ADIE should be off
- 2de:	36 9a       	sbi	0x06, 6	; 6
-
-    while (ADCSRA & (1 << ADSC))
- 2e0:	36 99       	sbic	0x06, 6	; 6
- 2e2:	fe cf       	rjmp	.-4      	; 0x2e0 <ADCMeasure+0x2>
-        ; // wait until the conversion has been finishied
-}
- 2e4:	08 95       	ret
-
-000002e6 <ADCInterruptEnable>:
-
-void ADCInterruptEnable(const uint8_t channel) {
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
- 2e6:	2f b7       	in	r18, 0x3f	; 63
+00000154 <MotorSpeed>:
+ 154:	9f b7       	in	r25, 0x3f	; 63
     return 1;
 }
 
 static __inline__ uint8_t __iCliRetVal(void)
 {
     cli();
- 2e8:	f8 94       	cli
-        const uint8_t _adcsra = ADCSRA;
- 2ea:	96 b1       	in	r25, 0x06	; 6
-
-        if (!(_adcsra & (1 << ADEN)) || (_adcsra & (1 << ADIE))) {
- 2ec:	97 ff       	sbrs	r25, 7
- 2ee:	02 c0       	rjmp	.+4      	; 0x2f4 <ADCInterruptEnable+0xe>
- 2f0:	93 ff       	sbrs	r25, 3
- 2f2:	0a c0       	rjmp	.+20     	; 0x308 <ADCInterruptEnable+0x22>
-            // ADC is off or asynchronous mode is already enabled
-
-            disableADCOnRefChange(ADMUX, channel);
- 2f4:	97 b1       	in	r25, 0x07	; 7
- * @param newmux the new channel configuration
- * \endif
- */
-static inline void disableADCOnRefChange(const uint8_t oldmux,
-        const uint8_t newmux) {
-    if ((oldmux & ADC_REF_MASK) != (newmux & ADC_REF_MASK)) {
- 2f6:	98 27       	eor	r25, r24
- 2f8:	90 7c       	andi	r25, 0xC0	; 192
- 2fa:	09 f0       	breq	.+2      	; 0x2fe <ADCInterruptEnable+0x18>
- * \if en
- * Shuts down the ADC completely.
- * \endif
- */
-static inline void ADCOff(void) {
-    ADCSRA = 0;
- 2fc:	16 b8       	out	0x06, r1	; 6
-        if (!(_adcsra & (1 << ADEN)) || (_adcsra & (1 << ADIE))) {
-            // ADC is off or asynchronous mode is already enabled
-
-            disableADCOnRefChange(ADMUX, channel);
-
-            if (ADCSRA & (1 << ADSC)) { // interrupt running conversion, if any
- 2fe:	36 99       	sbic	0x06, 6	; 6
- * \if en
- * Shuts down the ADC completely.
- * \endif
- */
-static inline void ADCOff(void) {
-    ADCSRA = 0;
- 300:	16 b8       	out	0x06, r1	; 6
-
-            if (ADCSRA & (1 << ADSC)) { // interrupt running conversion, if any
-                ADCOff();
-            }
-
-            ADMUX = channel;
- 302:	87 b9       	out	0x07, r24	; 7
-            ADCSRA = ADCSRA_BASE_VALUE | (1 << ADEN) | (1 << ADSC)
- 304:	9e ed       	ldi	r25, 0xDE	; 222
- 306:	96 b9       	out	0x06, r25	; 6
-        }
-
-        // would normally be an "else", but this way is faster
-        // At least one ADC_BLOCK ist active, store desired channel
-        // configuration until the ADC_BLOCK is left.
-        old_channel = channel;
- 308:	80 93 61 00 	sts	0x0061, r24
+ 156:	f8 94       	cli
+ 158:	1b bc       	out	0x2b, r1	; 43
+ 15a:	8a bd       	out	0x2a, r24	; 42
+ 15c:	68 bd       	out	0x28, r22	; 40
     (void)__s;
 }
 
 static __inline__ void __iRestore(const  uint8_t *__s)
 {
     SREG = *__s;
- 30c:	2f bf       	out	0x3f, r18	; 63
+ 15e:	9f bf       	out	0x3f, r25	; 63
     __asm__ volatile ("" ::: "memory");
- 30e:	08 95       	ret
+ 160:	08 95       	ret
 
-00000310 <SwitchInit>:
-#if SWITCH_ISR_HOOK_ENABLE
-    ISRHookFunc_t *SwitchISRHook;
-#endif
+00000162 <MotorInit>:
+ 162:	87 b3       	in	r24, 0x17	; 23
+ 164:	86 63       	ori	r24, 0x36	; 54
+ 166:	87 bb       	out	0x17, r24	; 23
+ 168:	81 b3       	in	r24, 0x11	; 17
+ 16a:	80 63       	ori	r24, 0x30	; 48
+ 16c:	81 bb       	out	0x11, r24	; 17
+ 16e:	81 ea       	ldi	r24, 0xA1	; 161
+ 170:	8f bd       	out	0x2f, r24	; 47
+ 172:	82 e0       	ldi	r24, 0x02	; 2
+ 174:	8e bd       	out	0x2e, r24	; 46
+ 176:	89 b7       	in	r24, 0x39	; 57
+ 178:	83 7c       	andi	r24, 0xC3	; 195
+ 17a:	89 bf       	out	0x39, r24	; 57
+ 17c:	60 e2       	ldi	r22, 0x20	; 32
+ 17e:	80 e2       	ldi	r24, 0x20	; 32
+ 180:	dd df       	rcall	.-70     	; 0x13c <MotorDir>
+ 182:	60 e0       	ldi	r22, 0x00	; 0
+ 184:	80 e0       	ldi	r24, 0x00	; 0
+ 186:	e6 cf       	rjmp	.-52     	; 0x154 <MotorSpeed>
 
-void SwitchInit(void) {
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
- 310:	9f b7       	in	r25, 0x3f	; 63
+00000188 <LineData>:
+ 188:	1f 93       	push	r17
+ 18a:	cf 93       	push	r28
+ 18c:	df 93       	push	r29
+ 18e:	ec 01       	movw	r28, r24
+ 190:	cb d0       	rcall	.+406    	; 0x328 <__ADCBlockEnter>
+ 192:	18 2f       	mov	r17, r24
+ 194:	83 e4       	ldi	r24, 0x43	; 67
+ 196:	f0 d0       	rcall	.+480    	; 0x378 <ADCSelectChannel>
+ 198:	f8 d0       	rcall	.+496    	; 0x38a <ADCMeasure>
+ 19a:	24 b1       	in	r18, 0x04	; 4
+ 19c:	35 b1       	in	r19, 0x05	; 5
+ 19e:	39 83       	std	Y+1, r19	; 0x01
+ 1a0:	28 83       	st	Y, r18
+ 1a2:	82 e4       	ldi	r24, 0x42	; 66
+ 1a4:	e9 d0       	rcall	.+466    	; 0x378 <ADCSelectChannel>
+ 1a6:	f1 d0       	rcall	.+482    	; 0x38a <ADCMeasure>
+ 1a8:	24 b1       	in	r18, 0x04	; 4
+ 1aa:	35 b1       	in	r19, 0x05	; 5
+ 1ac:	3b 83       	std	Y+3, r19	; 0x03
+ 1ae:	2a 83       	std	Y+2, r18	; 0x02
+ 1b0:	81 2f       	mov	r24, r17
+ 1b2:	df 91       	pop	r29
+ 1b4:	cf 91       	pop	r28
+ 1b6:	1f 91       	pop	r17
+ 1b8:	c9 c0       	rjmp	.+402    	; 0x34c <__ADCBlockLeave>
+
+000001ba <__vector_14>:
+ 1ba:	1f 92       	push	r1
+ 1bc:	0f 92       	push	r0
+ 1be:	0f b6       	in	r0, 0x3f	; 63
+ 1c0:	0f 92       	push	r0
+ 1c2:	11 24       	eor	r1, r1
+ 1c4:	2f 93       	push	r18
+ 1c6:	3f 93       	push	r19
+ 1c8:	4f 93       	push	r20
+ 1ca:	5f 93       	push	r21
+ 1cc:	6f 93       	push	r22
+ 1ce:	7f 93       	push	r23
+ 1d0:	8f 93       	push	r24
+ 1d2:	9f 93       	push	r25
+ 1d4:	af 93       	push	r26
+ 1d6:	bf 93       	push	r27
+ 1d8:	ef 93       	push	r30
+ 1da:	ff 93       	push	r31
+ 1dc:	87 b1       	in	r24, 0x07	; 7
+ 1de:	78 94       	sei
+ 1e0:	81 36       	cpi	r24, 0x61	; 97
+ 1e2:	19 f0       	breq	.+6      	; 0x1ea <__vector_14+0x30>
+ 1e4:	83 36       	cpi	r24, 0x63	; 99
+ 1e6:	a1 f0       	breq	.+40     	; 0x210 <__vector_14+0x56>
+ 1e8:	27 c0       	rjmp	.+78     	; 0x238 <__vector_14+0x7e>
+ 1ea:	80 91 63 00 	lds	r24, 0x0063
+ 1ee:	82 fd       	sbrc	r24, 2
+ 1f0:	02 c0       	rjmp	.+4      	; 0x1f6 <__vector_14+0x3c>
+ 1f2:	80 e6       	ldi	r24, 0x60	; 96
+ 1f4:	01 c0       	rjmp	.+2      	; 0x1f8 <__vector_14+0x3e>
+ 1f6:	82 e6       	ldi	r24, 0x62	; 98
+ 1f8:	f8 94       	cli
+ 1fa:	95 b1       	in	r25, 0x05	; 5
+ 1fc:	90 93 65 00 	sts	0x0065, r25
+ 200:	90 91 60 00 	lds	r25, 0x0060
+ 204:	90 93 64 00 	sts	0x0064, r25
+ 208:	91 e0       	ldi	r25, 0x01	; 1
+ 20a:	90 93 68 00 	sts	0x0068, r25
+ 20e:	12 c0       	rjmp	.+36     	; 0x234 <__vector_14+0x7a>
+ 210:	80 91 63 00 	lds	r24, 0x0063
+ 214:	80 ff       	sbrs	r24, 0
+ 216:	02 c0       	rjmp	.+4      	; 0x21c <__vector_14+0x62>
+ 218:	80 e6       	ldi	r24, 0x60	; 96
+ 21a:	01 c0       	rjmp	.+2      	; 0x21e <__vector_14+0x64>
+ 21c:	82 e6       	ldi	r24, 0x62	; 98
+ 21e:	f8 94       	cli
+ 220:	95 b1       	in	r25, 0x05	; 5
+ 222:	90 93 67 00 	sts	0x0067, r25
+ 226:	90 91 60 00 	lds	r25, 0x0060
+ 22a:	90 93 66 00 	sts	0x0066, r25
+ 22e:	91 e0       	ldi	r25, 0x01	; 1
+ 230:	90 93 62 00 	sts	0x0062, r25
+ 234:	78 94       	sei
+ 236:	04 c0       	rjmp	.+8      	; 0x240 <__vector_14+0x86>
+ 238:	95 b1       	in	r25, 0x05	; 5
+ 23a:	90 93 60 00 	sts	0x0060, r25
+ 23e:	8f 5f       	subi	r24, 0xFF	; 255
+ 240:	a8 d0       	rcall	.+336    	; 0x392 <ADCInterruptEnable>
+ 242:	ff 91       	pop	r31
+ 244:	ef 91       	pop	r30
+ 246:	bf 91       	pop	r27
+ 248:	af 91       	pop	r26
+ 24a:	9f 91       	pop	r25
+ 24c:	8f 91       	pop	r24
+ 24e:	7f 91       	pop	r23
+ 250:	6f 91       	pop	r22
+ 252:	5f 91       	pop	r21
+ 254:	4f 91       	pop	r20
+ 256:	3f 91       	pop	r19
+ 258:	2f 91       	pop	r18
+ 25a:	0f 90       	pop	r0
+ 25c:	0f be       	out	0x3f, r0	; 63
+ 25e:	0f 90       	pop	r0
+ 260:	1f 90       	pop	r1
+ 262:	18 95       	reti
+
+00000264 <SwitchInit>:
+ 264:	9f b7       	in	r25, 0x3f	; 63
     return 1;
 }
 
 static __inline__ uint8_t __iCliRetVal(void)
 {
     cli();
- 312:	f8 94       	cli
-        GICR &= ~(1 << INT1); // switch interrupt (INT1) off
- 314:	8b b7       	in	r24, 0x3b	; 59
- 316:	8f 77       	andi	r24, 0x7F	; 127
- 318:	8b bf       	out	0x3b, r24	; 59
-
-        uint8_t mcucr = MCUCR;
- 31a:	85 b7       	in	r24, 0x35	; 53
-
-        mcucr |= (1 << ISC10); // trigger interrupt on rising or falling edge
-        mcucr &= ~(1 << ISC11);
- 31c:	87 7f       	andi	r24, 0xF7	; 247
- 31e:	84 60       	ori	r24, 0x04	; 4
-
-        MCUCR = mcucr;
- 320:	85 bf       	out	0x35, r24	; 53
+ 266:	f8 94       	cli
+ 268:	8b b7       	in	r24, 0x3b	; 59
+ 26a:	8f 77       	andi	r24, 0x7F	; 127
+ 26c:	8b bf       	out	0x3b, r24	; 59
+ 26e:	85 b7       	in	r24, 0x35	; 53
+ 270:	87 7f       	andi	r24, 0xF7	; 247
+ 272:	84 60       	ori	r24, 0x04	; 4
+ 274:	85 bf       	out	0x35, r24	; 53
     (void)__s;
 }
 
 static __inline__ void __iRestore(const  uint8_t *__s)
 {
     SREG = *__s;
- 322:	9f bf       	out	0x3f, r25	; 63
-    }
+ 276:	9f bf       	out	0x3f, r25	; 63
+ 278:	a4 98       	cbi	0x14, 4	; 20
+ 27a:	85 b3       	in	r24, 0x15	; 21
+ 27c:	80 71       	andi	r24, 0x10	; 16
+ 27e:	85 bb       	out	0x15, r24	; 21
+ 280:	8b 98       	cbi	0x11, 3	; 17
+ 282:	93 98       	cbi	0x12, 3	; 18
+ 284:	10 92 69 00 	sts	0x0069, r1
+ 288:	08 95       	ret
 
-    DDRC &= ~(1 << DDC4); // configure measurment input to input, low
- 324:	a4 98       	cbi	0x14, 4	; 20
-    PORTC &= (1 << PC4);
- 326:	85 b3       	in	r24, 0x15	; 21
- 328:	80 71       	andi	r24, 0x10	; 16
- 32a:	85 bb       	out	0x15, r24	; 21
+0000028a <__vector_2>:
+ 28a:	1f 92       	push	r1
+ 28c:	0f 92       	push	r0
+ 28e:	0f b6       	in	r0, 0x3f	; 63
+ 290:	0f 92       	push	r0
+ 292:	11 24       	eor	r1, r1
+ 294:	8f 93       	push	r24
+ 296:	81 e0       	ldi	r24, 0x01	; 1
+ 298:	80 93 69 00 	sts	0x0069, r24
+ 29c:	8b b7       	in	r24, 0x3b	; 59
+ 29e:	8f 77       	andi	r24, 0x7F	; 127
+ 2a0:	8b bf       	out	0x3b, r24	; 59
+ 2a2:	8f 91       	pop	r24
+ 2a4:	0f 90       	pop	r0
+ 2a6:	0f be       	out	0x3f, r0	; 63
+ 2a8:	0f 90       	pop	r0
+ 2aa:	1f 90       	pop	r1
+ 2ac:	18 95       	reti
 
-    SWITCH_INPUT();
- 32c:	8b 98       	cbi	0x11, 3	; 17
-    SWITCH_OFF();
- 32e:	93 98       	cbi	0x12, 3	; 18
-    switch_event = false;
- 330:	10 92 6a 00 	sts	0x006A, r1
- 334:	08 95       	ret
+000002ae <Timer2Init>:
+ 2ae:	12 bc       	out	0x22, r1	; 34
+ 2b0:	81 e0       	ldi	r24, 0x01	; 1
+ 2b2:	85 bd       	out	0x25, r24	; 37
+ 2b4:	89 b7       	in	r24, 0x39	; 57
+ 2b6:	80 64       	ori	r24, 0x40	; 64
+ 2b8:	89 bf       	out	0x39, r24	; 57
+ 2ba:	81 e9       	ldi	r24, 0x91	; 145
+ 2bc:	83 bd       	out	0x23, r24	; 35
+ 2be:	85 b5       	in	r24, 0x25	; 37
+ 2c0:	87 78       	andi	r24, 0x87	; 135
+ 2c2:	85 bd       	out	0x25, r24	; 37
+ 2c4:	bb 9a       	sbi	0x17, 3	; 23
+ 2c6:	c3 98       	cbi	0x18, 3	; 24
+ 2c8:	08 95       	ret
 
-00000336 <__vector_2>:
-        GICR &= ~(1 << INT1); // disable interrupt
-    }
-}
+000002ca <__vector_4>:
+ 2ca:	1f 92       	push	r1
+ 2cc:	0f 92       	push	r0
+ 2ce:	0f b6       	in	r0, 0x3f	; 63
+ 2d0:	0f 92       	push	r0
+ 2d2:	11 24       	eor	r1, r1
+ 2d4:	8f 93       	push	r24
+ 2d6:	84 b5       	in	r24, 0x24	; 36
+ 2d8:	8b 5d       	subi	r24, 0xDB	; 219
+ 2da:	84 bd       	out	0x24, r24	; 36
+ 2dc:	80 91 6a 00 	lds	r24, 0x006A
+ 2e0:	8f 5f       	subi	r24, 0xFF	; 255
+ 2e2:	80 93 6a 00 	sts	0x006A, r24
+ 2e6:	8f 91       	pop	r24
+ 2e8:	0f 90       	pop	r0
+ 2ea:	0f be       	out	0x3f, r0	; 63
+ 2ec:	0f 90       	pop	r0
+ 2ee:	1f 90       	pop	r1
+ 2f0:	18 95       	reti
 
-ISR(INT1_vect)
-{
- 336:	1f 92       	push	r1
- 338:	0f 92       	push	r0
- 33a:	0f b6       	in	r0, 0x3f	; 63
- 33c:	0f 92       	push	r0
- 33e:	11 24       	eor	r1, r1
- 340:	8f 93       	push	r24
-    switch_event = true;
- 342:	81 e0       	ldi	r24, 0x01	; 1
- 344:	80 93 6a 00 	sts	0x006A, r24
+000002f2 <sleep>:
+ 2f2:	f8 94       	cli
+ 2f4:	95 b7       	in	r25, 0x35	; 53
+ 2f6:	9f 70       	andi	r25, 0x0F	; 15
+ 2f8:	90 68       	ori	r25, 0x80	; 128
+ 2fa:	95 bf       	out	0x35, r25	; 53
+ 2fc:	78 94       	sei
+ 2fe:	90 91 6a 00 	lds	r25, 0x006A
+ 302:	89 0f       	add	r24, r25
+ 304:	90 91 6a 00 	lds	r25, 0x006A
+ 308:	98 17       	cp	r25, r24
+ 30a:	11 f0       	breq	.+4      	; 0x310 <sleep+0x1e>
+ 30c:	88 95       	sleep
+ 30e:	fa cf       	rjmp	.-12     	; 0x304 <sleep+0x12>
+ 310:	f8 94       	cli
+ 312:	85 b7       	in	r24, 0x35	; 53
+ 314:	8f 77       	andi	r24, 0x7F	; 127
+ 316:	85 bf       	out	0x35, r24	; 53
+ 318:	78 94       	sei
+ 31a:	08 95       	ret
 
-    // SwitchInterruptDisable();
-    // disabled function call to the equivalent function since GCC does not
-    // inline it and produces a lot of stack push/pop operations.
-    GICR &= ~(1 << INT1); // disable interrupt
- 348:	8b b7       	in	r24, 0x3b	; 59
- 34a:	8f 77       	andi	r24, 0x7F	; 127
- 34c:	8b bf       	out	0x3b, r24	; 59
-#if SWITCH_ISR_HOOK_ENABLE
-    if (SwitchISRHook != NULL) {
-        SwitchISRHook();
-    }
-#endif
-}
- 34e:	8f 91       	pop	r24
- 350:	0f 90       	pop	r0
- 352:	0f be       	out	0x3f, r0	; 63
- 354:	0f 90       	pop	r0
- 356:	1f 90       	pop	r1
- 358:	18 95       	reti
+0000031c <ADCInit>:
+ 31c:	8f ef       	ldi	r24, 0xFF	; 255
+ 31e:	80 93 61 00 	sts	0x0061, r24
+ 322:	86 e0       	ldi	r24, 0x06	; 6
+ 324:	86 b9       	out	0x06, r24	; 6
+ 326:	08 95       	ret
 
-0000035a <StatusLED>:
-    BackLEDFast(OFF);
-    StatusLED(GREEN);
-}
+00000328 <__ADCBlockEnter>:
+ 328:	2f b7       	in	r18, 0x3f	; 63
+ 32a:	f8 94       	cli
+ 32c:	87 b1       	in	r24, 0x07	; 7
+ 32e:	96 b1       	in	r25, 0x06	; 6
+ 330:	39 2f       	mov	r19, r25
+ 332:	38 78       	andi	r19, 0x88	; 136
+ 334:	31 f0       	breq	.+12     	; 0x342 <__ADCBlockEnter+0x1a>
+ 336:	93 ff       	sbrs	r25, 3
+ 338:	05 c0       	rjmp	.+10     	; 0x344 <__ADCBlockEnter+0x1c>
+ 33a:	80 93 61 00 	sts	0x0061, r24
+ 33e:	86 e8       	ldi	r24, 0x86	; 134
+ 340:	86 b9       	out	0x06, r24	; 6
+ 342:	8f ef       	ldi	r24, 0xFF	; 255
+ 344:	2f bf       	out	0x3f, r18	; 63
+ 346:	36 99       	sbic	0x06, 6	; 6
+ 348:	fe cf       	rjmp	.-4      	; 0x346 <__ADCBlockEnter+0x1e>
+ 34a:	08 95       	ret
 
-void StatusLED(const uint8_t color) {
-    GREEN_LED_OFF();
- 35a:	c0 98       	cbi	0x18, 0	; 24
-    RED_LED_OFF();
- 35c:	92 98       	cbi	0x12, 2	; 18
+0000034c <__ADCBlockLeave>:
+ 34c:	3f b7       	in	r19, 0x3f	; 63
+ 34e:	f8 94       	cli
+ 350:	8f 3f       	cpi	r24, 0xFF	; 255
+ 352:	31 f4       	brne	.+12     	; 0x360 <__ADCBlockLeave+0x14>
+ 354:	80 91 61 00 	lds	r24, 0x0061
+ 358:	8f 3f       	cpi	r24, 0xFF	; 255
+ 35a:	51 f0       	breq	.+20     	; 0x370 <__ADCBlockLeave+0x24>
+ 35c:	2e ed       	ldi	r18, 0xDE	; 222
+ 35e:	01 c0       	rjmp	.+2      	; 0x362 <__ADCBlockLeave+0x16>
+ 360:	26 ed       	ldi	r18, 0xD6	; 214
+ 362:	97 b1       	in	r25, 0x07	; 7
+ 364:	98 27       	eor	r25, r24
+ 366:	90 7c       	andi	r25, 0xC0	; 192
+ 368:	09 f0       	breq	.+2      	; 0x36c <__ADCBlockLeave+0x20>
+ 36a:	16 b8       	out	0x06, r1	; 6
+ 36c:	87 b9       	out	0x07, r24	; 7
+ 36e:	01 c0       	rjmp	.+2      	; 0x372 <__ADCBlockLeave+0x26>
+ 370:	20 e0       	ldi	r18, 0x00	; 0
+ 372:	26 b9       	out	0x06, r18	; 6
+ 374:	3f bf       	out	0x3f, r19	; 63
+ 376:	08 95       	ret
 
-    if (color & GREEN) {
- 35e:	80 fd       	sbrc	r24, 0
-        GREEN_LED_ON();
- 360:	c0 9a       	sbi	0x18, 0	; 24
-    }
+00000378 <ADCSelectChannel>:
+ 378:	97 b1       	in	r25, 0x07	; 7
+ 37a:	98 27       	eor	r25, r24
+ 37c:	90 7c       	andi	r25, 0xC0	; 192
+ 37e:	09 f0       	breq	.+2      	; 0x382 <ADCSelectChannel+0xa>
+ 380:	16 b8       	out	0x06, r1	; 6
+ 382:	96 e8       	ldi	r25, 0x86	; 134
+ 384:	96 b9       	out	0x06, r25	; 6
+ 386:	87 b9       	out	0x07, r24	; 7
+ 388:	08 95       	ret
 
-    if (color & RED) {
- 362:	81 fd       	sbrc	r24, 1
-        RED_LED_ON();
- 364:	92 9a       	sbi	0x12, 2	; 18
- 366:	08 95       	ret
+0000038a <ADCMeasure>:
+ 38a:	36 9a       	sbi	0x06, 6	; 6
+ 38c:	36 99       	sbic	0x06, 6	; 6
+ 38e:	fe cf       	rjmp	.-4      	; 0x38c <ADCMeasure+0x2>
+ 390:	08 95       	ret
 
-00000368 <BackLEDFast>:
-        FRONT_LED_OFF();
-    }
-}
-
-void BackLEDFast(const uint8_t leds) {
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
- 368:	2f b7       	in	r18, 0x3f	; 63
+00000392 <ADCInterruptEnable>:
+ 392:	2f b7       	in	r18, 0x3f	; 63
     return 1;
 }
 
 static __inline__ uint8_t __iCliRetVal(void)
 {
     cli();
- 36a:	f8 94       	cli
-        if (leds > 0) {
- 36c:	88 23       	and	r24, r24
- 36e:	19 f0       	breq	.+6      	; 0x376 <BackLEDFast+0xe>
-            LED_CONFIGURE_BACK();
- 370:	97 98       	cbi	0x12, 7	; 18
- 372:	a1 9a       	sbi	0x14, 1	; 20
- 374:	a0 9a       	sbi	0x14, 0	; 20
-        }
-
-        PORTC = (PORTC & ~BACK_LED_BOTH) | leds;
- 376:	95 b3       	in	r25, 0x15	; 21
- 378:	9c 7f       	andi	r25, 0xFC	; 252
- 37a:	98 2b       	or	r25, r24
- 37c:	95 bb       	out	0x15, r25	; 21
+ 394:	f8 94       	cli
+ 396:	96 b1       	in	r25, 0x06	; 6
+ 398:	97 ff       	sbrs	r25, 7
+ 39a:	02 c0       	rjmp	.+4      	; 0x3a0 <ADCInterruptEnable+0xe>
+ 39c:	93 ff       	sbrs	r25, 3
+ 39e:	0a c0       	rjmp	.+20     	; 0x3b4 <ADCInterruptEnable+0x22>
+ 3a0:	97 b1       	in	r25, 0x07	; 7
+ 3a2:	98 27       	eor	r25, r24
+ 3a4:	90 7c       	andi	r25, 0xC0	; 192
+ 3a6:	09 f0       	breq	.+2      	; 0x3aa <ADCInterruptEnable+0x18>
+ 3a8:	16 b8       	out	0x06, r1	; 6
+ 3aa:	36 99       	sbic	0x06, 6	; 6
+ 3ac:	16 b8       	out	0x06, r1	; 6
+ 3ae:	87 b9       	out	0x07, r24	; 7
+ 3b0:	9e ed       	ldi	r25, 0xDE	; 222
+ 3b2:	96 b9       	out	0x06, r25	; 6
+ 3b4:	80 93 61 00 	sts	0x0061, r24
     (void)__s;
 }
 
 static __inline__ void __iRestore(const  uint8_t *__s)
 {
     SREG = *__s;
- 37e:	2f bf       	out	0x3f, r18	; 63
+ 3b8:	2f bf       	out	0x3f, r18	; 63
     __asm__ volatile ("" ::: "memory");
- 380:	08 95       	ret
+ 3ba:	08 95       	ret
 
-00000382 <LEDInit>:
+000003bc <_exit>:
+ 3bc:	f8 94       	cli
 
-#include <asuro/led.h>
-#include <util/misc.h>
-
-void LEDInit(void) {
-    DDRB |= GREEN_LED;
- 382:	b8 9a       	sbi	0x17, 0	; 23
-    DDRD |= FRONT_LED | ODOMETRY_LED | RED_LED;
- 384:	81 b3       	in	r24, 0x11	; 17
- 386:	84 6c       	ori	r24, 0xC4	; 196
- 388:	81 bb       	out	0x11, r24	; 17
-
-    FRONT_LED_OFF();
- 38a:	96 98       	cbi	0x12, 6	; 18
-    LED_CONFIGURE_BACK();
- 38c:	97 98       	cbi	0x12, 7	; 18
- 38e:	a1 9a       	sbi	0x14, 1	; 20
- 390:	a0 9a       	sbi	0x14, 0	; 20
-    BackLEDFast(OFF);
- 392:	80 e0       	ldi	r24, 0x00	; 0
- 394:	e9 df       	rcall	.-46     	; 0x368 <BackLEDFast>
-    StatusLED(GREEN);
- 396:	81 e0       	ldi	r24, 0x01	; 1
- 398:	e0 cf       	rjmp	.-64     	; 0x35a <StatusLED>
-
-0000039a <_exit>:
- 39a:	f8 94       	cli
-
-0000039c <__stop_program>:
- 39c:	ff cf       	rjmp	.-2      	; 0x39c <__stop_program>
+000003be <__stop_program>:
+ 3be:	ff cf       	rjmp	.-2      	; 0x3be <__stop_program>
