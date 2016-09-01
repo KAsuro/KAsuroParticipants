@@ -34,6 +34,7 @@ void main(void) {
 			MotorDir(FWD, FWD);
 			MotorSpeed(100, 0);
 			StatusLED(YELLOW);
+			BackLED(ON, ON);
 		} 
         msleep(5);
     }
