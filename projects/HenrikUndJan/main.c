@@ -22,7 +22,6 @@ void main(void)		{
     
     int pressed[]	= {0,0,0,0,0,0,0,0,0,0,0};
     int t			= 0;
-    int counter 	= 0;
     int x			= 0;
     int left 		= 0;
     int right 		= 0;
@@ -149,17 +148,7 @@ void main(void)		{
 			MotorSpeed(60,120);
 			msleep(600);
 			MotorDir(BREAK,BREAK);
-		}
-		
-		if(counter>30){
-			MotorDir(RWD,RWD);
-			MotorSpeed(60,60);
-			msleep(60);
-			counter=0;
-		}
-		else{
-			counter++;		
-	}	
+		}	
 	while(lineData[LEFT] || lineData[RIGHT] > 900){
 		MotorDir(BREAK,BREAK);
 		pressed[t]=pressed[t]+10;
@@ -175,7 +164,7 @@ void main(void)		{
 	
 	
 	
-	
+
 }
 	}
 
