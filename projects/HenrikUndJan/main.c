@@ -11,14 +11,21 @@
 //*********************************************
 //
 #define SWITCH(X) 1<<X
-#define SLOW 1000
-#define FAST 100
+
 
 #include <asuro/asuro.h>
 
+
+
 void main(void)		{
     Init();
-    
+   
+	MotorSpeed(0,0);
+	MotorDir(BREAK,BREAK);
+	FrontLED(OFF);
+	BackLED(OFF,OFF);
+	StatusLED(OFF);
+	
     
     int pressed[]	= {0,0,0,0,0,0,0,0,0,0,0};
     int t			= 0;
@@ -178,21 +185,8 @@ void main(void)		{
 	
 }
 	}
-	
-	
-	//void test123 (void){
-		//while(1){
-		
-		
-		//MotorDir(FWD,BWD);
-		//MotorSpeed(160,160);
-		//msleep(200);
-		//MotorDir(BWD,FWD);
-		//MotorSpeed(160,160);
-		
-	//}
-		//}	
-		
+
+
 //**********  ****    *****    *    *              *********************
 //**********   ***    ****    **    *              *********************
 //**********   ***    ***    ***    ******    **************************
