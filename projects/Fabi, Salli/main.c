@@ -6,6 +6,7 @@
 
 void main(void) {
     Init();
+    int status = 0;
 	//int x = 160;
 	//int y = 200;
 	int i = 0;
@@ -13,10 +14,8 @@ void main(void) {
 		i++;
 		char sensor = PollSwitch();
 		sensor &= 0b00111111;
-		
 		MotorDir(FWD, FWD); //Werkeinstellung
-		MotorSpeed(230, 190); 
-		
+		MotorSpeed(230, 200); 
 		
 		if (sensor > 0) 	//Abfrage der sechs Drucksensoren -> backwards
 		{
@@ -29,10 +28,6 @@ void main(void) {
 		uint16_t data[] = {0,0};
 		LineData(data);
 		
-		/*if (((data[LEFT] > 100) || (data[RIGHT] > 100)) && ((data[LEFT] < 400) || (data[RIGHT] < 400))) { 		//Geschwindigkeit geringer bei Licht über 50E
-				MotorSpeed(50, 70);
-				msleep(2000);
-		}*/
 		LineData(data);
 		while ((data[LEFT] > 500) || (data[RIGHT] > 500)) 	//Geschwindigkeit 0 bei Licht über 100E
 		{	
@@ -48,20 +43,25 @@ void main(void) {
 				stopAsuro(3000);
 			}
 		}
-		
-		/*if ((data[LEFT] > data[RIGHT]) && ((data[LEFT] < 400) || (data[RIGHT] < 400)))
-		{
-			MotorSpeed(70, 140);
-			LineData(data);
-			msleep(100);
+		switch (status) {
+			case 0: 
+			MotorSpeed(250, 50);
+			status = 1;
+			msleep(1000);
+			break;
+			case 1: 
+			MotorSpeed(60,250);
+			status = 2;
+			msleep(1000);
+			break;
+			case 2: 
+			MotorSpeed(230, 200); 
+			status = 0;
+			msleep(1000);
+			break;
+			default: 
+			MotorDir(BREAK, BREAK);
 		}
-		
-		if ((data[LEFT] < data[RIGHT]) && ((data[LEFT] < 400) || (data[RIGHT] < 400)))
-		{
-			MotorSpeed(180, 90);
-			LineData(data);
-			msleep(100);
-		}*/
 		StatusLED(GREEN);
 		BackLED(OFF, OFF);
 		msleep(800); 				//Werkseinstellungen : LEDs auf off | StatusLED auf grün | Pause
