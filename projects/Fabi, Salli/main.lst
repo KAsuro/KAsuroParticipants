@@ -464,7 +464,7 @@
  101 000e 00E0      		ldi r16,0	 ;  3	*movhi/2	[length = 2]
  102 0010 10E0      		ldi r17,0
  103               	.LBB18:
-  12:main.c        **** 	
+  12:main.c        **** 	// RUSSIA
   13:main.c        **** 	while (1) {  	//Hauptschleife
   14:main.c        **** 		i++;
   15:main.c        **** 		char sensor = PollSwitch();
@@ -908,13 +908,13 @@
  457               		.file 10 "../../libtinyasuro/inc/asuro/asuro.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/ccvdoCHs.s:2      *ABS*:0000003e __SP_H__
-     /tmp/ccvdoCHs.s:3      *ABS*:0000003d __SP_L__
-     /tmp/ccvdoCHs.s:4      *ABS*:0000003f __SREG__
-     /tmp/ccvdoCHs.s:5      *ABS*:00000000 __tmp_reg__
-     /tmp/ccvdoCHs.s:6      *ABS*:00000001 __zero_reg__
-     /tmp/ccvdoCHs.s:13     .text.stopAsuro:00000000 stopAsuro
-     /tmp/ccvdoCHs.s:71     .text.startup.main:00000000 main
+     /tmp/ccvAh7Kc.s:2      *ABS*:0000003e __SP_H__
+     /tmp/ccvAh7Kc.s:3      *ABS*:0000003d __SP_L__
+     /tmp/ccvAh7Kc.s:4      *ABS*:0000003f __SREG__
+     /tmp/ccvAh7Kc.s:5      *ABS*:00000000 __tmp_reg__
+     /tmp/ccvAh7Kc.s:6      *ABS*:00000001 __zero_reg__
+     /tmp/ccvAh7Kc.s:13     .text.stopAsuro:00000000 stopAsuro
+     /tmp/ccvAh7Kc.s:71     .text.startup.main:00000000 main
 
 UNDEFINED SYMBOLS
 MotorSpeed

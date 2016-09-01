@@ -9,7 +9,7 @@ void main(void) {
 	//int x = 160;
 	//int y = 200;
 	int i = 0;
-	
+	// RUSSIA
 	while (1) {  	//Hauptschleife
 		i++;
 		char sensor = PollSwitch();
