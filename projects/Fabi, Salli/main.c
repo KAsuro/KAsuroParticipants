@@ -24,7 +24,7 @@ void main(void) {
 			 StatusLED(RED);
 			 msleep(800);
 		}
-		
+		MotorDir(FWD, FWD); 
 		uint16_t data[] = {0,0};
 		LineData(data);
 		
@@ -45,19 +45,19 @@ void main(void) {
 		}
 		switch (status) {
 			case 0: 
-			MotorSpeed(250, 50);
+			MotorSpeed(250, 175);
 			status = 1;
-			msleep(1000);
+			msleep(4000);
 			break;
 			case 1: 
-			MotorSpeed(60,250);
+			MotorSpeed(50,120);
 			status = 2;
-			msleep(1000);
+			msleep(4000);
 			break;
 			case 2: 
 			MotorSpeed(230, 200); 
 			status = 0;
-			msleep(1000);
+			msleep(4000);
 			break;
 			default: 
 			MotorDir(BREAK, BREAK);
