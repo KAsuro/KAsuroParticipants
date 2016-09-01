@@ -14,16 +14,16 @@
   15               		.file 1 "helpers.h"
    1:helpers.h     **** #include <stdio.h>
    2:helpers.h     **** 
-   3:helpers.h     **** void stopAsuro(int pause) // While Schleife zum Blinken benötigt!
+   3:helpers.h     **** void stopAsuro(int pause) 
    4:helpers.h     **** {
   16               		.loc 1 4 0
   17               		.cfi_startproc
   18               	.LVL0:
-  19 0000 CF93      		push r28	 ;  50	pushqi1/1	[length = 1]
+  19 0000 CF93      		push r28	 ;  45	pushqi1/1	[length = 1]
   20               	.LCFI0:
   21               		.cfi_def_cfa_offset 3
   22               		.cfi_offset 28, -2
-  23 0002 DF93      		push r29	 ;  51	pushqi1/1	[length = 1]
+  23 0002 DF93      		push r29	 ;  46	pushqi1/1	[length = 1]
   24               	.LCFI1:
   25               		.cfi_def_cfa_offset 4
   26               		.cfi_offset 29, -3
@@ -32,37 +32,23 @@
   29               	/* stack size = 2 */
   30               	.L__stack_usage = 2
   31 0004 EC01      		movw r28,r24	 ;  2	*movhi/1	[length = 1]
-  32               	.LVL1:
-   5:helpers.h     **** 	int status = 0;
-   6:helpers.h     **** 	MotorSpeed(0, 0);
-  33               		.loc 1 6 0
-  34 0006 60E0      		ldi r22,0	 ;  7	movqi_insn/1	[length = 1]
-  35 0008 80E0      		ldi r24,0	 ;  8	movqi_insn/1	[length = 1]
-  36               	.LVL2:
-  37 000a 00D0      		rcall MotorSpeed	 ;  9	call_insn/2	[length = 1]
-  38               	.LVL3:
-   7:helpers.h     **** 	if (status) { 				
-   8:helpers.h     **** 		BackLED(ON, OFF);
-   9:helpers.h     **** 		status = 0;
-  10:helpers.h     **** 	} else {
-  11:helpers.h     **** 		BackLED(OFF, ON);
-  39               		.loc 1 11 0
-  40 000c 61E0      		ldi r22,lo8(1)	 ;  10	movqi_insn/2	[length = 1]
-  41 000e 80E0      		ldi r24,0	 ;  11	movqi_insn/1	[length = 1]
-  42 0010 00D0      		rcall BackLED	 ;  12	call_insn/2	[length = 1]
-  43               	.LVL4:
-  12:helpers.h     **** 		status = 1;
-  13:helpers.h     **** 	}
-  14:helpers.h     **** 	if (pause > 0)
-  44               		.loc 1 14 0
-  45 0012 1C16      		cp __zero_reg__,r28	 ;  14	*reversed_tsthi	[length = 2]
-  46 0014 1D06      		cpc __zero_reg__,r29
-  47 0016 04F4      		brge .L1	 ;  15	branch	[length = 1]
-  48               	.LVL5:
-  49               	.L4:
-  50               	.LBB12:
-  51               	.LBB13:
-  52               		.file 2 "../../libtinyasuro/inc/asuro/time.h"
+   5:helpers.h     **** 	MotorSpeed(0, 0);
+  32               		.loc 1 5 0
+  33 0006 60E0      		ldi r22,0	 ;  6	movqi_insn/1	[length = 1]
+  34 0008 80E0      		ldi r24,0	 ;  7	movqi_insn/1	[length = 1]
+  35               	.LVL1:
+  36 000a 00D0      		rcall MotorSpeed	 ;  8	call_insn/2	[length = 1]
+  37               	.LVL2:
+   6:helpers.h     **** 	if (pause > 0)
+  38               		.loc 1 6 0
+  39 000c 1C16      		cp __zero_reg__,r28	 ;  9	*reversed_tsthi	[length = 2]
+  40 000e 1D06      		cpc __zero_reg__,r29
+  41 0010 04F4      		brge .L1	 ;  10	branch	[length = 1]
+  42               	.LVL3:
+  43               	.L4:
+  44               	.LBB12:
+  45               	.LBB13:
+  46               		.file 2 "../../libtinyasuro/inc/asuro/time.h"
    1:../../libtinyasuro/inc/asuro/time.h **** /**
    2:../../libtinyasuro/inc/asuro/time.h ****  * @file
    3:../../libtinyasuro/inc/asuro/time.h ****  *
@@ -409,368 +395,413 @@
  344:../../libtinyasuro/inc/asuro/time.h **** void msleep(uint16_t ms) {
  345:../../libtinyasuro/inc/asuro/time.h ****     for (; ms > 0; ms--) {
  346:../../libtinyasuro/inc/asuro/time.h ****         sleep(36);
-  53               		.loc 2 346 0
-  54 0018 84E2      		ldi r24,lo8(36)	 ;  26	movqi_insn/2	[length = 1]
-  55 001a 00D0      		rcall sleep	 ;  27	call_insn/2	[length = 1]
-  56               	.LVL6:
+  47               		.loc 2 346 0
+  48 0012 84E2      		ldi r24,lo8(36)	 ;  21	movqi_insn/2	[length = 1]
+  49 0014 00D0      		rcall sleep	 ;  22	call_insn/2	[length = 1]
+  50               	.LVL4:
  345:../../libtinyasuro/inc/asuro/time.h ****         sleep(36);
-  57               		.loc 2 345 0
-  58 001c 2197      		sbiw r28,1	 ;  28	addhi3_clobber/1	[length = 1]
-  59               	.LVL7:
-  60 001e 2097      		sbiw r28,0	 ;  32	*cmphi/1	[length = 1]
-  61 0020 01F4      		brne .L4	 ;  33	branch	[length = 1]
-  62               	.LVL8:
-  63               	.L1:
-  64               	/* epilogue start */
-  65               	.LBE13:
-  66               	.LBE12:
-  15:helpers.h     **** 		msleep(pause);
-  16:helpers.h     **** }
-  67               		.loc 1 16 0
-  68 0022 DF91      		pop r29	 ;  54	popqi	[length = 1]
-  69 0024 CF91      		pop r28	 ;  55	popqi	[length = 1]
-  70 0026 0895      		ret	 ;  56	return_from_epilogue	[length = 1]
-  71               		.cfi_endproc
-  72               	.LFE3:
-  74               		.section	.text.startup.main,"ax",@progbits
-  75               	.global	main
-  77               	main:
-  78               	.LFB4:
-  79               		.file 3 "main.c"
+  51               		.loc 2 345 0
+  52 0016 2197      		sbiw r28,1	 ;  23	addhi3_clobber/1	[length = 1]
+  53               	.LVL5:
+  54 0018 2097      		sbiw r28,0	 ;  27	*cmphi/1	[length = 1]
+  55 001a 01F4      		brne .L4	 ;  28	branch	[length = 1]
+  56               	.LVL6:
+  57               	.L1:
+  58               	/* epilogue start */
+  59               	.LBE13:
+  60               	.LBE12:
+   7:helpers.h     **** 		msleep(pause);
+   8:helpers.h     **** }
+  61               		.loc 1 8 0
+  62 001c DF91      		pop r29	 ;  49	popqi	[length = 1]
+  63 001e CF91      		pop r28	 ;  50	popqi	[length = 1]
+  64 0020 0895      		ret	 ;  51	return_from_epilogue	[length = 1]
+  65               		.cfi_endproc
+  66               	.LFE3:
+  68               		.section	.text.startup.main,"ax",@progbits
+  69               	.global	main
+  71               	main:
+  72               	.LFB8:
+  73               		.file 3 "main.c"
    1:main.c        **** #define SWITCH(X) 1<<X
    2:main.c        **** 
    3:main.c        **** #include <asuro/asuro.h>
    4:main.c        **** #include "helpers.h"
-   5:main.c        **** 
-   6:main.c        **** void main(void) {
-  80               		.loc 3 6 0
-  81               		.cfi_startproc
-  82 0000 CF93      		push r28	 ;  279	pushqi1/1	[length = 1]
-  83               	.LCFI2:
-  84               		.cfi_def_cfa_offset 3
-  85               		.cfi_offset 28, -2
-  86 0002 DF93      		push r29	 ;  280	pushqi1/1	[length = 1]
-  87               	.LCFI3:
-  88               		.cfi_def_cfa_offset 4
-  89               		.cfi_offset 29, -3
-  90               		 ; SP -= 4	 ;  284	*addhi3_sp	[length = 2]
-  91 0004 00D0      		rcall .
-  92 0006 00D0      		rcall .
-  93               	.LCFI4:
-  94               		.cfi_def_cfa_offset 8
-  95 0008 CDB7      		in r28,__SP_L__	 ;  285	*movhi/8	[length = 2]
-  96 000a DEB7      		in r29,__SP_H__
-  97               	.LCFI5:
-  98               		.cfi_def_cfa_register 28
-  99               	/* prologue: function */
- 100               	/* frame size = 4 */
- 101               	/* stack size = 6 */
- 102               	.L__stack_usage = 6
-   7:main.c        ****     Init();
- 103               		.loc 3 7 0
- 104 000c 00D0      		rcall Init	 ;  78	call_insn/2	[length = 1]
- 105               	.LVL9:
-   8:main.c        **** 	int x = 160;
-   9:main.c        **** 	int y = 200;
- 106               		.loc 3 9 0
- 107 000e 38EC      		ldi r19,lo8(-56)	 ;  295	*reload_inhi	[length = 3]
- 108 0010 E32E      		mov r14,r19
- 109 0012 F12C      		mov r15,__zero_reg__
-   8:main.c        **** 	int x = 160;
- 110               		.loc 3 8 0
- 111 0014 00EA      		ldi r16,lo8(-96)	 ;  72	*movhi/5	[length = 2]
- 112 0016 10E0      		ldi r17,0
- 113               	.LVL10:
- 114               	.L23:
- 115               	.LBB14:
-  10:main.c        **** 	
-  11:main.c        **** 	while (1) {  	//Hauptschleife
-  12:main.c        **** 		
-  13:main.c        **** 		char sensor = PollSwitch();
- 116               		.loc 3 13 0
- 117 0018 00D0      		rcall PollSwitch	 ;  84	call_value_insn/2	[length = 1]
- 118               	.LVL11:
- 119 001a D82E      		mov r13,r24	 ;  85	movqi_insn/1	[length = 1]
- 120               	.LVL12:
-  14:main.c        **** 		sensor &= 0b00111111;
-  15:main.c        **** 		
-  16:main.c        **** 		MotorDir(FWD, FWD); //Werkeinstellung
- 121               		.loc 3 16 0
- 122 001c 60E2      		ldi r22,lo8(32)	 ;  88	movqi_insn/2	[length = 1]
- 123 001e 80E2      		ldi r24,lo8(32)	 ;  89	movqi_insn/2	[length = 1]
- 124 0020 00D0      		rcall MotorDir	 ;  90	call_insn/2	[length = 1]
- 125               	.LVL13:
-  17:main.c        **** 		MotorSpeed(170, 130); 
- 126               		.loc 3 17 0
- 127 0022 62E8      		ldi r22,lo8(-126)	 ;  91	movqi_insn/2	[length = 1]
- 128 0024 8AEA      		ldi r24,lo8(-86)	 ;  92	movqi_insn/2	[length = 1]
- 129 0026 00D0      		rcall MotorSpeed	 ;  93	call_insn/2	[length = 1]
- 130               	.LVL14:
-  14:main.c        **** 		sensor &= 0b00111111;
- 131               		.loc 3 14 0
- 132 0028 8D2D      		mov r24,r13	 ;  275	movqi_insn/1	[length = 1]
- 133 002a 8F73      		andi r24,lo8(63)	 ;  94	andqi3/2	[length = 1]
- 134               	.LVL15:
-  18:main.c        **** 		
+   5:main.c        **** #include <stdlib.h>
+   6:main.c        **** 
+   7:main.c        **** void main(void) {
+  74               		.loc 3 7 0
+  75               		.cfi_startproc
+  76 0000 CF93      		push r28	 ;  251	pushqi1/1	[length = 1]
+  77               	.LCFI2:
+  78               		.cfi_def_cfa_offset 3
+  79               		.cfi_offset 28, -2
+  80 0002 DF93      		push r29	 ;  252	pushqi1/1	[length = 1]
+  81               	.LCFI3:
+  82               		.cfi_def_cfa_offset 4
+  83               		.cfi_offset 29, -3
+  84               		 ; SP -= 4	 ;  256	*addhi3_sp	[length = 2]
+  85 0004 00D0      		rcall .
+  86 0006 00D0      		rcall .
+  87               	.LCFI4:
+  88               		.cfi_def_cfa_offset 8
+  89 0008 CDB7      		in r28,__SP_L__	 ;  257	*movhi/8	[length = 2]
+  90 000a DEB7      		in r29,__SP_H__
+  91               	.LCFI5:
+  92               		.cfi_def_cfa_register 28
+  93               	/* prologue: function */
+  94               	/* frame size = 4 */
+  95               	/* stack size = 6 */
+  96               	.L__stack_usage = 6
+   8:main.c        ****     Init();
+  97               		.loc 3 8 0
+  98 000c 00D0      		rcall Init	 ;  9	call_insn/2	[length = 1]
+  99               	.LVL7:
+   9:main.c        **** 	//int x = 160;
+  10:main.c        **** 	//int y = 200;
+  11:main.c        **** 	int i = 0;
+ 100               		.loc 3 11 0
+ 101 000e 00E0      		ldi r16,0	 ;  3	*movhi/2	[length = 2]
+ 102 0010 10E0      		ldi r17,0
+ 103               	.LBB14:
+  12:main.c        **** 	
+  13:main.c        **** 	while (1) {  	//Hauptschleife
+  14:main.c        **** 		i++;
+  15:main.c        **** 		char sensor = PollSwitch();
+  16:main.c        **** 		sensor &= 0b00111111;
+  17:main.c        **** 		
+  18:main.c        **** 		MotorDir(FWD, FWD); //Werkeinstellung
+  19:main.c        **** 		MotorSpeed(170, 130); 
+  20:main.c        **** 		
+  21:main.c        **** 		
+  22:main.c        **** 		if (sensor > 0) //Abfrage der sechs Drucksensoren -> backwards
+  23:main.c        **** 		{
+  24:main.c        **** 			 MotorDir(BWD, BWD); 
+  25:main.c        **** 			 MotorSpeed(60, 150);
+  26:main.c        **** 			 StatusLED(RED);
+  27:main.c        **** 			 msleep(800);
+  28:main.c        **** 		}
+  29:main.c        **** 		
+  30:main.c        **** 		uint16_t data[] = {0,0};
+  31:main.c        **** 		LineData(data);
+  32:main.c        **** 		
+  33:main.c        **** 		if (((data[LEFT] > 50) || (data[RIGHT] > 50)) && ((data[LEFT] < 150) || (data[RIGHT] < 150))) { 	
+  34:main.c        **** 				MotorSpeed(60, 80);
+  35:main.c        **** 				LineData(data);
+  36:main.c        **** 				msleep(2000);
+  37:main.c        **** 		}
+  38:main.c        **** 		while ((data[LEFT] > 150) || (data[RIGHT] > 150)) 	//Geschwindigkeit 0 bei Licht über 100E
+  39:main.c        **** 		{	
+  40:main.c        **** 			stopAsuro(500);
+  41:main.c        **** 			LineData(data);
+  42:main.c        **** 		} 
+  43:main.c        **** 		
+  44:main.c        **** 		if ( (i % 3000) == 0) {
+ 104               		.loc 3 44 0
+ 105 0012 38EB      		ldi r19,lo8(-72)	 ;  262	*reload_inhi	[length = 4]
+ 106 0014 C32E      		mov r12,r19
+ 107 0016 3BE0      		ldi r19,lo8(11)
+ 108 0018 D32E      		mov r13,r19
+ 109               	.LBB15:
+  45:main.c        **** 			int ran;
+  46:main.c        **** 			ran = rand() % 2;
+ 110               		.loc 3 46 0
+ 111 001a 42E0      		ldi r20,lo8(2)	 ;  263	*reload_inhi	[length = 3]
+ 112 001c A42E      		mov r10,r20
+ 113 001e B12C      		mov r11,__zero_reg__
+ 114               	.LVL8:
+ 115               	.L25:
+ 116               	.LBE15:
+  14:main.c        **** 		char sensor = PollSwitch();
+ 117               		.loc 3 14 0
+ 118 0020 0F5F      		subi r16,-1	 ;  13	addhi3_clobber/2	[length = 2]
+ 119 0022 1F4F      		sbci r17,-1
+ 120               	.LVL9:
+  15:main.c        **** 		sensor &= 0b00111111;
+ 121               		.loc 3 15 0
+ 122 0024 00D0      		rcall PollSwitch	 ;  15	call_value_insn/2	[length = 1]
+ 123               	.LVL10:
+ 124 0026 F82E      		mov r15,r24	 ;  16	movqi_insn/1	[length = 1]
+ 125               	.LVL11:
+  18:main.c        **** 		MotorSpeed(170, 130); 
+ 126               		.loc 3 18 0
+ 127 0028 60E2      		ldi r22,lo8(32)	 ;  19	movqi_insn/2	[length = 1]
+ 128 002a 80E2      		ldi r24,lo8(32)	 ;  20	movqi_insn/2	[length = 1]
+ 129 002c 00D0      		rcall MotorDir	 ;  21	call_insn/2	[length = 1]
+ 130               	.LVL12:
   19:main.c        **** 		
-  20:main.c        **** 		if (sensor > 0) //Abfrage der sechs Drucksensoren -> backwards
- 135               		.loc 3 20 0
- 136 002c 01F4      		brne .L10	 ;  96	branch	[length = 1]
- 137               	.LVL16:
- 138               	.L12:
-  21:main.c        **** 		{
-  22:main.c        **** 			 MotorDir(BWD, BWD); 
-  23:main.c        **** 			 MotorSpeed(80, 200);
-  24:main.c        **** 			 StatusLED(RED);
-  25:main.c        **** 			 msleep(1500);
-  26:main.c        **** 		}
-  27:main.c        **** 		
-  28:main.c        **** 		uint16_t data[] = {0,0};
- 139               		.loc 3 28 0
- 140 002e 1A82      		std Y+2,__zero_reg__	 ;  98	*movhi/4	[length = 2]
- 141 0030 1982      		std Y+1,__zero_reg__
- 142 0032 1C82      		std Y+4,__zero_reg__	 ;  99	*movhi/4	[length = 2]
- 143 0034 1B82      		std Y+3,__zero_reg__
- 144 0036 00C0      		rjmp .L28	 ;  296	jump	[length = 1]
- 145               	.LVL17:
- 146               	.L10:
-  22:main.c        **** 			 MotorSpeed(80, 200);
- 147               		.loc 3 22 0
- 148 0038 60E1      		ldi r22,lo8(16)	 ;  106	movqi_insn/2	[length = 1]
- 149 003a 80E1      		ldi r24,lo8(16)	 ;  107	movqi_insn/2	[length = 1]
- 150               	.LVL18:
- 151 003c 00D0      		rcall MotorDir	 ;  108	call_insn/2	[length = 1]
- 152               	.LVL19:
-  23:main.c        **** 			 StatusLED(RED);
- 153               		.loc 3 23 0
- 154 003e 68EC      		ldi r22,lo8(-56)	 ;  109	movqi_insn/2	[length = 1]
- 155 0040 80E5      		ldi r24,lo8(80)	 ;  110	movqi_insn/2	[length = 1]
- 156 0042 00D0      		rcall MotorSpeed	 ;  111	call_insn/2	[length = 1]
- 157               	.LVL20:
-  24:main.c        **** 			 msleep(1500);
- 158               		.loc 3 24 0
- 159 0044 82E0      		ldi r24,lo8(2)	 ;  112	movqi_insn/2	[length = 1]
- 160 0046 00D0      		rcall StatusLED	 ;  113	call_insn/2	[length = 1]
- 161               	.LVL21:
- 162 0048 2CED      		ldi r18,lo8(-36)	 ;  294	*reload_inhi	[length = 4]
- 163 004a C22E      		mov r12,r18
- 164 004c 25E0      		ldi r18,lo8(5)
- 165 004e D22E      		mov r13,r18
- 166               	.LVL22:
- 167               	.L13:
- 168               	.LBB15:
- 169               	.LBB16:
- 170               		.loc 2 346 0
- 171 0050 84E2      		ldi r24,lo8(36)	 ;  118	movqi_insn/2	[length = 1]
- 172 0052 00D0      		rcall sleep	 ;  119	call_insn/2	[length = 1]
- 173               	.LVL23:
- 174 0054 81E0      		ldi r24,1	 ;  123	addhi3_clobber/3	[length = 3]
- 175 0056 C81A      		sub r12,r24
- 176 0058 D108      		sbc r13,__zero_reg__
- 177               	.LVL24:
+ 131               		.loc 3 19 0
+ 132 002e 62E8      		ldi r22,lo8(-126)	 ;  22	movqi_insn/2	[length = 1]
+ 133 0030 8AEA      		ldi r24,lo8(-86)	 ;  23	movqi_insn/2	[length = 1]
+ 134 0032 00D0      		rcall MotorSpeed	 ;  24	call_insn/2	[length = 1]
+ 135               	.LVL13:
+  16:main.c        **** 		
+ 136               		.loc 3 16 0
+ 137 0034 8F2D      		mov r24,r15	 ;  247	movqi_insn/1	[length = 1]
+ 138 0036 8F73      		andi r24,lo8(63)	 ;  25	andqi3/2	[length = 1]
+ 139               	.LVL14:
+  22:main.c        **** 		{
+ 140               		.loc 3 22 0
+ 141 0038 01F4      		brne .L10	 ;  27	branch	[length = 1]
+ 142               	.LVL15:
+ 143               	.L13:
+  30:main.c        **** 		LineData(data);
+ 144               		.loc 3 30 0
+ 145 003a 1A82      		std Y+2,__zero_reg__	 ;  29	*movhi/4	[length = 2]
+ 146 003c 1982      		std Y+1,__zero_reg__
+ 147 003e 1C82      		std Y+4,__zero_reg__	 ;  30	*movhi/4	[length = 2]
+ 148 0040 1B82      		std Y+3,__zero_reg__
+  31:main.c        **** 		
+ 149               		.loc 3 31 0
+ 150 0042 CE01      		movw r24,r28	 ;  248	*movhi/1	[length = 1]
+ 151 0044 0196      		adiw r24,1	 ;  31	*addhi3/3	[length = 1]
+ 152 0046 00D0      		rcall LineData	 ;  32	call_insn/2	[length = 1]
+ 153               	.LVL16:
+  33:main.c        **** 				MotorSpeed(60, 80);
+ 154               		.loc 3 33 0
+ 155 0048 8981      		ldd r24,Y+1	 ;  33	*movhi/3	[length = 2]
+ 156 004a 9A81      		ldd r25,Y+2
+ 157 004c 8333      		cpi r24,51	 ;  34	*cmphi/6	[length = 2]
+ 158 004e 9105      		cpc r25,__zero_reg__
+ 159 0050 00F4      		brsh .L11	 ;  35	branch	[length = 1]
+ 160 0052 00C0      		rjmp .L37	 ;  266	jump	[length = 1]
+ 161               	.LVL17:
+ 162               	.L10:
+  24:main.c        **** 			 MotorSpeed(60, 150);
+ 163               		.loc 3 24 0
+ 164 0054 60E1      		ldi r22,lo8(16)	 ;  41	movqi_insn/2	[length = 1]
+ 165 0056 80E1      		ldi r24,lo8(16)	 ;  42	movqi_insn/2	[length = 1]
+ 166               	.LVL18:
+ 167 0058 00D0      		rcall MotorDir	 ;  43	call_insn/2	[length = 1]
+ 168               	.LVL19:
+  25:main.c        **** 			 StatusLED(RED);
+ 169               		.loc 3 25 0
+ 170 005a 66E9      		ldi r22,lo8(-106)	 ;  44	movqi_insn/2	[length = 1]
+ 171 005c 8CE3      		ldi r24,lo8(60)	 ;  45	movqi_insn/2	[length = 1]
+ 172 005e 00D0      		rcall MotorSpeed	 ;  46	call_insn/2	[length = 1]
+ 173               	.LVL20:
+  26:main.c        **** 			 msleep(800);
+ 174               		.loc 3 26 0
+ 175 0060 82E0      		ldi r24,lo8(2)	 ;  47	movqi_insn/2	[length = 1]
+ 176 0062 00D0      		rcall StatusLED	 ;  48	call_insn/2	[length = 1]
+ 177               	.LVL21:
+ 178 0064 20E2      		ldi r18,lo8(32)	 ;  261	*reload_inhi	[length = 4]
+ 179 0066 E22E      		mov r14,r18
+ 180 0068 23E0      		ldi r18,lo8(3)
+ 181 006a F22E      		mov r15,r18
+ 182               	.LVL22:
+ 183               	.L14:
+ 184               	.LBB16:
+ 185               	.LBB17:
+ 186               		.loc 2 346 0
+ 187 006c 84E2      		ldi r24,lo8(36)	 ;  53	movqi_insn/2	[length = 1]
+ 188 006e 00D0      		rcall sleep	 ;  54	call_insn/2	[length = 1]
+ 189               	.LVL23:
+ 190 0070 81E0      		ldi r24,1	 ;  58	addhi3_clobber/3	[length = 3]
+ 191 0072 E81A      		sub r14,r24
+ 192 0074 F108      		sbc r15,__zero_reg__
+ 193               	.LVL24:
  345:../../libtinyasuro/inc/asuro/time.h ****         sleep(36);
- 178               		.loc 2 345 0
- 179 005a C114      		cp r12,__zero_reg__	 ;  125	*cmphi/2	[length = 2]
- 180 005c D104      		cpc r13,__zero_reg__
- 181 005e 01F4      		brne .L13	 ;  126	branch	[length = 1]
- 182 0060 00C0      		rjmp .L12	 ;  299	jump	[length = 1]
- 183               	.LVL25:
- 184               	.L29:
- 185               	.LBE16:
- 186               	.LBE15:
-  29:main.c        **** 		LineData(data);
-  30:main.c        **** 		
-  31:main.c        **** 		while (((data[LEFT] > 40) || (data[RIGHT] > 40)) && (x > 10)) //Geschwindigkeit geringer bei Lich
- 187               		.loc 3 31 0 discriminator 3
- 188 0062 8B81      		ldd r24,Y+3	 ;  153	*movhi/3	[length = 2]
- 189 0064 9C81      		ldd r25,Y+4
- 190 0066 8997      		sbiw r24,41	 ;  154	*cmphi/6	[length = 1]
- 191 0068 00F0      		brlo .L15	 ;  155	branch	[length = 1]
- 192               	.L14:
- 193               		.loc 3 31 0 is_stmt 0 discriminator 2
- 194 006a 0B30      		cpi r16,11	 ;  162	*cmphi/6	[length = 2]
- 195 006c 1105      		cpc r17,__zero_reg__
- 196 006e 04F0      		brlt .L15	 ;  163	branch	[length = 1]
-  32:main.c        **** 		{	
-  33:main.c        **** 			StatusLED(YELLOW);
- 197               		.loc 3 33 0 is_stmt 1
- 198 0070 83E0      		ldi r24,lo8(3)	 ;  134	movqi_insn/2	[length = 1]
- 199 0072 00D0      		rcall StatusLED	 ;  135	call_insn/2	[length = 1]
- 200               	.LVL26:
-  34:main.c        **** 			x -= 5;
- 201               		.loc 3 34 0
- 202 0074 0550      		subi r16,5	 ;  136	addhi3_clobber/2	[length = 2]
- 203 0076 1109      		sbc r17,__zero_reg__
- 204               	.LVL27:
-  35:main.c        **** 			y -= 5;
- 205               		.loc 3 35 0
- 206 0078 85E0      		ldi r24,5	 ;  138	addhi3_clobber/3	[length = 3]
- 207 007a E81A      		sub r14,r24
- 208 007c F108      		sbc r15,__zero_reg__
- 209               	.LVL28:
-  36:main.c        **** 			MotorSpeed(x, y);
- 210               		.loc 3 36 0
- 211 007e 6E2D      		mov r22,r14	 ;  140	movqi_insn/1	[length = 1]
- 212 0080 802F      		mov r24,r16	 ;  141	movqi_insn/1	[length = 1]
- 213 0082 00D0      		rcall MotorSpeed	 ;  142	call_insn/2	[length = 1]
- 214               	.LVL29:
- 215               	.L28:
-  37:main.c        **** 			LineData(data);
- 216               		.loc 3 37 0
- 217 0084 CE01      		movw r24,r28	 ;  277	*movhi/1	[length = 1]
- 218 0086 0196      		adiw r24,1	 ;  143	*addhi3/3	[length = 1]
- 219 0088 00D0      		rcall LineData	 ;  144	call_insn/2	[length = 1]
- 220               	.LVL30:
-  31:main.c        **** 		{	
- 221               		.loc 3 31 0
- 222 008a 8981      		ldd r24,Y+1	 ;  149	*movhi/3	[length = 2]
- 223 008c 9A81      		ldd r25,Y+2
- 224 008e 8997      		sbiw r24,41	 ;  150	*cmphi/6	[length = 1]
- 225 0090 00F4      		brsh .L14	 ;  151	branch	[length = 1]
- 226 0092 00C0      		rjmp .L29	 ;  303	jump	[length = 1]
- 227               	.L18:
-  38:main.c        **** 		} 
-  39:main.c        **** 		while ((data[LEFT] > 100) || (data[RIGHT] > 100)) //Geschwindigkeit 0 bei Licht über 100E
-  40:main.c        **** 		{	
-  41:main.c        **** 			stopAsuro(500);
- 228               		.loc 3 41 0
- 229 0094 84EF      		ldi r24,lo8(-12)	 ;  169	*movhi/5	[length = 2]
- 230 0096 91E0      		ldi r25,lo8(1)
- 231 0098 00D0      		rcall stopAsuro	 ;  170	call_insn/2	[length = 1]
- 232               	.LVL31:
-  42:main.c        **** 			LineData(data);
- 233               		.loc 3 42 0
- 234 009a CE01      		movw r24,r28	 ;  278	*movhi/1	[length = 1]
- 235 009c 0196      		adiw r24,1	 ;  171	*addhi3/3	[length = 1]
- 236 009e 00D0      		rcall LineData	 ;  172	call_insn/2	[length = 1]
- 237               	.LVL32:
- 238               	.L15:
-  39:main.c        **** 		{	
- 239               		.loc 3 39 0 discriminator 1
- 240 00a0 8981      		ldd r24,Y+1	 ;  176	*movhi/3	[length = 2]
- 241 00a2 9A81      		ldd r25,Y+2
- 242 00a4 8536      		cpi r24,101	 ;  177	*cmphi/6	[length = 2]
- 243 00a6 9105      		cpc r25,__zero_reg__
- 244 00a8 00F4      		brsh .L18	 ;  178	branch	[length = 1]
-  39:main.c        **** 		{	
- 245               		.loc 3 39 0 is_stmt 0 discriminator 2
- 246 00aa 8B81      		ldd r24,Y+3	 ;  180	*movhi/3	[length = 2]
- 247 00ac 9C81      		ldd r25,Y+4
- 248 00ae 8536      		cpi r24,101	 ;  181	*cmphi/6	[length = 2]
- 249 00b0 9105      		cpc r25,__zero_reg__
- 250 00b2 00F4      		brsh .L18	 ;  182	branch	[length = 1]
- 251               	.LVL33:
- 252               	.LBB17:
-  43:main.c        **** 		} 
-  44:main.c        **** 		
-  45:main.c        **** 		for (int i=0; i % 10000==0; i++)
-  46:main.c        **** 		{
-  47:main.c        **** 			StatusLED(YELLOW);
- 253               		.loc 3 47 0 is_stmt 1
- 254 00b4 83E0      		ldi r24,lo8(3)	 ;  186	movqi_insn/2	[length = 1]
- 255 00b6 00D0      		rcall StatusLED	 ;  187	call_insn/2	[length = 1]
- 256               	.LVL34:
-  48:main.c        **** 			stopAsuro(1000);
- 257               		.loc 3 48 0
- 258 00b8 88EE      		ldi r24,lo8(-24)	 ;  188	*movhi/5	[length = 2]
- 259 00ba 93E0      		ldi r25,lo8(3)
- 260 00bc 00D0      		rcall stopAsuro	 ;  189	call_insn/2	[length = 1]
- 261               	.LVL35:
- 262 00be 98EE      		ldi r25,lo8(-24)	 ;  293	*reload_inhi	[length = 4]
- 263 00c0 C92E      		mov r12,r25
- 264 00c2 93E0      		ldi r25,lo8(3)
- 265 00c4 D92E      		mov r13,r25
- 266               	.L20:
- 267               	.LVL36:
- 268               	.LBE17:
- 269               	.LBB18:
- 270               	.LBB19:
- 271               		.loc 2 346 0
- 272 00c6 84E2      		ldi r24,lo8(36)	 ;  194	movqi_insn/2	[length = 1]
- 273 00c8 00D0      		rcall sleep	 ;  195	call_insn/2	[length = 1]
- 274               	.LVL37:
- 275 00ca 81E0      		ldi r24,1	 ;  199	addhi3_clobber/3	[length = 3]
- 276 00cc C81A      		sub r12,r24
- 277 00ce D108      		sbc r13,__zero_reg__
- 278               	.LVL38:
+ 194               		.loc 2 345 0
+ 195 0076 E114      		cp r14,__zero_reg__	 ;  60	*cmphi/2	[length = 2]
+ 196 0078 F104      		cpc r15,__zero_reg__
+ 197 007a 01F4      		brne .L14	 ;  61	branch	[length = 1]
+ 198 007c 00C0      		rjmp .L13	 ;  269	jump	[length = 1]
+ 199               	.LVL25:
+ 200               	.L37:
+ 201               	.LBE17:
+ 202               	.LBE16:
+  33:main.c        **** 				MotorSpeed(60, 80);
+ 203               		.loc 3 33 0 discriminator 2
+ 204 007e 8B81      		ldd r24,Y+3	 ;  70	*movhi/3	[length = 2]
+ 205 0080 9C81      		ldd r25,Y+4
+ 206 0082 C397      		sbiw r24,51	 ;  71	*cmphi/6	[length = 1]
+ 207 0084 00F4      		brsh .L15	 ;  72	branch	[length = 1]
+ 208 0086 00C0      		rjmp .L16	 ;  272	jump	[length = 1]
+ 209               	.L11:
+  33:main.c        **** 				MotorSpeed(60, 80);
+ 210               		.loc 3 33 0 is_stmt 0 discriminator 1
+ 211 0088 8639      		cpi r24,-106	 ;  78	*cmphi/6	[length = 2]
+ 212 008a 9105      		cpc r25,__zero_reg__
+ 213 008c 00F0      		brlo .L15	 ;  79	branch	[length = 1]
+ 214 008e 8B81      		ldd r24,Y+3	 ;  82	*movhi/3	[length = 2]
+ 215 0090 9C81      		ldd r25,Y+4
+ 216 0092 8639      		cpi r24,-106	 ;  83	*cmphi/6	[length = 2]
+ 217 0094 9105      		cpc r25,__zero_reg__
+ 218 0096 00F4      		brsh .L16	 ;  84	branch	[length = 1]
+ 219               	.L15:
+  34:main.c        **** 				LineData(data);
+ 220               		.loc 3 34 0 is_stmt 1
+ 221 0098 60E5      		ldi r22,lo8(80)	 ;  87	movqi_insn/2	[length = 1]
+ 222 009a 8CE3      		ldi r24,lo8(60)	 ;  88	movqi_insn/2	[length = 1]
+ 223 009c 00D0      		rcall MotorSpeed	 ;  89	call_insn/2	[length = 1]
+ 224               	.LVL26:
+  35:main.c        **** 				msleep(2000);
+ 225               		.loc 3 35 0
+ 226 009e CE01      		movw r24,r28	 ;  249	*movhi/1	[length = 1]
+ 227 00a0 0196      		adiw r24,1	 ;  90	*addhi3/3	[length = 1]
+ 228 00a2 00D0      		rcall LineData	 ;  91	call_insn/2	[length = 1]
+ 229               	.LVL27:
+ 230 00a4 90ED      		ldi r25,lo8(-48)	 ;  260	*reload_inhi	[length = 4]
+ 231 00a6 E92E      		mov r14,r25
+ 232 00a8 97E0      		ldi r25,lo8(7)
+ 233 00aa F92E      		mov r15,r25
+ 234               	.LVL28:
+ 235               	.L18:
+ 236               	.LBB18:
+ 237               	.LBB19:
+ 238               		.loc 2 346 0
+ 239 00ac 84E2      		ldi r24,lo8(36)	 ;  96	movqi_insn/2	[length = 1]
+ 240 00ae 00D0      		rcall sleep	 ;  97	call_insn/2	[length = 1]
+ 241               	.LVL29:
+ 242 00b0 81E0      		ldi r24,1	 ;  101	addhi3_clobber/3	[length = 3]
+ 243 00b2 E81A      		sub r14,r24
+ 244 00b4 F108      		sbc r15,__zero_reg__
+ 245               	.LVL30:
  345:../../libtinyasuro/inc/asuro/time.h ****         sleep(36);
- 279               		.loc 2 345 0
- 280 00d0 C114      		cp r12,__zero_reg__	 ;  200	*cmphi/2	[length = 2]
- 281 00d2 D104      		cpc r13,__zero_reg__
- 282 00d4 01F4      		brne .L20	 ;  201	branch	[length = 1]
- 283               	.LBE19:
- 284               	.LBE18:
-  49:main.c        **** 		}
-  50:main.c        **** 		
-  51:main.c        **** 		msleep(1000); 
-  52:main.c        **** 		MotorSpeed(160, 200);
- 285               		.loc 3 52 0
- 286 00d6 68EC      		ldi r22,lo8(-56)	 ;  210	movqi_insn/2	[length = 1]
- 287 00d8 80EA      		ldi r24,lo8(-96)	 ;  211	movqi_insn/2	[length = 1]
- 288 00da 00D0      		rcall MotorSpeed	 ;  212	call_insn/2	[length = 1]
- 289               	.LVL39:
+ 246               		.loc 2 345 0
+ 247 00b6 E114      		cp r14,__zero_reg__	 ;  102	*cmphi/2	[length = 2]
+ 248 00b8 F104      		cpc r15,__zero_reg__
+ 249 00ba 01F4      		brne .L18	 ;  103	branch	[length = 1]
+ 250 00bc 00C0      		rjmp .L16	 ;  275	jump	[length = 1]
+ 251               	.LVL31:
+ 252               	.L39:
+ 253               	.LBE19:
+ 254               	.LBE18:
+  38:main.c        **** 		{	
+ 255               		.loc 3 38 0 discriminator 2
+ 256 00be 8B81      		ldd r24,Y+3	 ;  122	*movhi/3	[length = 2]
+ 257 00c0 9C81      		ldd r25,Y+4
+ 258 00c2 8739      		cpi r24,-105	 ;  123	*cmphi/6	[length = 2]
+ 259 00c4 9105      		cpc r25,__zero_reg__
+ 260 00c6 00F0      		brlo .L38	 ;  124	branch	[length = 1]
+ 261               	.L19:
+  40:main.c        **** 			LineData(data);
+ 262               		.loc 3 40 0
+ 263 00c8 84EF      		ldi r24,lo8(-12)	 ;  111	*movhi/5	[length = 2]
+ 264 00ca 91E0      		ldi r25,lo8(1)
+ 265 00cc 00D0      		rcall stopAsuro	 ;  112	call_insn/2	[length = 1]
+ 266               	.LVL32:
+  41:main.c        **** 		} 
+ 267               		.loc 3 41 0
+ 268 00ce CE01      		movw r24,r28	 ;  250	*movhi/1	[length = 1]
+ 269 00d0 0196      		adiw r24,1	 ;  113	*addhi3/3	[length = 1]
+ 270 00d2 00D0      		rcall LineData	 ;  114	call_insn/2	[length = 1]
+ 271               	.LVL33:
+ 272               	.L16:
+  38:main.c        **** 		{	
+ 273               		.loc 3 38 0 discriminator 1
+ 274 00d4 8981      		ldd r24,Y+1	 ;  118	*movhi/3	[length = 2]
+ 275 00d6 9A81      		ldd r25,Y+2
+ 276 00d8 8739      		cpi r24,-105	 ;  119	*cmphi/6	[length = 2]
+ 277 00da 9105      		cpc r25,__zero_reg__
+ 278 00dc 00F0      		brlo .L39	 ;  120	branch	[length = 1]
+ 279 00de 00C0      		rjmp .L19	 ;  280	jump	[length = 1]
+ 280               	.L38:
+  44:main.c        **** 			int ran;
+ 281               		.loc 3 44 0
+ 282 00e0 C801      		movw r24,r16	 ;  240	*movhi/1	[length = 1]
+ 283 00e2 B601      		movw r22,r12	 ;  241	*movhi/1	[length = 1]
+ 284 00e4 00D0      		rcall __divmodhi4	 ;  242	*divmodhi4_call	[length = 1]
+ 285 00e6 892B      		or r24,r25	 ;  128	*cmphi/1	[length = 1]
+ 286 00e8 01F4      		brne .L21	 ;  129	branch	[length = 1]
+ 287               	.LBB20:
+ 288               		.loc 3 46 0
+ 289 00ea 00D0      		rcall rand	 ;  135	call_value_insn/2	[length = 1]
+ 290               	.LVL34:
+ 291 00ec B501      		movw r22,r10	 ;  236	*movhi/1	[length = 1]
+ 292 00ee 00D0      		rcall __divmodhi4	 ;  237	*divmodhi4_call	[length = 1]
+ 293               	.LVL35:
+  47:main.c        **** 			if (ran) {
+ 294               		.loc 3 47 0
+ 295 00f0 892B      		or r24,r25	 ;  141	*cmphi/1	[length = 1]
+ 296 00f2 01F0      		breq .L21	 ;  142	branch	[length = 1]
+  48:main.c        **** 				StatusLED(YELLOW);
+ 297               		.loc 3 48 0
+ 298 00f4 83E0      		ldi r24,lo8(3)	 ;  144	movqi_insn/2	[length = 1]
+ 299 00f6 00D0      		rcall StatusLED	 ;  145	call_insn/2	[length = 1]
+ 300               	.LVL36:
+  49:main.c        **** 				stopAsuro(3000);
+ 301               		.loc 3 49 0
+ 302 00f8 88EB      		ldi r24,lo8(-72)	 ;  208	*movhi/5	[length = 2]
+ 303 00fa 9BE0      		ldi r25,lo8(11)
+ 304 00fc 00D0      		rcall stopAsuro	 ;  147	call_insn/2	[length = 1]
+ 305               	.LVL37:
+ 306               	.L21:
+ 307               	.LBE20:
+  50:main.c        **** 			}
+  51:main.c        **** 		}
+  52:main.c        **** 		MotorSpeed(160, 220);
+ 308               		.loc 3 52 0
+ 309 00fe 6CED      		ldi r22,lo8(-36)	 ;  150	movqi_insn/2	[length = 1]
+ 310 0100 80EA      		ldi r24,lo8(-96)	 ;  151	movqi_insn/2	[length = 1]
+ 311 0102 00D0      		rcall MotorSpeed	 ;  152	call_insn/2	[length = 1]
+ 312               	.LVL38:
   53:main.c        **** 		StatusLED(GREEN);
- 290               		.loc 3 53 0
- 291 00dc 81E0      		ldi r24,lo8(1)	 ;  213	movqi_insn/2	[length = 1]
- 292 00de 00D0      		rcall StatusLED	 ;  214	call_insn/2	[length = 1]
- 293               	.LVL40:
+ 313               		.loc 3 53 0
+ 314 0104 81E0      		ldi r24,lo8(1)	 ;  153	movqi_insn/2	[length = 1]
+ 315 0106 00D0      		rcall StatusLED	 ;  154	call_insn/2	[length = 1]
+ 316               	.LVL39:
   54:main.c        **** 		BackLED(OFF, OFF);
- 294               		.loc 3 54 0
- 295 00e0 60E0      		ldi r22,0	 ;  215	movqi_insn/1	[length = 1]
- 296 00e2 80E0      		ldi r24,0	 ;  216	movqi_insn/1	[length = 1]
- 297 00e4 00D0      		rcall BackLED	 ;  217	call_insn/2	[length = 1]
- 298               	.LVL41:
- 299 00e6 84EF      		ldi r24,lo8(-12)	 ;  292	*reload_inhi	[length = 4]
- 300 00e8 C82E      		mov r12,r24
- 301 00ea DD24      		clr r13
- 302 00ec D394      		inc r13
- 303               	.LVL42:
- 304               	.L22:
- 305               	.LBB20:
- 306               	.LBB21:
- 307               		.loc 2 346 0
- 308 00ee 84E2      		ldi r24,lo8(36)	 ;  222	movqi_insn/2	[length = 1]
- 309 00f0 00D0      		rcall sleep	 ;  223	call_insn/2	[length = 1]
- 310               	.LVL43:
- 311 00f2 81E0      		ldi r24,1	 ;  227	addhi3_clobber/3	[length = 3]
- 312 00f4 C81A      		sub r12,r24
- 313 00f6 D108      		sbc r13,__zero_reg__
- 314               	.LVL44:
+ 317               		.loc 3 54 0
+ 318 0108 60E0      		ldi r22,0	 ;  155	movqi_insn/1	[length = 1]
+ 319 010a 80E0      		ldi r24,0	 ;  156	movqi_insn/1	[length = 1]
+ 320 010c 00D0      		rcall BackLED	 ;  157	call_insn/2	[length = 1]
+ 321               	.LVL40:
+ 322 010e 88EE      		ldi r24,lo8(-24)	 ;  259	*reload_inhi	[length = 4]
+ 323 0110 E82E      		mov r14,r24
+ 324 0112 83E0      		ldi r24,lo8(3)
+ 325 0114 F82E      		mov r15,r24
+ 326               	.LVL41:
+ 327               	.L24:
+ 328               	.LBB21:
+ 329               	.LBB22:
+ 330               		.loc 2 346 0
+ 331 0116 84E2      		ldi r24,lo8(36)	 ;  162	movqi_insn/2	[length = 1]
+ 332 0118 00D0      		rcall sleep	 ;  163	call_insn/2	[length = 1]
+ 333               	.LVL42:
+ 334 011a 81E0      		ldi r24,1	 ;  167	addhi3_clobber/3	[length = 3]
+ 335 011c E81A      		sub r14,r24
+ 336 011e F108      		sbc r15,__zero_reg__
+ 337               	.LVL43:
  345:../../libtinyasuro/inc/asuro/time.h ****         sleep(36);
- 315               		.loc 2 345 0
- 316 00f8 C114      		cp r12,__zero_reg__	 ;  228	*cmphi/2	[length = 2]
- 317 00fa D104      		cpc r13,__zero_reg__
- 318 00fc 01F4      		brne .L22	 ;  229	branch	[length = 1]
- 319 00fe 00C0      		rjmp .L23	 ;  306	jump	[length = 1]
- 320               	.LBE21:
- 321               	.LBE20:
- 322               	.LBE14:
- 323               		.cfi_endproc
- 324               	.LFE4:
- 326               		.text
- 327               	.Letext0:
- 328               		.file 4 "/usr/lib/avr/include/stdint.h"
- 329               		.file 5 "../../libtinyasuro/inc/asuro/motor.h"
- 330               		.file 6 "../../libtinyasuro/inc/asuro/led.h"
- 331               		.file 7 "../../libtinyasuro/inc/asuro/sensors.h"
- 332               		.file 8 "../../libtinyasuro/inc/asuro/switches.h"
- 333               		.file 9 "../../libtinyasuro/inc/asuro/asuro.h"
+ 338               		.loc 2 345 0
+ 339 0120 E114      		cp r14,__zero_reg__	 ;  168	*cmphi/2	[length = 2]
+ 340 0122 F104      		cpc r15,__zero_reg__
+ 341 0124 01F4      		brne .L24	 ;  169	branch	[length = 1]
+ 342 0126 00C0      		rjmp .L25	 ;  283	jump	[length = 1]
+ 343               	.LBE22:
+ 344               	.LBE21:
+ 345               	.LBE14:
+ 346               		.cfi_endproc
+ 347               	.LFE8:
+ 349               		.text
+ 350               	.Letext0:
+ 351               		.file 4 "/usr/lib/avr/include/stdint.h"
+ 352               		.file 5 "../../libtinyasuro/inc/asuro/motor.h"
+ 353               		.file 6 "../../libtinyasuro/inc/asuro/led.h"
+ 354               		.file 7 "/usr/lib/avr/include/stdlib.h"
+ 355               		.file 8 "../../libtinyasuro/inc/asuro/switches.h"
+ 356               		.file 9 "../../libtinyasuro/inc/asuro/sensors.h"
+ 357               		.file 10 "../../libtinyasuro/inc/asuro/asuro.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/ccBm998e.s:2      *ABS*:0000003e __SP_H__
-     /tmp/ccBm998e.s:3      *ABS*:0000003d __SP_L__
-     /tmp/ccBm998e.s:4      *ABS*:0000003f __SREG__
-     /tmp/ccBm998e.s:5      *ABS*:00000000 __tmp_reg__
-     /tmp/ccBm998e.s:6      *ABS*:00000001 __zero_reg__
-     /tmp/ccBm998e.s:13     .text.stopAsuro:00000000 stopAsuro
-     /tmp/ccBm998e.s:77     .text.startup.main:00000000 main
+     /tmp/ccAxSyD9.s:2      *ABS*:0000003e __SP_H__
+     /tmp/ccAxSyD9.s:3      *ABS*:0000003d __SP_L__
+     /tmp/ccAxSyD9.s:4      *ABS*:0000003f __SREG__
+     /tmp/ccAxSyD9.s:5      *ABS*:00000000 __tmp_reg__
+     /tmp/ccAxSyD9.s:6      *ABS*:00000001 __zero_reg__
+     /tmp/ccAxSyD9.s:13     .text.stopAsuro:00000000 stopAsuro
+     /tmp/ccAxSyD9.s:71     .text.startup.main:00000000 main
 
 UNDEFINED SYMBOLS
 MotorSpeed
-BackLED
 sleep
 Init
 PollSwitch
 MotorDir
-StatusLED
 LineData
+StatusLED
+__divmodhi4
+rand
+BackLED
