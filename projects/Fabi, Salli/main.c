@@ -30,12 +30,12 @@ void main(void) {
 		uint16_t data[] = {0,0};
 		LineData(data);
 		
-		if (((data[LEFT] > 50) || (data[RIGHT] > 50)) && ((data[LEFT] < 200) || (data[RIGHT] < 200))) { 		//Geschwindigkeit geringer bei Licht über 50E
+		if (((data[LEFT] > 100) || (data[RIGHT] > 100)) && ((data[LEFT] < 400) || (data[RIGHT] < 400))) { 		//Geschwindigkeit geringer bei Licht über 50E
 				MotorSpeed(50, 70);
 				msleep(2000);
 		}
 		LineData(data);
-		while ((data[LEFT] > 200) || (data[RIGHT] > 200)) 	//Geschwindigkeit 0 bei Licht über 100E
+		while ((data[LEFT] > 400) || (data[RIGHT] > 400)) 	//Geschwindigkeit 0 bei Licht über 100E
 		{	
 			stopAsuro(500);
 			LineData(data);
@@ -50,14 +50,14 @@ void main(void) {
 			}
 		}
 		
-		if ((data[LEFT] > data[RIGHT]) && ((data[LEFT] < 200) || (data[RIGHT] < 200)))
+		if ((data[LEFT] > data[RIGHT]) && ((data[LEFT] < 400) || (data[RIGHT] < 400)))
 		{
 			MotorSpeed(70, 140);
 			LineData(data);
 			msleep(100);
 		}
 		
-		if ((data[LEFT] < data[RIGHT]) && ((data[LEFT] < 200) || (data[RIGHT] < 200)))
+		if ((data[LEFT] < data[RIGHT]) && ((data[LEFT] < 400) || (data[RIGHT] < 400)))
 		{
 			MotorSpeed(180, 90);
 			LineData(data);
