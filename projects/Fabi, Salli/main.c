@@ -7,11 +7,12 @@
 void main(void) {
     Init();
     int status = 0;
+    int sstatus = 0;
 	//int x = 160;
 	//int y = 200;
 	int i = 0;
 	while (1) {  			//Hauptschleife
-		i++;
+		//i++;
 		char sensor = PollSwitch();
 		sensor &= 0b00111111;
 		MotorDir(FWD, FWD); //Werkeinstellung
@@ -34,7 +35,7 @@ void main(void) {
 			LineData(data);
 		} 
 		
-		if ( (i % 3000) == 0) {
+		/*if ( (i % 3000) == 0) {
 			int ran;
 			ran = rand() % 2;
 			if (ran) {
@@ -42,7 +43,7 @@ void main(void) {
 				stopAsuro(3000);
 				
 			}
-		}
+		}*/
 		switch (status) {
 			
 			case 0: 
@@ -73,7 +74,6 @@ void main(void) {
 			MotorDir(BREAK, BREAK);
 		}
 		
-		int sstatus = 0;
 		switch (sstatus)
 		{
 			case 0:
@@ -91,8 +91,6 @@ void main(void) {
 			sstatus = 0;
 			break;
 		}
-		BackLED(OFF, OFF);
-		msleep(500); 				//Werkseinstellungen : LEDs auf off | StatusLED auf grün | Pause
+		msleep(500); 				
 	}
 }
-
