@@ -19,13 +19,6 @@
 
 void main(void)		{
     Init();
-   
-	MotorSpeed(0,0);
-	MotorDir(BREAK,BREAK);
-	FrontLED(OFF);
-	BackLED(OFF,OFF);
-	StatusLED(OFF);
-	
     
     int pressed[]	= {0,0,0,0,0,0,0,0,0,0,0};
     int t			= 0;
