@@ -31,10 +31,10 @@ void main(void) {
 		LineData(data);
 		
 		if (((data[LEFT] > 50) || (data[RIGHT] > 50)) && ((data[LEFT] < 150) || (data[RIGHT] < 150))) { 		//Geschwindigkeit geringer bei Licht über 50E
-				MotorSpeed(60, 80);
-				LineData(data);
+				MotorSpeed(50, 70);
 				msleep(2000);
 		}
+		LineData(data);
 		while ((data[LEFT] > 150) || (data[RIGHT] > 150)) 	//Geschwindigkeit 0 bei Licht über 100E
 		{	
 			stopAsuro(500);
@@ -49,10 +49,10 @@ void main(void) {
 				stopAsuro(3000);
 			}
 		}
-		MotorSpeed(160, 220);
+		MotorSpeed(160, 210);
 		StatusLED(GREEN);
 		BackLED(OFF, OFF);
-		msleep(1000); 				//Werkseinstellungen : LEDs auf off | StatusLED auf grün | Pause
+		msleep(800); 				//Werkseinstellungen : LEDs auf off | StatusLED auf grün | Pause
 	}
 };
 
