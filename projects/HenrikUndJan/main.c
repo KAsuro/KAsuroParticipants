@@ -19,6 +19,7 @@
 void main(void)		{
     Init();
     
+    int counter 	= 0;
     int x			= 0;
     int left 		= 0;
     int right 		= 0;
@@ -38,8 +39,8 @@ void main(void)		{
 		char switches = PollSwitch();
         switches &= 0b00111111;
 		
-		left  = ((int)lineData[LEFT]+60	)  / 7;
-		right = ((int)lineData[RIGHT]	)  / 7;
+		left  = ((int)lineData[LEFT] +160)  / 7;
+		right = ((int)lineData[RIGHT]+100)  / 7;
 		
 		a_pressed = ( switches & SWITCH(1) );
 		b_pressed = ( switches & SWITCH(4) );
@@ -88,14 +89,14 @@ void main(void)		{
 			StatusLED(GREEN);
 		}
 		
-		for(int i=0;i<30;i++){
 			if(x == 29){
 				FrontLED(ON);
-				msleep(2000);
+				msleep(200);
 				x=0;
 		    }
 		    if(x == 15){				
 				FrontLED(OFF);
+				msleep(200);
 				x++;
 				}
 			else{
@@ -138,8 +139,29 @@ void main(void)		{
 			msleep(600);
 			MotorDir(BREAK,BREAK);
 		}
+		
+		if(counter<30){
+			MotorSpeed(99,99);
+			msleep(60);
+			counter=0;
+			
+			
+			}else{
+			counter++;	
+			
+			
+			}
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	}	
-}
+
 //**********  ****    *****    *    *              *********************
 //**********   ***    ****    **    *              *********************
 //**********   ***    ***    ***    ******    **************************
