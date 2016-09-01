@@ -10,7 +10,7 @@ void main(void) {
     int sstatus = 0;
 	//int x = 160;
 	//int y = 200;
-	int i = 0;
+	//int i = 0;
 	while (1) {  			//Hauptschleife
 		//i++;
 		char sensor = PollSwitch();
@@ -47,7 +47,7 @@ void main(void) {
 		switch (status) {
 			
 			case 0: 
-			MotorSpeed(250, 175);
+			MotorSpeed(250, 220);
 			status = 1;
 			msleep(4000);
 			break;
@@ -65,7 +65,7 @@ void main(void) {
 			break;
 			
 			case 3: 
-			MotorSpeed(200, 260); 
+			MotorSpeed(235, 260); 
 			status = 0;
 			msleep(4000);
 			break;
