@@ -136,10 +136,10 @@
  108 0066 80E2      		ldi r24,lo8(32)	 ;  44	movqi_insn/2	[length = 1]
  109 0068 00D0      		rcall MotorDir	 ;  45	call_insn/2	[length = 1]
  110               	.LVL9:
-  30:main.c        **** 			MotorSpeed(90, 100);
+  30:main.c        **** 			MotorSpeed(0, 100);
  111               		.loc 1 30 0
  112 006a 64E6      		ldi r22,lo8(100)	 ;  46	movqi_insn/2	[length = 1]
- 113 006c 8AE5      		ldi r24,lo8(90)	 ;  47	movqi_insn/2	[length = 1]
+ 113 006c 80E0      		ldi r24,0	 ;  47	movqi_insn/1	[length = 1]
  114 006e 00D0      		rcall MotorSpeed	 ;  48	call_insn/2	[length = 1]
  115               	.LVL10:
   31:main.c        **** 			StatusLED(RED);
@@ -164,9 +164,9 @@
  131 0084 80E2      		ldi r24,lo8(32)	 ;  59	movqi_insn/2	[length = 1]
  132 0086 00D0      		rcall MotorDir	 ;  60	call_insn/2	[length = 1]
  133               	.LVL12:
-  35:main.c        **** 			MotorSpeed(100, 90);
+  35:main.c        **** 			MotorSpeed(100, 0);
  134               		.loc 1 35 0
- 135 0088 6AE5      		ldi r22,lo8(90)	 ;  61	movqi_insn/2	[length = 1]
+ 135 0088 60E0      		ldi r22,0	 ;  61	movqi_insn/1	[length = 1]
  136 008a 84E6      		ldi r24,lo8(100)	 ;  62	movqi_insn/2	[length = 1]
  137 008c 00D0      		rcall MotorSpeed	 ;  63	call_insn/2	[length = 1]
  138               	.LVL13:
@@ -557,12 +557,12 @@
  175               		.file 7 "../../libtinyasuro/inc/asuro/asuro.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/ccVqY15p.s:2      *ABS*:0000003e __SP_H__
-     /tmp/ccVqY15p.s:3      *ABS*:0000003d __SP_L__
-     /tmp/ccVqY15p.s:4      *ABS*:0000003f __SREG__
-     /tmp/ccVqY15p.s:5      *ABS*:00000000 __tmp_reg__
-     /tmp/ccVqY15p.s:6      *ABS*:00000001 __zero_reg__
-     /tmp/ccVqY15p.s:13     .text.startup.main:00000000 main
+     /tmp/ccMs010O.s:2      *ABS*:0000003e __SP_H__
+     /tmp/ccMs010O.s:3      *ABS*:0000003d __SP_L__
+     /tmp/ccMs010O.s:4      *ABS*:0000003f __SREG__
+     /tmp/ccMs010O.s:5      *ABS*:00000000 __tmp_reg__
+     /tmp/ccMs010O.s:6      *ABS*:00000001 __zero_reg__
+     /tmp/ccMs010O.s:13     .text.startup.main:00000000 main
 
 UNDEFINED SYMBOLS
 Init

@@ -13,19 +13,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   4 .debug_aranges 000001c0  00000000  00000000  00000476  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00001404  00000000  00000000  00000636  2**0
+  5 .debug_info   00001402  00000000  00000000  00000636  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000a63  00000000  00000000  00001a3a  2**0
+  6 .debug_abbrev 00000a63  00000000  00000000  00001a38  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000007ad  00000000  00000000  0000249d  2**0
+  7 .debug_line   000007ad  00000000  00000000  0000249b  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  0000038c  00000000  00000000  00002c4c  2**2
+  8 .debug_frame  0000038c  00000000  00000000  00002c48  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    000005cd  00000000  00000000  00002fd8  2**0
+  9 .debug_str    000005cd  00000000  00000000  00002fd4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    0000087c  00000000  00000000  000035a5  2**0
+ 10 .debug_loc    0000087c  00000000  00000000  000035a1  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 000001a0  00000000  00000000  00003e21  2**0
+ 11 .debug_ranges 000001a0  00000000  00000000  00003e1d  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -160,9 +160,9 @@ void main(void) {
   ac:	60 e2       	ldi	r22, 0x20	; 32
   ae:	80 e2       	ldi	r24, 0x20	; 32
   b0:	45 d0       	rcall	.+138    	; 0x13c <MotorDir>
-			MotorSpeed(90, 100);
+			MotorSpeed(0, 100);
   b2:	64 e6       	ldi	r22, 0x64	; 100
-  b4:	8a e5       	ldi	r24, 0x5A	; 90
+  b4:	80 e0       	ldi	r24, 0x00	; 0
   b6:	4e d0       	rcall	.+156    	; 0x154 <MotorSpeed>
 			StatusLED(RED);
   b8:	82 e0       	ldi	r24, 0x02	; 2
@@ -180,8 +180,8 @@ void main(void) {
   ca:	60 e2       	ldi	r22, 0x20	; 32
   cc:	80 e2       	ldi	r24, 0x20	; 32
   ce:	36 d0       	rcall	.+108    	; 0x13c <MotorDir>
-			MotorSpeed(100, 90);
-  d0:	6a e5       	ldi	r22, 0x5A	; 90
+			MotorSpeed(100, 0);
+  d0:	60 e0       	ldi	r22, 0x00	; 0
   d2:	84 e6       	ldi	r24, 0x64	; 100
   d4:	3f d0       	rcall	.+126    	; 0x154 <MotorSpeed>
 			StatusLED(YELLOW);

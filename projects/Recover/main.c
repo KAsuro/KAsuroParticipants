@@ -27,12 +27,12 @@ void main(void) {
 		}
 		if (data[LEFT] > data[RIGHT]) { //if left is brighter than right
 			MotorDir(FWD, FWD);
-			MotorSpeed(90, 100);
+			MotorSpeed(0, 100);
 			StatusLED(RED);
 		}  
 		if (data[RIGHT] > data[LEFT]) { // if right is brighter than left
 			MotorDir(FWD, FWD);
-			MotorSpeed(100, 90);
+			MotorSpeed(100, 0);
 			StatusLED(YELLOW);
 		} 
         msleep(5);
