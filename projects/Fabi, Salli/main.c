@@ -55,7 +55,7 @@ void main(void) {
 			case 1: 
 			MotorSpeed(80,140);
 			status = 2;
-			msleep(4000);
+			msleep(1000);
 			break;
 			
 			case 2: 

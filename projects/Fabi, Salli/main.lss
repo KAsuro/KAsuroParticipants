@@ -328,8 +328,8 @@ void msleep(uint16_t ms) {
  136:	6c e8       	ldi	r22, 0x8C	; 140
  138:	80 e5       	ldi	r24, 0x50	; 80
  13a:	89 d0       	rcall	.+274    	; 0x24e <MotorSpeed>
- 13c:	00 ea       	ldi	r16, 0xA0	; 160
- 13e:	1f e0       	ldi	r17, 0x0F	; 15
+ 13c:	08 ee       	ldi	r16, 0xE8	; 232
+ 13e:	13 e0       	ldi	r17, 0x03	; 3
         sleep(36);
  140:	84 e2       	ldi	r24, 0x24	; 36
  142:	7d d1       	rcall	.+762    	; 0x43e <sleep>
@@ -346,7 +346,7 @@ void msleep(uint16_t ms) {
  14c:	c9 f7       	brne	.-14     	; 0x140 <main+0xd6>
  14e:	1c c0       	rjmp	.+56     	; 0x188 <main+0x11e>
 			status = 2;
-			msleep(4000);
+			msleep(1000);
 			break;
 			
 			case 2: 
@@ -414,7 +414,7 @@ void msleep(uint16_t ms) {
  188:	02 e0       	ldi	r16, 0x02	; 2
  18a:	10 e0       	ldi	r17, 0x00	; 0
  18c:	05 c0       	rjmp	.+10     	; 0x198 <main+0x12e>
-			msleep(4000);
+			msleep(1000);
 			break;
 			
 			case 2: 

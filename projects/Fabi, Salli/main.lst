@@ -741,7 +741,7 @@
   55:main.c        **** 			case 1: 
   56:main.c        **** 			MotorSpeed(80,140);
   57:main.c        **** 			status = 2;
-  58:main.c        **** 			msleep(4000);
+  58:main.c        **** 			msleep(1000);
   59:main.c        **** 			break;
   60:main.c        **** 			
   61:main.c        **** 			case 2: 
@@ -787,8 +787,8 @@
  330 00ce 80E5      		ldi r24,lo8(80)	 ;  136	movqi_insn/2	[length = 1]
  331 00d0 00D0      		rcall MotorSpeed	 ;  137	call_insn/2	[length = 1]
  332               	.LVL41:
- 333 00d2 00EA      		ldi r16,lo8(-96)	 ;  306	*movhi/5	[length = 2]
- 334 00d4 1FE0      		ldi r17,lo8(15)
+ 333 00d2 08EE      		ldi r16,lo8(-24)	 ;  306	*movhi/5	[length = 2]
+ 334 00d4 13E0      		ldi r17,lo8(3)
  335               	.LVL42:
  336               	.L28:
  337               	.LBB30:
@@ -880,7 +880,7 @@
  412 011c 00C0      		rjmp .L26	 ;  413	jump	[length = 1]
  413               	.LVL57:
  414               	.L50:
-  57:main.c        **** 			msleep(4000);
+  57:main.c        **** 			msleep(1000);
  415               		.loc 3 57 0
  416 011e 02E0      		ldi r16,lo8(2)	 ;  307	*movhi/5	[length = 2]
  417 0120 10E0      		ldi r17,0
@@ -1001,15 +1001,15 @@
  513               		.file 9 "../../libtinyasuro/inc/asuro/asuro.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/ccGnkBSW.s:2      *ABS*:0000003e __SP_H__
-     /tmp/ccGnkBSW.s:3      *ABS*:0000003d __SP_L__
-     /tmp/ccGnkBSW.s:4      *ABS*:0000003f __SREG__
-     /tmp/ccGnkBSW.s:5      *ABS*:00000000 __tmp_reg__
-     /tmp/ccGnkBSW.s:6      *ABS*:00000001 __zero_reg__
-     /tmp/ccGnkBSW.s:13     .text.stopAsuro:00000000 stopAsuro
-     /tmp/ccGnkBSW.s:71     .text.flashLED:00000000 flashLED
-     /tmp/ccGnkBSW.s:116    .text.stopLED:00000000 stopLED
-     /tmp/ccGnkBSW.s:134    .text.startup.main:00000000 main
+     /tmp/cccxFrQl.s:2      *ABS*:0000003e __SP_H__
+     /tmp/cccxFrQl.s:3      *ABS*:0000003d __SP_L__
+     /tmp/cccxFrQl.s:4      *ABS*:0000003f __SREG__
+     /tmp/cccxFrQl.s:5      *ABS*:00000000 __tmp_reg__
+     /tmp/cccxFrQl.s:6      *ABS*:00000001 __zero_reg__
+     /tmp/cccxFrQl.s:13     .text.stopAsuro:00000000 stopAsuro
+     /tmp/cccxFrQl.s:71     .text.flashLED:00000000 flashLED
+     /tmp/cccxFrQl.s:116    .text.stopLED:00000000 stopLED
+     /tmp/cccxFrQl.s:134    .text.startup.main:00000000 main
 
 UNDEFINED SYMBOLS
 MotorSpeed
