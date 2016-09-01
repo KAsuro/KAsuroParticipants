@@ -577,12 +577,12 @@
  192               		.file 9 "../../libtinyasuro/inc/asuro/led.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/cc9hoWeS.s:2      *ABS*:0000003e __SP_H__
-     /tmp/cc9hoWeS.s:3      *ABS*:0000003d __SP_L__
-     /tmp/cc9hoWeS.s:4      *ABS*:0000003f __SREG__
-     /tmp/cc9hoWeS.s:5      *ABS*:00000000 __tmp_reg__
-     /tmp/cc9hoWeS.s:6      *ABS*:00000001 __zero_reg__
-     /tmp/cc9hoWeS.s:13     .text.startup.main:00000000 main
+     /tmp/ccGX4DGC.s:2      *ABS*:0000003e __SP_H__
+     /tmp/ccGX4DGC.s:3      *ABS*:0000003d __SP_L__
+     /tmp/ccGX4DGC.s:4      *ABS*:0000003f __SREG__
+     /tmp/ccGX4DGC.s:5      *ABS*:00000000 __tmp_reg__
+     /tmp/ccGX4DGC.s:6      *ABS*:00000001 __zero_reg__
+     /tmp/ccGX4DGC.s:13     .text.startup.main:00000000 main
 
 UNDEFINED SYMBOLS
 Init
