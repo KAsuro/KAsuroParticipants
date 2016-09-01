@@ -19,6 +19,9 @@
 void main(void)		{
     Init();
     
+    
+    int pressed[]	= {0,0,0,0,0,0,0,0,0,0,0};
+    int t			= 0;
     int counter 	= 0;
     int x			= 0;
     int left 		= 0;
@@ -56,12 +59,16 @@ void main(void)		{
 		}
 		else if(left<100){
 			left=0;
-		}		
+			StatusLED(RED);
+		}
+				
 		if (right>200){
 			(right=200);
 		}
+		
 		else if(right<100){
 			right=0;
+			StatusLED(RED);
 		}
 			
 		MotorDir(FWD,FWD);
@@ -73,21 +80,27 @@ void main(void)		{
 		if(left > right){
 			BackLED(OFF,ON);
 		}
+		
 		if(right > left){
 			BackLED(ON,OFF);
 		}
+		
 		if(right == left){
 			BackLED(ON,ON);
 		}
+		
 		if(right && left < 80){
 			StatusLED(RED);
 		}
+		
 		if(80 < right && left < 120){
 			StatusLED(YELLOW);
 		}
+		
 		if(right && left > 120){
 			StatusLED(GREEN);
 		}
+		
 		
 			if(x == 3000){
 				FrontLED(ON);
@@ -139,26 +152,34 @@ void main(void)		{
 		}
 		
 		if(counter>30){
+			MotorDir(RWD,RWD);
 			MotorSpeed(60,60);
 			msleep(60);
 			counter=0;
-			
-			
-			}else{
-			counter++;	
-			
-			
+		}
+		else{
+			counter++;		
+	}	
+	while(lineData[LEFT] || lineData[RIGHT] > 900){
+		MotorDir(BREAK,BREAK);
+		pressed[t]=pressed[t]+10;
+		t++;
+		if(t == 10){
+			MotorDir(FWD,FWD);
+			MotorSpeed(pressed[t],pressed[t]);
+			msleep(1);
+			t=0;
 			}
 		
-		
-		
-		
-		
-		
-		
-		
-		
+		}
+	
+	
+	
+	
+}
 	}
+	
+	
 	//void test123 (void){
 		//while(1){
 		
@@ -171,7 +192,7 @@ void main(void)		{
 		
 	//}
 		//}	
-		}
+		
 //**********  ****    *****    *    *              *********************
 //**********   ***    ****    **    *              *********************
 //**********   ***    ***    ***    ******    **************************
