@@ -9,17 +9,16 @@ void main(void) {
 	//int x = 160;
 	//int y = 200;
 	int i = 0;
-	// RUSSIA
-	while (1) {  	//Hauptschleife
+	while (1) {  			//Hauptschleife
 		i++;
 		char sensor = PollSwitch();
 		sensor &= 0b00111111;
 		
 		MotorDir(FWD, FWD); //Werkeinstellung
-		MotorSpeed(170, 130); 
+		MotorSpeed(230, 190); 
 		
 		
-		if (sensor > 0) //Abfrage der sechs Drucksensoren -> backwards
+		if (sensor > 0) 	//Abfrage der sechs Drucksensoren -> backwards
 		{
 			 MotorDir(BWD, BWD); 
 			 MotorSpeed(60, 150);
@@ -63,9 +62,6 @@ void main(void) {
 			LineData(data);
 			msleep(100);
 		}
-		
-		
-		MotorSpeed(160, 200);
 		StatusLED(GREEN);
 		BackLED(OFF, OFF);
 		msleep(800); 				//Werkseinstellungen : LEDs auf off | StatusLED auf grün | Pause
