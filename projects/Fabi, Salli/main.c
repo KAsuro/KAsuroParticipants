@@ -50,14 +50,14 @@ void main(void) {
 			}
 		}
 		
-		while ((data[LEFT] > data[RIGHT]) && ((data[LEFT] < 200) || (data[RIGHT] < 200)))
+		if ((data[LEFT] > data[RIGHT]) && ((data[LEFT] < 200) || (data[RIGHT] < 200)))
 		{
 			MotorSpeed(70, 140);
 			LineData(data);
 			msleep(100);
 		}
 		
-		while ((data[LEFT] < data[RIGHT]) && ((data[LEFT] < 200) || (data[RIGHT] < 200)))
+		if ((data[LEFT] < data[RIGHT]) && ((data[LEFT] < 200) || (data[RIGHT] < 200)))
 		{
 			MotorSpeed(180, 90);
 			LineData(data);
@@ -65,7 +65,7 @@ void main(void) {
 		}
 		
 		
-		MotorSpeed(160, 210);
+		MotorSpeed(160, 200);
 		StatusLED(GREEN);
 		BackLED(OFF, OFF);
 		msleep(800); 				//Werkseinstellungen : LEDs auf off | StatusLED auf grün | Pause
