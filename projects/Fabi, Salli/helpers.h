@@ -11,22 +11,22 @@ void flashLED (int intervall)
 {
 	while (1)
 	{
-		int status = 0;
-		switch (status)
+		int sstatus = 0;
+		switch (sstatus)
 		{
 			case 0:
 			StatusLED(RED);
-			status = 1;
+			sstatus = 1;
 			break;
 			
 			case 1:
 			StatusLED(GREEN);
-			status = 2;
+			sstatus = 2;
 			break;
 			
 			case 2:
 			StatusLED(YELLOW);
-			status = 0;
+			sstatus = 0;
 			break;
 		}
 		msleep(intervall);

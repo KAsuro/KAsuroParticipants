@@ -72,9 +72,27 @@ void main(void) {
 			default: 
 			MotorDir(BREAK, BREAK);
 		}
-		flashLED(500);
+		
+		int sstatus = 0;
+		switch (sstatus)
+		{
+			case 0:
+			StatusLED(RED);
+			sstatus = 1;
+			break;
+			
+			case 1:
+			StatusLED(GREEN);
+			sstatus = 2;
+			break;
+			
+			case 2:
+			StatusLED(YELLOW);
+			sstatus = 0;
+			break;
+		}
 		BackLED(OFF, OFF);
-		msleep(800); 				//Werkseinstellungen : LEDs auf off | StatusLED auf grün | Pause
+		msleep(500); 				//Werkseinstellungen : LEDs auf off | StatusLED auf grün | Pause
 	}
 }
 
