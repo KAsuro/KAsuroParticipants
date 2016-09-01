@@ -20,8 +20,6 @@
 void main(void)		{
     Init();
     
-    int pressed[]	= {0,0,0,0,0,0,0,0,0,0,0};
-    int t			= 0;
     int x			= 0;
     int left 		= 0;
     int right 		= 0;
@@ -149,18 +147,7 @@ void main(void)		{
 			msleep(600);
 			MotorDir(BREAK,BREAK);
 		}	
-	while(lineData[LEFT] || lineData[RIGHT] > 900){
-		MotorDir(BREAK,BREAK);
-		pressed[t]=pressed[t]+10;
-		t++;
-		if(t == 10){
-			MotorDir(FWD,FWD);
-			MotorSpeed(pressed[t],pressed[t]);
-			msleep(1);
-			t=0;
-			}
-		
-		}
+
 	
 	
 	
