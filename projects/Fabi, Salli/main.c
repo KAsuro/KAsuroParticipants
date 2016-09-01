@@ -6,69 +6,91 @@
 
 void main(void) {
     Init();
+    int status = 0;
+    int sstatus = 0;
 	//int x = 160;
 	//int y = 200;
 	int i = 0;
-	
-	while (1) {  	//Hauptschleife
-		i++;
+	while (1) {  			//Hauptschleife
+		//i++;
 		char sensor = PollSwitch();
 		sensor &= 0b00111111;
-		
 		MotorDir(FWD, FWD); //Werkeinstellung
-		MotorSpeed(170, 130); 
+		MotorSpeed(230, 200); 
 		
-		
-		if (sensor > 0) //Abfrage der sechs Drucksensoren -> backwards
+		if (sensor > 0) 	//Abfrage der sechs Drucksensoren -> backwards
 		{
 			 MotorDir(BWD, BWD); 
 			 MotorSpeed(60, 150);
-			 StatusLED(RED);
 			 msleep(800);
 		}
-		
+		MotorDir(FWD, FWD); 
 		uint16_t data[] = {0,0};
 		LineData(data);
 		
-		if (((data[LEFT] > 50) || (data[RIGHT] > 50)) && ((data[LEFT] < 200) || (data[RIGHT] < 200))) { 		//Geschwindigkeit geringer bei Licht über 50E
-				MotorSpeed(50, 70);
-				msleep(2000);
-		}
 		LineData(data);
-		while ((data[LEFT] > 200) || (data[RIGHT] > 200)) 	//Geschwindigkeit 0 bei Licht über 100E
+		while ((data[LEFT] > 500) || (data[RIGHT] > 500)) 	//Geschwindigkeit 0 bei Licht über 100E
 		{	
 			stopAsuro(500);
 			LineData(data);
 		} 
 		
-		if ( (i % 3000) == 0) {
+		/*if ( (i % 3000) == 0) {
 			int ran;
 			ran = rand() % 2;
 			if (ran) {
-				StatusLED(YELLOW);
+				
 				stopAsuro(3000);
+				
 			}
+		}*/
+		switch (status) {
+			
+			case 0: 
+			MotorSpeed(250, 175);
+			status = 1;
+			msleep(4000);
+			break;
+			
+			case 1: 
+			MotorSpeed(80,140);
+			status = 2;
+			msleep(4000);
+			break;
+			
+			case 2: 
+			MotorSpeed(220, 205); 
+			status = 3;
+			msleep(4000);
+			break;
+			
+			case 3: 
+			MotorSpeed(200, 260); 
+			status = 0;
+			msleep(4000);
+			break;
+			
+			default: 
+			MotorDir(BREAK, BREAK);
 		}
 		
-		if ((data[LEFT] > data[RIGHT]) && ((data[LEFT] < 200) || (data[RIGHT] < 200)))
+		switch (sstatus)
 		{
-			MotorSpeed(70, 140);
-			LineData(data);
-			msleep(100);
+			case 0:
+			StatusLED(RED);
+			sstatus = 1;
+			break;
+			
+			case 1:
+			StatusLED(GREEN);
+			sstatus = 2;
+			break;
+			
+			case 2:
+			StatusLED(YELLOW);
+			sstatus = 0;
+			break;
 		}
-		
-		if ((data[LEFT] < data[RIGHT]) && ((data[LEFT] < 200) || (data[RIGHT] < 200)))
-		{
-			MotorSpeed(180, 90);
-			LineData(data);
-			msleep(100);
-		}
-		
-		
-		MotorSpeed(160, 200);
-		StatusLED(GREEN);
-		BackLED(OFF, OFF);
-		msleep(800); 				//Werkseinstellungen : LEDs auf off | StatusLED auf grün | Pause
+		msleep(500); 				
 	}
 }
-
