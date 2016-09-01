@@ -13,19 +13,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   4 .debug_aranges 000001d8  00000000  00000000  000005ea  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   000016c0  00000000  00000000  000007c2  2**0
+  5 .debug_info   000016b6  00000000  00000000  000007c2  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000ae0  00000000  00000000  00001e82  2**0
+  6 .debug_abbrev 00000ad1  00000000  00000000  00001e78  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   00000858  00000000  00000000  00002962  2**0
+  7 .debug_line   00000858  00000000  00000000  00002949  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  000003c8  00000000  00000000  000031bc  2**2
+  8 .debug_frame  000003c8  00000000  00000000  000031a4  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    000005fe  00000000  00000000  00003584  2**0
+  9 .debug_str    000005fe  00000000  00000000  0000356c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000c52  00000000  00000000  00003b82  2**0
+ 10 .debug_loc    00000c52  00000000  00000000  00003b6a  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 000001b8  00000000  00000000  000047d4  2**0
+ 11 .debug_ranges 000001b8  00000000  00000000  000047bc  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -146,7 +146,7 @@ void main(void) {
   7e:	10 e0       	ldi	r17, 0x00	; 0
 	//int x = 160;
 	//int y = 200;
-	int i = 0;
+	//int i = 0;
 	while (1) {  			//Hauptschleife
 		//i++;
 		char sensor = PollSwitch();
@@ -162,7 +162,7 @@ void main(void) {
   8c:	86 ee       	ldi	r24, 0xE6	; 230
   8e:	df d0       	rcall	.+446    	; 0x24e <MotorSpeed>
 	//int y = 200;
-	int i = 0;
+	//int i = 0;
 	while (1) {  			//Hauptschleife
 		//i++;
 		char sensor = PollSwitch();
@@ -273,8 +273,8 @@ void msleep(uint16_t ms) {
  100:	e1 f5       	brne	.+120    	; 0x17a <main+0x110>
 			
 			case 0: 
-			MotorSpeed(250, 175);
- 102:	6f ea       	ldi	r22, 0xAF	; 175
+			MotorSpeed(250, 220);
+ 102:	6c ed       	ldi	r22, 0xDC	; 220
  104:	8a ef       	ldi	r24, 0xFA	; 250
  106:	a3 d0       	rcall	.+326    	; 0x24e <MotorSpeed>
  108:	00 ea       	ldi	r16, 0xA0	; 160
@@ -297,9 +297,9 @@ void msleep(uint16_t ms) {
 			break;
 			
 			case 3: 
-			MotorSpeed(200, 260); 
+			MotorSpeed(235, 260); 
  11a:	64 e0       	ldi	r22, 0x04	; 4
- 11c:	88 ec       	ldi	r24, 0xC8	; 200
+ 11c:	8b ee       	ldi	r24, 0xEB	; 235
  11e:	97 d0       	rcall	.+302    	; 0x24e <MotorSpeed>
  120:	00 ea       	ldi	r16, 0xA0	; 160
  122:	1f e0       	ldi	r17, 0x0F	; 15
@@ -400,7 +400,7 @@ void msleep(uint16_t ms) {
 		switch (status) {
 			
 			case 0: 
-			MotorSpeed(250, 175);
+			MotorSpeed(250, 220);
 			status = 1;
  182:	01 e0       	ldi	r16, 0x01	; 1
  184:	10 e0       	ldi	r17, 0x00	; 0
@@ -427,7 +427,7 @@ void msleep(uint16_t ms) {
 			break;
 			
 			case 3: 
-			MotorSpeed(200, 260); 
+			MotorSpeed(235, 260); 
 			status = 0;
  194:	00 e0       	ldi	r16, 0x00	; 0
  196:	10 e0       	ldi	r17, 0x00	; 0
