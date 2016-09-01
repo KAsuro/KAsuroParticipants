@@ -30,12 +30,12 @@ void main(void) {
 		uint16_t data[] = {0,0};
 		LineData(data);
 		
-		if (((data[LEFT] > 50) || (data[RIGHT] > 50)) && ((data[LEFT] < 150) || (data[RIGHT] < 150))) { 		//Geschwindigkeit geringer bei Licht über 50E
-				MotorSpeed(60, 80);
-				LineData(data);
+		if (((data[LEFT] > 50) || (data[RIGHT] > 50)) && ((data[LEFT] < 200) || (data[RIGHT] < 200))) { 		//Geschwindigkeit geringer bei Licht über 50E
+				MotorSpeed(50, 70);
 				msleep(2000);
 		}
-		while ((data[LEFT] > 150) || (data[RIGHT] > 150)) 	//Geschwindigkeit 0 bei Licht über 100E
+		LineData(data);
+		while ((data[LEFT] > 200) || (data[RIGHT] > 200)) 	//Geschwindigkeit 0 bei Licht über 100E
 		{	
 			stopAsuro(500);
 			LineData(data);
@@ -49,10 +49,26 @@ void main(void) {
 				stopAsuro(3000);
 			}
 		}
-		MotorSpeed(160, 220);
+		
+		if ((data[LEFT] > data[RIGHT]) && ((data[LEFT] < 200) || (data[RIGHT] < 200)))
+		{
+			MotorSpeed(70, 140);
+			LineData(data);
+			msleep(100);
+		}
+		
+		if ((data[LEFT] < data[RIGHT]) && ((data[LEFT] < 200) || (data[RIGHT] < 200)))
+		{
+			MotorSpeed(180, 90);
+			LineData(data);
+			msleep(100);
+		}
+		
+		
+		MotorSpeed(160, 200);
 		StatusLED(GREEN);
 		BackLED(OFF, OFF);
-		msleep(1000); 				//Werkseinstellungen : LEDs auf off | StatusLED auf grün | Pause
+		msleep(800); 				//Werkseinstellungen : LEDs auf off | StatusLED auf grün | Pause
 	}
-};
+}
 
