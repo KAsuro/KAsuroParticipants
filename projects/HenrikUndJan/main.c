@@ -1,20 +1,15 @@
-/**
- * 	   (K)iT lives!
- *		  	  *
- *           * *
- * 			* * *
- *         * * * *
- *        * * * * *
- * 		 * * * * * *
- * 		* * * * * * *
- *     * * * * * * * *
- *    * * * * * * * * *
- *		   	 * *
- *		   	 * *
- * 		   	 * *
- * 
- */
-
+	
+// 	   			(K)iT lives!
+//*********************************************
+//*|x|**| |***| |****[___]****[_________]**|x|*
+//*|x|**| |***/ /*****| |*********| |******|x|*	 
+//*|x|**| |**/ /******| |*********| |******|x|*
+//*|x|**[     ]*******| |*********| |******|x|*
+//*|x|**| |**\ \******| |*********| |******|x|*
+//*|x|**| |***\ \*****| |*********| |******|x|*
+//*|x|**| |***| |****[___]*******[___]*****|x|*
+//*********************************************
+//
 #define SWITCH(X) 1<<X
 #define SLOW 1000
 #define FAST 100
@@ -24,6 +19,7 @@
 void main(void)		{
     Init();
     
+    int x			= 0;
     int left 		= 0;
     int right 		= 0;
 	char a_pressed	= 0;
@@ -42,8 +38,8 @@ void main(void)		{
 		char switches = PollSwitch();
         switches &= 0b00111111;
 		
-		left  = ((int)lineData[LEFT]+60	)  / 6;
-		right = ((int)lineData[RIGHT]	)  / 6;
+		left  = ((int)lineData[LEFT]+60	)  / 7;
+		right = ((int)lineData[RIGHT]	)  / 7;
 		
 		a_pressed = ( switches & SWITCH(1) );
 		b_pressed = ( switches & SWITCH(4) );
@@ -54,25 +50,23 @@ void main(void)		{
 		
 		//fahren
 		
+		if (left>200 ){
+			left=200;
+		}
+		else if(left<100){
+			left=0;
+		}		
+		if (right>200){
+			(right=200);
+		}
+		else if(right<100){
+			right=0;
+		}
+			
 		MotorDir(FWD,FWD);
 		MotorSpeed(right,left);
 		msleep(120);
-		
-		if (left>255){
-			left=254;
-			}
-		else if(left<100){
-			left=0;
-			}	
-			
-		if (right>255){
-			right=254;
-			}
-		else if(right<100){
-			right=0;
-			}	
-					
-					
+						
 		//LED Steuerung
 		
 		if(left > right){
@@ -87,16 +81,33 @@ void main(void)		{
 		if(right && left < 80){
 			StatusLED(RED);
 		}
-		if(80 < right && left < 100){
+		if(80 < right && left < 120){
 			StatusLED(YELLOW);
 		}
-		if(right && left > 100){
+		if(right && left > 120){
 			StatusLED(GREEN);
 		}
+		
+		for(int i=0;i<30;i++){
+			if(x == 29){
+				FrontLED(ON);
+				msleep(2000);
+				x=0;
+		    }
+		    if(x == 15){				
+				FrontLED(OFF);
+				x++;
+				}
+			else{
+				x++;
+				}
+			
+		}	
 		
 		//Rückfahrt
 		
 		if (a_pressed | b_pressed > 0) {
+			StatusLED(RED);
 			BackLED(OFF,ON);
 			msleep(1);
 			BackLED(ON,OFF);
@@ -104,9 +115,10 @@ void main(void)		{
 			MotorSpeed(120,120);
 			msleep(600);
 			MotorDir(BREAK,BREAK);
-			}
+		}
 		
 		if (c_pressed | d_pressed > 0) {
+			StatusLED(RED);
 			BackLED(OFF,ON);
 			msleep(1);
 			BackLED(ON,OFF);
@@ -114,9 +126,10 @@ void main(void)		{
 			MotorSpeed(120,60);
 			msleep(600);
 			MotorDir(BREAK,BREAK);
-			}
+		}
 		
 		if (e_pressed | f_pressed > 0) {
+			StatusLED(RED);
 			BackLED(OFF,ON);
 			msleep(1);
 			BackLED(ON,OFF);
@@ -124,16 +137,18 @@ void main(void)		{
 			MotorSpeed(60,120);
 			msleep(600);
 			MotorDir(BREAK,BREAK);
-			}
-			
-			
-		//Lichtsuche
-		
-		if(left && right < 90){
-			MotorDir(RWD,FWD);
-			MotorSpeed(120,120);
-			}
-					
-}	
-}		
+		}
+	}	
+}
+//**********  ****    *****    *    *              *********************
+//**********   ***    ****    **    *              *********************
+//**********   ***    ***    ***    ******    **************************
+//**   ******   ***   **    ****    ******    **************************
+//***   *****   ***   *    *****    ******    **************************
+//*****   ****   **       ******    ******    **************************
+//*******   ***   *   *    *****    ******    **************************
+//*********    *  **  **    ****    ******    **************************
+//************     *  ***    ***    ******    **************************
+//			*******   ****    **    ******    **************************
+//					  *****    *    ******    *************************			
 	
