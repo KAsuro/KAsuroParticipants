@@ -197,7 +197,7 @@ void main(void) {
 #include <asuro/asuro.h>
 
 void main(void) {
-  e0:	05 e0       	ldi	r16, 0x05	; 5
+  e0:	0f e0       	ldi	r16, 0x0F	; 15
   e2:	10 e0       	ldi	r17, 0x00	; 0
 static ALWAYS_INLINE void msleep(uint16_t ms);
 #endif

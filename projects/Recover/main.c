@@ -36,6 +36,6 @@ void main(void) {
 			StatusLED(YELLOW);
 			BackLED(ON, ON);
 		} 
-        msleep(5);
+        msleep(15);
     }
 }

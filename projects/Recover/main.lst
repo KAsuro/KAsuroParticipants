@@ -184,7 +184,7 @@
  148               	.L4:
    7:main.c        ****     Init();
  149               		.loc 1 7 0
- 150 0098 05E0      		ldi r16,lo8(5)	 ;  101	*movhi/5	[length = 2]
+ 150 0098 0FE0      		ldi r16,lo8(15)	 ;  101	*movhi/5	[length = 2]
  151 009a 10E0      		ldi r17,0
  152               	.LVL16:
  153               	.L7:
@@ -563,12 +563,12 @@
  180               		.file 7 "../../libtinyasuro/inc/asuro/asuro.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/ccQzqLgt.s:2      *ABS*:0000003e __SP_H__
-     /tmp/ccQzqLgt.s:3      *ABS*:0000003d __SP_L__
-     /tmp/ccQzqLgt.s:4      *ABS*:0000003f __SREG__
-     /tmp/ccQzqLgt.s:5      *ABS*:00000000 __tmp_reg__
-     /tmp/ccQzqLgt.s:6      *ABS*:00000001 __zero_reg__
-     /tmp/ccQzqLgt.s:13     .text.startup.main:00000000 main
+     /tmp/cc3xXFGX.s:2      *ABS*:0000003e __SP_H__
+     /tmp/cc3xXFGX.s:3      *ABS*:0000003d __SP_L__
+     /tmp/cc3xXFGX.s:4      *ABS*:0000003f __SREG__
+     /tmp/cc3xXFGX.s:5      *ABS*:00000000 __tmp_reg__
+     /tmp/cc3xXFGX.s:6      *ABS*:00000001 __zero_reg__
+     /tmp/cc3xXFGX.s:13     .text.startup.main:00000000 main
 
 UNDEFINED SYMBOLS
 Init
