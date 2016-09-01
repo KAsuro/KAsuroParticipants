@@ -13,19 +13,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   4 .debug_aranges 000001c0  00000000  00000000  0000073e  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00001910  00000000  00000000  000008fe  2**0
+  5 .debug_info   0000190e  00000000  00000000  000008fe  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000a7f  00000000  00000000  0000220e  2**0
+  6 .debug_abbrev 00000a7f  00000000  00000000  0000220c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   0000087d  00000000  00000000  00002c8d  2**0
+  7 .debug_line   0000087d  00000000  00000000  00002c8b  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  0000038c  00000000  00000000  0000350c  2**2
+  8 .debug_frame  0000038c  00000000  00000000  00003508  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00000619  00000000  00000000  00003898  2**0
+  9 .debug_str    00000619  00000000  00000000  00003894  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000c54  00000000  00000000  00003eb1  2**0
+ 10 .debug_loc    00000c54  00000000  00000000  00003ead  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 000001a0  00000000  00000000  00004b05  2**0
+ 11 .debug_ranges 000001a0  00000000  00000000  00004b01  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -102,9 +102,9 @@ void main(void)		{
   5e:	60 e0       	ldi	r22, 0x00	; 0
   60:	80 e0       	ldi	r24, 0x00	; 0
   62:	8c d1       	rcall	.+792    	; 0x37c <MotorSpeed>
-	MotorDir(FREE,FREE);
-  64:	60 e3       	ldi	r22, 0x30	; 48
-  66:	80 e3       	ldi	r24, 0x30	; 48
+	MotorDir(BREAK,BREAK);
+  64:	60 e0       	ldi	r22, 0x00	; 0
+  66:	80 e0       	ldi	r24, 0x00	; 0
   68:	7d d1       	rcall	.+762    	; 0x364 <MotorDir>
 	FrontLED(OFF);
   6a:	80 e0       	ldi	r24, 0x00	; 0

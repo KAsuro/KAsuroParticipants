@@ -556,16 +556,16 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x1910
+.debug_info     0x00000000     0x190e
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000      0x7bf *.o
- .debug_info    0x000007bf       0xdd ../../libtinyasuro/libtinyasuro.a(asuro.o)
- .debug_info    0x0000089c      0x1e4 ../../libtinyasuro/libtinyasuro.a(led.o)
- .debug_info    0x00000a80      0x1f4 ../../libtinyasuro/libtinyasuro.a(motor.o)
- .debug_info    0x00000c74      0x49e ../../libtinyasuro/libtinyasuro.a(sensors.o)
- .debug_info    0x00001112      0x36a ../../libtinyasuro/libtinyasuro.a(switches.o)
- .debug_info    0x0000147c      0x10b ../../libtinyasuro/libtinyasuro.a(time.o)
- .debug_info    0x00001587      0x389 ../../libtinyasuro/libtinyasuro.a(adc.o)
+ .debug_info    0x00000000      0x7bd *.o
+ .debug_info    0x000007bd       0xdd ../../libtinyasuro/libtinyasuro.a(asuro.o)
+ .debug_info    0x0000089a      0x1e4 ../../libtinyasuro/libtinyasuro.a(led.o)
+ .debug_info    0x00000a7e      0x1f4 ../../libtinyasuro/libtinyasuro.a(motor.o)
+ .debug_info    0x00000c72      0x49e ../../libtinyasuro/libtinyasuro.a(sensors.o)
+ .debug_info    0x00001110      0x36a ../../libtinyasuro/libtinyasuro.a(switches.o)
+ .debug_info    0x0000147a      0x10b ../../libtinyasuro/libtinyasuro.a(time.o)
+ .debug_info    0x00001585      0x389 ../../libtinyasuro/libtinyasuro.a(adc.o)
 
 .debug_abbrev   0x00000000      0xa7f
  *(.debug_abbrev)

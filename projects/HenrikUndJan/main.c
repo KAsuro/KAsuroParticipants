@@ -21,7 +21,7 @@ void main(void)		{
     Init();
    
 	MotorSpeed(0,0);
-	MotorDir(FREE,FREE);
+	MotorDir(BREAK,BREAK);
 	FrontLED(OFF);
 	BackLED(OFF,OFF);
 	StatusLED(OFF);

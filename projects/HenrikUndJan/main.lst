@@ -69,10 +69,10 @@
   47 0018 80E0      		ldi r24,0	 ;  42	movqi_insn/1	[length = 1]
   48 001a 00D0      		rcall MotorSpeed	 ;  43	call_insn/2	[length = 1]
   49               	.LVL1:
-  24:main.c        **** 	MotorDir(FREE,FREE);
+  24:main.c        **** 	MotorDir(BREAK,BREAK);
   50               		.loc 1 24 0
-  51 001c 60E3      		ldi r22,lo8(48)	 ;  44	movqi_insn/2	[length = 1]
-  52 001e 80E3      		ldi r24,lo8(48)	 ;  45	movqi_insn/2	[length = 1]
+  51 001c 60E0      		ldi r22,0	 ;  44	movqi_insn/1	[length = 1]
+  52 001e 80E0      		ldi r24,0	 ;  45	movqi_insn/1	[length = 1]
   53 0020 00D0      		rcall MotorDir	 ;  46	call_insn/2	[length = 1]
   54               	.LVL2:
   25:main.c        **** 	FrontLED(OFF);
@@ -1175,12 +1175,12 @@
  636               		.file 8 "../../libtinyasuro/inc/asuro/asuro.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/ccKOLuYf.s:2      *ABS*:0000003e __SP_H__
-     /tmp/ccKOLuYf.s:3      *ABS*:0000003d __SP_L__
-     /tmp/ccKOLuYf.s:4      *ABS*:0000003f __SREG__
-     /tmp/ccKOLuYf.s:5      *ABS*:00000000 __tmp_reg__
-     /tmp/ccKOLuYf.s:6      *ABS*:00000001 __zero_reg__
-     /tmp/ccKOLuYf.s:13     .text.startup.main:00000000 main
+     /tmp/ccFcsVRc.s:2      *ABS*:0000003e __SP_H__
+     /tmp/ccFcsVRc.s:3      *ABS*:0000003d __SP_L__
+     /tmp/ccFcsVRc.s:4      *ABS*:0000003f __SREG__
+     /tmp/ccFcsVRc.s:5      *ABS*:00000000 __tmp_reg__
+     /tmp/ccFcsVRc.s:6      *ABS*:00000001 __zero_reg__
+     /tmp/ccFcsVRc.s:13     .text.startup.main:00000000 main
 
 UNDEFINED SYMBOLS
 Init
