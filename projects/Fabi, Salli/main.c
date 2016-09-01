@@ -21,7 +21,6 @@ void main(void) {
 		{
 			 MotorDir(BWD, BWD); 
 			 MotorSpeed(60, 150);
-			 StatusLED(RED);
 			 msleep(800);
 		}
 		MotorDir(FWD, FWD); 
@@ -39,30 +38,41 @@ void main(void) {
 			int ran;
 			ran = rand() % 2;
 			if (ran) {
-				StatusLED(YELLOW);
+				
 				stopAsuro(3000);
+				
 			}
 		}
 		switch (status) {
+			
 			case 0: 
 			MotorSpeed(250, 175);
 			status = 1;
 			msleep(4000);
 			break;
+			
 			case 1: 
-			MotorSpeed(50,120);
+			MotorSpeed(80,140);
 			status = 2;
 			msleep(4000);
 			break;
+			
 			case 2: 
-			MotorSpeed(230, 200); 
+			MotorSpeed(220, 205); 
+			status = 3;
+			msleep(4000);
+			break;
+			
+			case 3: 
+			MotorSpeed(200, 260); 
 			status = 0;
 			msleep(4000);
 			break;
+			
 			default: 
 			MotorDir(BREAK, BREAK);
 		}
-		StatusLED(GREEN);
+		flashLED(500);
 		BackLED(OFF, OFF);
 		msleep(800); 				//Werkseinstellungen : LEDs auf off | StatusLED auf grün | Pause
 	}
