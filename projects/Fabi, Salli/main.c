@@ -29,7 +29,7 @@ void main(void) {
 		LineData(data);
 		
 		LineData(data);
-		while ((data[LEFT] > 500) || (data[RIGHT] > 500)) 	//Geschwindigkeit 0 bei Licht über 100E
+		while ((data[LEFT] > 400) || (data[RIGHT] > 400)) 	//Geschwindigkeit 0 bei Licht über 100E
 		{	
 			stopAsuro(500);
 			LineData(data);
