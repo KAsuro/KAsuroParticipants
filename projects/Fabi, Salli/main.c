@@ -53,12 +53,14 @@ void main(void) {
 		while ((data[LEFT] > data[RIGHT]) && ((data[LEFT] < 200) || (data[RIGHT] < 200)))
 		{
 			MotorSpeed(70, 140);
+			LineData(data);
 			msleep(100);
 		}
 		
 		while ((data[LEFT] < data[RIGHT]) && ((data[LEFT] < 200) || (data[RIGHT] < 200)))
 		{
 			MotorSpeed(180, 90);
+			LineData(data);
 			msleep(100);
 		}
 		
